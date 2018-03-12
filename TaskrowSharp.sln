@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskrowSharp", "TaskrowSharp\TaskrowSharp.csproj", "{6C2A986E-2791-449E-BC28-2366143D78BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CDF09D99-6AF6-45F8-97F1-81E4AA350E2C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskrowSharp.Tests", "TaskrowSharp.Tests\TaskrowSharp.Tests.csproj", "{25CFF894-892A-4DCA-9AB5-9221ED79324E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C2A986E-2791-449E-BC28-2366143D78BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C2A986E-2791-449E-BC28-2366143D78BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C2A986E-2791-449E-BC28-2366143D78BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C2A986E-2791-449E-BC28-2366143D78BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25CFF894-892A-4DCA-9AB5-9221ED79324E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25CFF894-892A-4DCA-9AB5-9221ED79324E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25CFF894-892A-4DCA-9AB5-9221ED79324E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25CFF894-892A-4DCA-9AB5-9221ED79324E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE37CECF-AD2C-423B-A8C1-BB8083CF226B}
+	EndGlobalSection
+EndGlobal
