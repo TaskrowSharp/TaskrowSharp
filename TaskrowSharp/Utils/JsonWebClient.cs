@@ -11,17 +11,25 @@ namespace TaskrowSharp.Utils
 {
     internal class JsonWebClient
     {
-        public string UserAgent = "TaskrowSharp";
+        public string UserAgent = null;
         public CookieContainer Cookies = new CookieContainer();
         public bool AllowAutoRedirect = false;
         public string Host = null;
         public string Origin = null;
         public string Referer = null;
-        public int TimeOutMilliseconds = 60000; //1minuto
+        public int TimeOutMilliseconds = 60000; //1 minute
         public string ContentType = "application/x-www-form-urlencoded";
         public string Accept = null;
         public Dictionary<string, string> Headers = new Dictionary<string, string>();
         public bool ValidateHttpErrorStatus = true;
+
+        public JsonWebClient(string userAgent)
+        {
+            if (string.IsNullOrEmpty(userAgent))
+                throw new System.ArgumentNullException(nameof(userAgent));
+
+            this.UserAgent = userAgent;
+        }
 
         #region GET
 
@@ -216,7 +224,7 @@ namespace TaskrowSharp.Utils
         public static void CheckHttpStatusCode(HttpWebResponse response, Uri uri, bool acceptRedirect = false)
         {
             int code = (int)response.StatusCode;
-            if (code >= 200 && code <= 299) //Códigos 200 são considerados de sucesso (200 OK, 201 Created, 202 Accepted...)
+            if (code >= 200 && code <= 299) //Success codes (200 OK, 201 Created, 202 Accepted...)
                 return;
 
             if (acceptRedirect && (code == 301 || code == 302)) //301 Moved Permanently / 302 Found

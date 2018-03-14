@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class PermissionsApi
+    internal class GenderApi
     {
-        public bool EditUser { get; set; }
+        public int Value { get; set; }
+        public string Description { get; set; }
     }
 }

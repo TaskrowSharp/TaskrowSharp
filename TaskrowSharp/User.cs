@@ -15,7 +15,7 @@ namespace TaskrowSharp
 
         public string UserLogin { get; set; }
 
-        public bool Inactive { get; set; }
+        public bool Active { get; set; }
 
         public int AppMainCompanyID { get; set; }
 
@@ -27,27 +27,27 @@ namespace TaskrowSharp
 
         public string ProfileTitle { get; set; }
 
-        public User(int userID, string fullName, string mainEmail, string userLogin, bool inactive, int appMainCompanyID, string userHashCode, 
+        public User(int userID, string fullName, string mainEmail, string userLogin, bool active, int appMainCompanyID, string userHashCode, 
             string photoUrl, string approvalGroup, string profileTitle)
         {
             this.UserID = userID;
             this.FullName = fullName;
             this.MainEmail = mainEmail;
             this.UserLogin = userLogin;
-            this.Inactive = inactive;
+            this.Active = active;
             this.AppMainCompanyID = appMainCompanyID;
             this.UserHashCode = userHashCode;
             this.ApprovalGroup = approvalGroup;
             this.ProfileTitle = profileTitle;
         }
 
-        public User(ApiModels.UserApi userApi)
+        internal User(ApiModels.UserApi userApi)
         {
             this.UserID = userApi.UserID;
             this.FullName = userApi.FullName;
             this.MainEmail = userApi.MainEmail;
             this.UserLogin = userApi.UserLogin;
-            this.Inactive = userApi.Inactive;
+            this.Active = !userApi.Inactive;
             this.AppMainCompanyID = userApi.AppMainCompanyID;
             this.UserHashCode = userApi.UserHashCode;
             this.ApprovalGroup = userApi.ApprovalGroup;

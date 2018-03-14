@@ -19,13 +19,16 @@ namespace TaskrowSharp.Tests
         }
 
         [TestMethod]
-        public void User_GetByEmail()
+        public void User_GetUser()
         {
-            var config = UtilsTest.GetConfigurationFile();
             var taskrowClient = UtilsTest.GetTaskrowClient();
-            var user = taskrowClient.GetUserByEmail(config.Email);
+            var listUsers = taskrowClient.ListUsers();
+            var userTest = listUsers.Where(a => a.Active).First();
+            
+            var user = taskrowClient.GetUser(userTest.UserID);
             Assert.IsTrue(user != null);
-            Assert.IsTrue(string.Equals(config.Email, user.MainEmail));
+            Assert.IsTrue(string.Equals(userTest.UserID, user.UserID));
+            Assert.IsTrue(string.Equals(userTest.MainEmail, user.MainEmail));
         }
     }
 }

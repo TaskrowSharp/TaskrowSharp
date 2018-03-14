@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class PermissionsApi
+    internal class DateStartApi
     {
-        public bool EditUser { get; set; }
+        public string DateStart { get; set; }
+        public int DayID { get; set; }
     }
 }

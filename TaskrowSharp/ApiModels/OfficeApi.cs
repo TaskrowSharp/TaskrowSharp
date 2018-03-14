@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    public class OfficeApi
+    internal class OfficeApi
     {
         public int OfficeID { get; set; }
         public string Name { get; set; }

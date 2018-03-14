@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class PermissionsApi
+    internal class UserGroupApi
     {
-        public bool EditUser { get; set; }
+        public int GroupID { get; set; }
+        public string GroupName { get; set; }
+        public int OwnerUserID { get; set; }
     }
 }
