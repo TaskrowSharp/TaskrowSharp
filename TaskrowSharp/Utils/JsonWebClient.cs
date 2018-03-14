@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -113,26 +112,10 @@ namespace TaskrowSharp.Utils
             catch (System.Exception ex)
             {
                 string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new System.InvalidOperationException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
+                throw new TaskrowException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
             }
         }
-
-        public JObject GetReturnJObject(Uri url)
-        {
-            string json = GetReturnString(url);
-
-            try
-            {
-                var obj = Utils.JsonHelper.DeserializeToJObject(json);
-                return obj;
-            }
-            catch (System.Exception ex)
-            {
-                string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new System.InvalidOperationException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
-            }
-        }
-
+        
         #endregion
 
         #region POST
@@ -188,39 +171,7 @@ namespace TaskrowSharp.Utils
             response.Close();
             return json;
         }
-
-        public JObject PostValuesReturnJObject(Uri url, NameValueCollection values)
-        {
-            string json = PostValuesReturnString(url, values);
-
-            try
-            {
-                var obj = Utils.JsonHelper.DeserializeToJObject(json);
-                return obj;
-            }
-            catch (System.Exception ex)
-            {
-                string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new System.InvalidOperationException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
-            }
-        }
-
-        public JObject PostObjReturnJObject(Uri url, object obj)
-        {
-            string json = PostObjReturnString(url, obj);
-
-            try
-            {
-                var objRet = Utils.JsonHelper.DeserializeToJObject(json);
-                return objRet;
-            }
-            catch (System.Exception ex)
-            {
-                string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new System.InvalidOperationException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
-            }
-        }
-
+        
         public string PostObjReturnString(Uri url, object obj)
         {
             string requestString = Utils.JsonHelper.Serialize(obj);
@@ -249,7 +200,7 @@ namespace TaskrowSharp.Utils
             catch (System.Exception ex)
             {
                 string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new System.InvalidOperationException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
+                throw new TaskrowException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
             }
         }
 
@@ -289,7 +240,7 @@ namespace TaskrowSharp.Utils
             if (content != null && content.Length > 500)
                 content = string.Concat(content.Substring(0, 500), "...");
 
-            throw new System.InvalidOperationException(string.Format("HttpStatusError: {0} ({1}) -- Url: {2} -- {3}",
+            throw new TaskrowException(string.Format("HttpStatusError: {0} ({1}) -- Url: {2} -- {3}",
                 (int)response.StatusCode, response.StatusCode.ToString(), uri, content));
         }
 

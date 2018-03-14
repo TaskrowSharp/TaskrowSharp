@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 namespace TaskrowSharp
 {
     [Serializable]
-    public class NotConnectedException : TaskrowException
+    public class InvalidServiceUrlException : TaskrowException
     {
-        public NotConnectedException()
-            : base("Taskrow client not connected")
+        public InvalidServiceUrlException()
+            : base("Invalid Service Url")
         {
 
         }
 
-        public NotConnectedException(string message)
+        public InvalidServiceUrlException(string message)
             : base(message)
         {
 
         }
 
-        public NotConnectedException(string message, System.Exception innerException)
+        public InvalidServiceUrlException(string message, System.Exception innerException)
             : base(message, innerException)
         {
 

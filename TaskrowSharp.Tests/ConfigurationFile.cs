@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace TaskrowSharp.Tests
 {
+    [DataContract]
     public class ConfigurationFile
     {
-        [Newtonsoft.Json.JsonProperty("serviceUrl")]
+        [DataMember(Name = "serviceUrl")]
         public string ServiceUrl { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("email")]
+        [DataMember(Name = "email")]
         public string Email { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("password")]
+        [DataMember(Name = "password")]
         public string Password { get; set; }
     }
 }

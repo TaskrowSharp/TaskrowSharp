@@ -6,30 +6,16 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp
 {
-    public class Credential
+    /// <summary>
+    /// Credential abastract class. To construct a new credential use: UserAndPasswordCredential or MobileApiCredential
+    /// </summary>
+    public abstract class Credential
     {
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
-        public Credential()
+        internal Credential()
         {
 
         }
 
-        public Credential(string email, string password)
-        {
-            this.Email = email;
-            this.Password = password;
-        }
-
-        public void Validate()
-        {
-            if (string.IsNullOrEmpty(this.Email))
-                throw new System.InvalidOperationException(string.Format(string.Format("Invalid e-mail")));
-
-            if (string.IsNullOrEmpty(this.Password))
-                throw new System.InvalidOperationException(string.Format(string.Format("Invalid password")));
-        }
+        public abstract void Validate();
     }
 }

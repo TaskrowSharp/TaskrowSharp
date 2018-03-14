@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TaskrowSharp</RootNamespace>
     <AssemblyName>TaskrowSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,11 +39,9 @@
     <AssemblyOriginatorKeyFile>TaskrowSharp.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,7 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiModels\OfficeApi.cs" />
+    <Compile Include="ApiModels\PermissionsApi.cs" />
+    <Compile Include="ApiModels\UserApi.cs" />
+    <Compile Include="ApiModels\UserListApiResponse.cs" />
+    <Compile Include="InvalidServiceUrlException.cs" />
+    <Compile Include="MobileApiCredential.cs" />
+    <Compile Include="EmailAndPasswordCredential.cs" />
+    <Compile Include="AuthenticationException.cs" />
     <Compile Include="NotConnectedException.cs" />
+    <Compile Include="Utils\SimpleJson.cs" />
     <Compile Include="TaskrowException.cs" />
     <Compile Include="Credential.cs" />
     <Compile Include="Group.cs" />
@@ -72,8 +80,8 @@
     <Compile Include="Utils\Parser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="TaskrowSharp.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

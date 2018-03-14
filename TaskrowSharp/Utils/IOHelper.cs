@@ -42,7 +42,7 @@ namespace TaskrowSharp.Utils
             }
             catch (System.Exception)
             {
-                throw new System.InvalidOperationException(string.Format("Error converting relative path: {0}", relativePath));
+                throw new TaskrowException(string.Format("Error converting relative path: {0}", relativePath));
             }
 
             if (path.EndsWith(@"\"))
@@ -59,7 +59,7 @@ namespace TaskrowSharp.Utils
             }
 
             if (checkIfExists && !System.IO.File.Exists(path))
-                throw new System.InvalidOperationException(string.Format("File not found: {0}", path));
+                throw new TaskrowException(string.Format("File not found: {0}", path));
 
             return path;
         }
