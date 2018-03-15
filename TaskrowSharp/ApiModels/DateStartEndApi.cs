@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class DateStartApi
+    internal class DateStartEndApi
     {
         public string DateStart { get; set; }
         public int DayID { get; set; }

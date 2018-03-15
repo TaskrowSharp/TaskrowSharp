@@ -14,9 +14,9 @@ namespace TaskrowSharp.ApiModels
         public int OwnerUserID { get; set; }
         public OwnerApi Owner { get; set; }
         public List<MemberGroupApi> Members { get; set; }
-        public List<object> AllowedUsers { get; set; }
+        //public List<object> AllowedUsers { get; set; }
         public string MembersNames { get; set; }
         public ParentGroupApi ParentGroup { get; set; }
-        public List<object> Groups { get; set; }
+        //public List<object> Groups { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace TaskrowSharp.ApiModels
     {
         public List<UserApi> Users { get; set; }
         public PermissionsApi Permissions { get; set; }
-        public object UsagePlanLimitUsers { get; set; }
+        //public object UsagePlanLimitUsers { get; set; }
     }
 }

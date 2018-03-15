@@ -14,6 +14,6 @@ namespace TaskrowSharp.ApiModels
         public int? AppExpenseTypeID { get; set; }
         public string AppExpenseType { get; set; }
         public bool Inactive { get; set; }
-        public List<object> UserFunction { get; set; }
+        //public List<object> UserFunction { get; set; }
     }
 }

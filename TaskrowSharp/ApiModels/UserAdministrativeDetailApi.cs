@@ -8,16 +8,16 @@ namespace TaskrowSharp.ApiModels
 {
     internal class UserAdministrativeDetailApi
     {
-        public object NumberCTPS { get; set; }
-        public object DateCTPS { get; set; }
-        public object UFCTPS { get; set; }
-        public object SerieCTPS { get; set; }
-        public object PISPasep { get; set; }
-        public object TituloEleitor { get; set; }
-        public object TituloEleitorSecao { get; set; }
-        public object TituloEleitorZona { get; set; }
-        public object UnionName { get; set; }
-        public object Information { get; set; }
-        public object RegistrationNumber { get; set; }
+        public string NumberCTPS { get; set; }
+        public string DateCTPS { get; set; }
+        public string UFCTPS { get; set; }
+        public string SerieCTPS { get; set; }
+        public string PISPasep { get; set; }
+        public string TituloEleitor { get; set; }
+        public string TituloEleitorSecao { get; set; }
+        public string TituloEleitorZona { get; set; }
+        public string UnionName { get; set; }
+        public string Information { get; set; }
+        public string RegistrationNumber { get; set; }
     }
 }

@@ -58,9 +58,11 @@
   <ItemGroup>
     <Compile Include="ConfigurationFile.cs" />
     <Compile Include="ConnectTests.cs" />
+    <Compile Include="GroupListTests.cs" />
     <Compile Include="JsonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserTests.cs" />
+    <Compile Include="UserDetailTests.cs" />
+    <Compile Include="UserListTests.cs" />
     <Compile Include="UtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@ namespace TaskrowSharp.Tests
             var config = GetConfigurationFile();
 
             var taskrowClient = new TaskrowClient();
-            taskrowClient.Connect(new Uri(config.ServiceUrl), config.Email, config.Password);
+            taskrowClient.Connect(new Uri(config.ServiceUrl), new AccessKeyCredential(config.AccessKey));
 
             return taskrowClient;
         }

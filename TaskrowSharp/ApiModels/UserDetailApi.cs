@@ -8,32 +8,32 @@ namespace TaskrowSharp.ApiModels
 {
     internal class UserDetailApi
     {
-        public object CityBirth { get; set; }
-        public object StateBirth { get; set; }
-        public object CountryBirth { get; set; }
+        public string CityBirth { get; set; }
+        public string StateBirth { get; set; }
+        public string CountryBirth { get; set; }
         public int Gender { get; set; }
         public string GenderName { get; set; }
-        public object CivilStatus { get; set; }
+        public string CivilStatus { get; set; }
         public string CivilStatusName { get; set; }
-        public object DateBirth { get; set; }
-        public object email2 { get; set; }
-        public object PhoneNumber2 { get; set; }
-        public object CellNumber2 { get; set; }
-        public object CPF { get; set; }
-        public object RG { get; set; }
-        public object RGDate { get; set; }
-        public object Reservist { get; set; }
-        public object UserScholarityID { get; set; }
+        public string DateBirth { get; set; }
+        public string email2 { get; set; }
+        public string PhoneNumber2 { get; set; }
+        public string CellNumber2 { get; set; }
+        public string CPF { get; set; }
+        public string RG { get; set; }
+        public string RGDate { get; set; }
+        public string Reservist { get; set; }
+        public string UserScholarityID { get; set; }
         public string UserScholarity { get; set; }
-        public object FatherName { get; set; }
-        public object MotherName { get; set; }
-        public object HomeAddress { get; set; }
-        public object HomeAddressDetail { get; set; }
-        public object HomeAddressNumber { get; set; }
-        public object HomeCity { get; set; }
-        public object HomeDistrict { get; set; }
-        public object HomeState { get; set; }
-        public object HomeZipCode { get; set; }
-        public object Information { get; set; }
+        public string FatherName { get; set; }
+        public string MotherName { get; set; }
+        public string HomeAddress { get; set; }
+        public string HomeAddressDetail { get; set; }
+        public string HomeAddressNumber { get; set; }
+        public string HomeCity { get; set; }
+        public string HomeDistrict { get; set; }
+        public string HomeState { get; set; }
+        public string HomeZipCode { get; set; }
+        public string Information { get; set; }
     }
 }

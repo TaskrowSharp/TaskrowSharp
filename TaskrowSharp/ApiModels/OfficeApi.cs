@@ -11,8 +11,8 @@ namespace TaskrowSharp.ApiModels
         public int OfficeID { get; set; }
         public string Name { get; set; }
         public bool MainOffice { get; set; }
-        public object DailyMinutes { get; set; }
-        public object ExternalCode { get; set; }
+        public int? DailyMinutes { get; set; }
+        //public object ExternalCode { get; set; }
         public int AppMainCompanyID { get; set; }
         public string CreationDate { get; set; }
         public int CreationUserID { get; set; }

@@ -20,18 +20,18 @@ namespace TaskrowSharp.ApiModels
         public string UserHashCode { get; set; }
         public bool Inactive { get; set; }
         public int ProfileID { get; set; }
-        public object ExternalCode { get; set; }
+        public string ExternalCode { get; set; }
         public UserNotificationSettingApi UserNotificationSetting { get; set; }
         public bool ExternalUser { get; set; }
         public UserGroupApi UserGroup { get; set; }
         public string ProfileTitle { get; set; }
         public UserDetailApi UserDetail { get; set; }
         public UserAdministrativeDetailApi UserAdministrativeDetail { get; set; }
-        public List<object> UserBankingInfo { get; set; }
+        //public List<object> UserBankingInfo { get; set; }
         public List<UserPeriodApi> UserPeriods { get; set; }
         public List<UserFunctionPeriodApi> UserFunctionPeriod { get; set; }
-        public List<UserPeriodApi> UserPeriod { get; set; }
-        public List<object> UserExternalService { get; set; }
+        public List<UserPeriodSingleApi> UserPeriod { get; set; }
+        //public List<object> UserExternalService { get; set; }
         public string ApprovalGroup { get; set; }
         public object AppMainCompanyMediaUser { get; set; }
     }

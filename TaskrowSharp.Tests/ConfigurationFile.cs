@@ -18,5 +18,8 @@ namespace TaskrowSharp.Tests
 
         [DataMember(Name = "password")]
         public string Password { get; set; }
+
+        [DataMember(Name = "accessKey")]
+        public string AccessKey { get; set; }
     }
 }

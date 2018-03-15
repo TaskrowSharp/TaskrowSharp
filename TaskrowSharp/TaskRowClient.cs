@@ -10,7 +10,8 @@ namespace TaskrowSharp
     public class TaskrowClient
     {
         private Uri ServiceUrl = null;
-        private CookieCollection Cookies;
+        private CookieCollection AuthCookies;
+        private string AuthAccessKey;
 
         public string UserAgent { get; set; }
 
@@ -26,17 +27,28 @@ namespace TaskrowSharp
             this.UserAgent = string.Format("TaskrowSharp v{0}", Utils.Application.GetAppVersion());
             this.RetryPolicy = new RetryPolicy(1, 120);
         }
-        
-        #region Connect
 
-        public void Connect(Uri serviceUrl, string email, string password)
+        private void ValidateIsConnected()
         {
-            Connect(serviceUrl, new EmailAndPasswordCredential(email, password), this.RetryPolicy);
+            if (!this.StatusConnected)
+                throw new NotConnectedException();
         }
 
-        public void Connect(Uri serviceUrl, string email, string password, RetryPolicy retryPolicy)
+        #region Connect
+
+        public void Connect(Uri serviceUrl, string accessKey)
         {
-            Connect(serviceUrl, new EmailAndPasswordCredential(email, password), retryPolicy);
+            Connect(serviceUrl, new AccessKeyCredential(accessKey), this.RetryPolicy);
+        }
+
+        public void Connect(Uri serviceUrl, string accessKey, RetryPolicy retryPolicy)
+        {
+            Connect(serviceUrl, new AccessKeyCredential(accessKey), retryPolicy);
+        }
+
+        public void Connect(Uri serviceUrl, Credential credential)
+        {
+            Connect(serviceUrl, credential, this.RetryPolicy);
         }
 
         public void Connect(Uri serviceUrl, Credential credential, RetryPolicy retryPolicy)
@@ -47,9 +59,9 @@ namespace TaskrowSharp
             if (credential == null)
                 throw new ArgumentNullException(nameof(credential));
             
-            credential.Validate();
-
-            if (credential is EmailAndPasswordCredential)
+            if (credential is AccessKeyCredential)
+                ConnectUsingAccessKey(serviceUrl, (AccessKeyCredential)credential, retryPolicy);
+            else if (credential is EmailAndPasswordCredential)
                 ConnectUsingEmailAndPassword(serviceUrl, (EmailAndPasswordCredential)credential, retryPolicy);
             else
                 throw new TaskrowException("Credential Type not supported");
@@ -57,6 +69,8 @@ namespace TaskrowSharp
 
         private void ConnectUsingEmailAndPassword(Uri serviceUrl, EmailAndPasswordCredential credential, RetryPolicy retryPolicy)
         {
+            credential.Validate();
+
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
                 try
@@ -94,15 +108,68 @@ namespace TaskrowSharp
                         throw new AuthenticationException(string.Format("Error connecting in Taskrow. Check parameters: ServiceUrl, Email and Password -- URL: {0} -- email: {1}", url.ToString(), credential.Email));
 
                     this.ServiceUrl = serviceUrl;
-                    this.Cookies = cookies;
+                    this.AuthCookies = cookies;
+                    this.AuthAccessKey = null;
+
                     response.Close();
 
                     return; //Success
                 }
                 catch (System.Exception ex)
                 {
+                    if (Utils.Application.IsTaskrowEception(ex))
+                        throw;
+
+                    if (!Utils.Application.IsWebException(ex))
+                        throw new TaskrowException(string.Format("Error connection in Taskrow -- Url: {0} -- Error: {1}", serviceUrl.ToString(), ex.Message), ex);
+
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new AuthenticationException(string.Format("Error connecting in Taskrow after {0} attempts(s) -- url: {1} -- email: {2} -- {3} -- TimeOut: {4} seconds", retryPolicy.MaxAttempts, serviceUrl.ToString(), credential.Email, ex.Message, retryPolicy.TimeOutSeconds), ex);
+                }
+            }
+
+            throw new TaskrowException("Unexpected error in attempts control");
+        }
+
+        private void ConnectUsingAccessKey(Uri serviceUrl, AccessKeyCredential credential, RetryPolicy retryPolicy)
+        {
+            credential.Validate();
+
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
+            {
+                try
+                {
+                    this.ServiceUrl = null;
+
+                    Uri url = new Uri(serviceUrl, "/User/MyInfo");
+
+                    var client = new Utils.JsonWebClient(this.UserAgent);
+                    client.AllowAutoRedirect = true;
+                    client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
+                    client.Headers.Add("__identifier", credential.AccessKey);
+                    
+                    string json = client.GetReturnString(url);
+
+                    //When password is invalid, Taskrow returns html from login page
+                    if (json.IndexOf("<html", StringComparison.CurrentCultureIgnoreCase) != -1)
+                        throw new AuthenticationException("Invalid AccessKey");
+
+                    this.ServiceUrl = serviceUrl;
+                    this.AuthCookies = null;
+                    this.AuthAccessKey = credential.AccessKey;
+
+                    return; //Success
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsTaskrowEception(ex))
+                        throw;
+
+                    if (!Utils.Application.IsWebException(ex))
+                        throw new TaskrowException(string.Format("Error connection in Taskrow -- Url: {0} -- Error: {1}", serviceUrl.ToString(), ex.Message), ex);
+
+                    if (attempt == retryPolicy.MaxAttempts)
+                        throw new AuthenticationException(string.Format("Error connecting in Taskrow after {0} attempts(s) -- url: {1} -- {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, serviceUrl.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
                 }
             }
 
@@ -118,22 +185,17 @@ namespace TaskrowSharp
                 throw new InvalidServiceUrlException("https:// is required");
                         
             if (!serviceUrl.ToString().StartsWith("https://", StringComparison.CurrentCultureIgnoreCase) || !serviceUrl.ToString().EndsWith(".taskrow.com/", StringComparison.CurrentCultureIgnoreCase))
-                throw new InvalidServiceUrlException("Invalid service url, use the format: https://yourcompany.taskrow.com");
+                throw new InvalidServiceUrlException("Invalid service url, use the format: https://yourdomain.taskrow.com");
         }
-
-        private void ValidateIsConnected()
-        {
-            if (!this.StatusConnected)
-                throw new NotConnectedException();
-        }
-
+        
         public void Disconnect()
         {
             if (!StatusConnected)
                 return;
 
             this.ServiceUrl = null;
-            this.Cookies = null;
+            this.AuthCookies = null;
+            this.AuthAccessKey = null;
         }
 
         public string KeepAlive()
@@ -148,7 +210,7 @@ namespace TaskrowSharp
             {
                 var client = new Utils.JsonWebClient(this.UserAgent);
                 client.TimeOutMilliseconds = 5000; //5 seconds
-                client.Cookies.Add(this.Cookies);
+                client.Cookies.Add(this.AuthCookies);
 
                 return client.GetReturnString(url);
             }
@@ -183,7 +245,12 @@ namespace TaskrowSharp
 
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
-                    client.Cookies.Add(this.Cookies);
+
+                    if (this.AuthCookies != null)
+                        client.Cookies.Add(this.AuthCookies);
+
+                    if (this.AuthAccessKey != null)
+                        client.Headers.Add("__identifier", this.AuthAccessKey);
 
                     string json = client.GetReturnString(url);
 
@@ -191,11 +258,17 @@ namespace TaskrowSharp
 
                     foreach (var userResponse in userListResponse.Users)
                         listUsers.Add(new User(userResponse));
-                                        
+                    
                     return listUsers; //Success
                 }
                 catch (System.Exception ex)
                 {
+                    if (Utils.Application.IsTaskrowEception(ex))
+                        throw;
+
+                    if (!Utils.Application.IsWebException(ex))
+                        throw new TaskrowException(string.Format("Error listing users -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new TaskrowException(string.Format("Error listing users after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
                 }
@@ -204,12 +277,16 @@ namespace TaskrowSharp
             throw new TaskrowException("Unexpected error in attempts control");
         }
 
-        public User GetUser(int userID)
+        #endregion
+
+        #region UserDetail
+
+        public UserDetail GetUserDetail(int userID)
         {
-            return GetUser(userID, this.RetryPolicy);
+            return GetUserDetail(userID, this.RetryPolicy);
         }
 
-        public User GetUser(int userID, RetryPolicy retryPolicy)
+        public UserDetail GetUserDetail(int userID, RetryPolicy retryPolicy)
         {
             //Example: /User/UserDetail?userID=3564
 
@@ -226,17 +303,28 @@ namespace TaskrowSharp
                 {
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
-                    client.Cookies.Add(this.Cookies);
+
+                    if (this.AuthCookies != null)
+                        client.Cookies.Add(this.AuthCookies);
+
+                    if (this.AuthAccessKey != null)
+                        client.Headers.Add("__identifier", this.AuthAccessKey);
 
                     string json = client.GetReturnString(url);
 
-                    var userGetResponse = Utils.JsonHelper.Deserialize<ApiModels.UserGetApiResponse>(json);
+                    var userDetailresponse = Utils.JsonHelper.Deserialize<ApiModels.UserDetailResponse>(json);
 
-                    var user = new User(userGetResponse.User);
+                    var user = new UserDetail(userDetailresponse);
                     return user; //Success
                 }
                 catch (System.Exception ex)
                 {
+                    if (Utils.Application.IsTaskrowEception(ex))
+                        throw;
+
+                    if (!Utils.Application.IsWebException(ex))
+                        throw new TaskrowException(string.Format("Error getting user -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new TaskrowException(string.Format("Error getting user after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
                 }
@@ -249,51 +337,52 @@ namespace TaskrowSharp
 
         #region Group (not implemented)
 
-        //public Group GetGroupByName(string name, int maxAttempts = 1, int timeOutSeconds = 60)
-        //{
-        //    var list = this.ListGroups(maxAttempts, timeOutSeconds);
-        //    var group = list.FirstOrDefault(a => a.GroupName.Equals(name, StringComparison.CurrentCultureIgnoreCase));
-        //    return group;
-        //}
+        public List<Group> ListGroups(int maxAttempts = 1, int timeOutSeconds = 60)
+        {
+            //Example: /Administrative/ListGroups?groupTypeID=2
 
-        //public List<Group> ListGroups(int maxAttempts = 1, int timeOutSeconds = 60)
-        //{
-        //    //Example: /Administrative/ListGroups?groupTypeID=2
+            ValidateIsConnected();
 
-        //    ValidateStatusConnected();
+            var url = new Uri(this.ServiceUrl, "/Administrative/ListGroups?groupTypeID=2");
 
-        //    var url = new Uri(this.ServiceUrl, "/Administrative/ListGroups?groupTypeID=2");
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
+            {
+                try
+                {
+                    var client = new Utils.JsonWebClient(this.UserAgent);
+                    client.TimeOutMilliseconds = timeOutSeconds * 1000;
 
-        //    for (int attempt = 1; attempt <= maxAttempts; attempt++)
-        //    {
-        //        try
-        //        {
-        //            var client = new Utils.JsonWebClient(this.UserAgent);
-        //            client.TimeOutMilliseconds = timeOutSeconds * 1000;
-        //            client.Cookies.Add(this.Cookies);
+                    if (this.AuthCookies != null)
+                        client.Cookies.Add(this.AuthCookies);
 
-        //            var jObject = client.GetReturnJObject(url);
+                    if (this.AuthAccessKey != null)
+                        client.Headers.Add("__identifier", this.AuthAccessKey);
 
-        //            var listGroups = new List<Group>();
-        //            foreach (var item in jObject["Groups"])
-        //            {
-        //                var group = new Group();
-        //                group.GroupID = Utils.Parser.ToInt32(item["GroupID"]);
-        //                group.GroupName = item["GroupName"].ToString();
-        //                listGroups.Add(group);
-        //            }
+                    var json = client.GetReturnString(url);
 
-        //            return listGroups; //Success
-        //        }
-        //        catch (System.Exception ex)
-        //        {
-        //            if (attempt == maxAttempts)
-        //                throw new TaskrowException(string.Format("Error listing groups after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", maxAttempts, url.ToString(), ex.Message, timeOutSeconds), ex);
-        //        }
-        //    }
+                    var groupsResponse = Utils.JsonHelper.Deserialize<ApiModels.GroupListResponseApi>(json);
 
-        //    throw new TaskrowException("Unexpected error in attempts control");
-        //}
+                    var listGroups = new List<Group>();
+                    foreach (var groupApi in groupsResponse.Groups)
+                        listGroups.Add(new Group(groupApi));
+                    
+                    return listGroups; //Success
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsTaskrowEception(ex))
+                        throw;
+
+                    if (!Utils.Application.IsWebException(ex))
+                        throw new TaskrowException(string.Format("Error listing groups -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+                    
+                    if (attempt == maxAttempts)
+                        throw new TaskrowException(string.Format("Error listing groups after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", maxAttempts, url.ToString(), ex.Message, timeOutSeconds), ex);
+                }
+            }
+
+            throw new TaskrowException("Unexpected error in attempts control");
+        }
 
         #endregion
 

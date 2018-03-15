@@ -28,5 +28,15 @@ namespace TaskrowSharp.Utils
             staticExecutingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             return staticExecutingAssembly;
         }
+
+        public static bool IsTaskrowEception(System.Exception ex)
+        {
+            return (ex is TaskrowException);
+        }
+
+        public static bool IsWebException(System.Exception ex)
+        {
+            return (ex is System.Web.HttpException);
+        }
     }
 }

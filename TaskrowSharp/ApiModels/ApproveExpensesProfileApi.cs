@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class ProfileListApi
+    internal class ApproveExpensesProfileApi
     {
         public int AppMainCompanyID { get; set; }
         public int ProfileID { get; set; }
@@ -15,8 +15,8 @@ namespace TaskrowSharp.ApiModels
         public bool BuiltInUser { get; set; }
         public string PermissionListString { get; set; }
         public bool Inactive { get; set; }
-        public bool? ExternalUser { get; set; }
-        //public List<object> Permission { get; set; }
-        //public List<object> Users { get; set; }
+        public object ExternalUser { get; set; }
+        public IList<object> Permission { get; set; }
+        public IList<object> Users { get; set; }
     }
 }
