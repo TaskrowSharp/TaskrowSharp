@@ -337,7 +337,12 @@ namespace TaskrowSharp
 
         #region Group (not implemented)
 
-        public List<Group> ListGroups(int maxAttempts = 1, int timeOutSeconds = 60)
+        public List<Group> ListGroups()
+        {
+            return ListGroups(this.RetryPolicy);
+        }
+
+        public List<Group> ListGroups(RetryPolicy retryPolicy)
         {
             //Example: /Administrative/ListGroups?groupTypeID=2
 
@@ -345,12 +350,12 @@ namespace TaskrowSharp
 
             var url = new Uri(this.ServiceUrl, "/Administrative/ListGroups?groupTypeID=2");
 
-            for (int attempt = 1; attempt <= maxAttempts; attempt++)
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
                 try
                 {
                     var client = new Utils.JsonWebClient(this.UserAgent);
-                    client.TimeOutMilliseconds = timeOutSeconds * 1000;
+                    client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
                     if (this.AuthCookies != null)
                         client.Cookies.Add(this.AuthCookies);
@@ -375,9 +380,9 @@ namespace TaskrowSharp
 
                     if (!Utils.Application.IsWebException(ex))
                         throw new TaskrowException(string.Format("Error listing groups -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
-                    
-                    if (attempt == maxAttempts)
-                        throw new TaskrowException(string.Format("Error listing groups after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", maxAttempts, url.ToString(), ex.Message, timeOutSeconds), ex);
+
+                    if (attempt == retryPolicy.MaxAttempts)
+                        throw new TaskrowException(string.Format("Error listing groups after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
                 }
             }
 
@@ -386,46 +391,77 @@ namespace TaskrowSharp
 
         #endregion
 
-        #region Task (not implemented)
+        #region TasksByGroup
 
-        //public List<Task> ListTasksOpenByGroup(int groupID, int? userID = null, int maxAttempts = 1, int timeOutSeconds = 60)
-        //{
-        //    //Example: /Dashboard/TasksByGroup?groupID=421&hierarchyEnabled=true&userID=3564&closedDays=20&context=1
+        public List<Task> ListTasksByGroup(int groupID)
+        {
+            return ListTasksByGroup(groupID, null, this.RetryPolicy);
+        }
 
-        //    ValidateStatusConnected();
+        public List<Task> ListTasksByGroup(int groupID, int userID)
+        {
+            return ListTasksByGroup(groupID, userID, this.RetryPolicy);
+        }
 
-        //    var url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&hierarchyEnabled=true&closedDays=20&context=1", groupID)).ToString();
-        //    if (userID.HasValue)
-        //        url = string.Format("{0}&userID={1}", url, userID);
+        public List<Task> ListTasksByGroup(int groupID, int? userID, RetryPolicy retryPolicy)
+        {
+            //Example: /Dashboard/TasksByGroup?groupID=421&hierarchyEnabled=true&userID=3564&closedDays=20&context=1
 
-        //    for (int attempt = 1; attempt <= maxAttempts; attempt++)
-        //    {
-        //        try
-        //        {
-        //            var client = new Utils.JsonWebClient(this.UserAgent);
-        //            client.TimeOutMilliseconds = timeOutSeconds * 1000;
-        //            client.Cookies.Add(this.Cookies);
+            if (groupID == 0)
+                throw new ArgumentException(nameof(groupID));
+            
+            if (userID.HasValue && userID == 0)
+                throw new ArgumentException(nameof(userID));
 
-        //            var jObject = client.GetReturnJObject(new Uri(url));
+            ValidateIsConnected();
 
-        //            var listTasks = new List<Task>();
-        //            foreach (var item in jObject["Entity"]["OpenTasks"])
-        //            {
-        //                var task = GeTaskFromJToken(item);
-        //                listTasks.Add(task);
-        //            }
+            Uri url;
+            if (!userID.HasValue)
+                url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&hierarchyEnabled=true&closedDays=20&context=1", groupID));
+            else
+                url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&userID={1}&hierarchyEnabled=true&closedDays=20&context=1", groupID, userID.Value));
+            
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
+            {
+                try
+                {
+                    var client = new Utils.JsonWebClient(this.UserAgent);
+                    client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
-        //            return listTasks; //Success
-        //        }
-        //        catch (System.Exception ex)
-        //        {
-        //            if (attempt == maxAttempts)
-        //                throw new TaskrowException(string.Format("Erro listing open tasks from group after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", maxAttempts, url.ToString(), ex.Message, timeOutSeconds), ex);
-        //        }
-        //    }
+                    if (this.AuthCookies != null)
+                        client.Cookies.Add(this.AuthCookies);
 
-        //    throw new TaskrowException("Unexpected error in attempts control");
-        //}
+                    if (this.AuthAccessKey != null)
+                        client.Headers.Add("__identifier", this.AuthAccessKey);
+
+                    string json = client.GetReturnString(url);
+
+                    //var jObject = client.GetReturnJObject(new Uri(url));
+
+                    var listTasks = new List<Task>();
+                    //foreach (var item in jObject["Entity"]["OpenTasks"])
+                    //{
+                    //    var task = GeTaskFromJToken(item);
+                    //    listTasks.Add(task);
+                    //}
+
+                    return listTasks; //Success
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsTaskrowEception(ex))
+                        throw;
+
+                    if (!Utils.Application.IsWebException(ex))
+                        throw new TaskrowException(string.Format("Error listing open tasks from group -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+
+                    if (attempt == retryPolicy.MaxAttempts)
+                        throw new TaskrowException(string.Format("Error listing open tasks from group after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                }
+            }
+
+            throw new TaskrowException("Unexpected error in attempts control");
+        }
 
         //private Task GeTaskFromJToken(Newtonsoft.Json.Linq.JToken item)
         //{
@@ -441,6 +477,10 @@ namespace TaskrowSharp
         //    task.OwnerUserID = Convert.ToInt32(item["OwnerUserID"]);
         //    return task;
         //}
+
+        #endregion
+
+        #region Task (not implemented)
 
         //public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName, int maxAttempts = 1, int timeOutSeconds = 120)
         //{
