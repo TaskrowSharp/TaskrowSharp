@@ -19,7 +19,7 @@ namespace TaskrowSharp.Tests
         }
 
         [Test]
-        public void ListTasksOpenByGroup_OK()
+        public void ListTasksByGroup_OK()
         {
             var groupTest = taskrowClient.ListGroups().First();
 

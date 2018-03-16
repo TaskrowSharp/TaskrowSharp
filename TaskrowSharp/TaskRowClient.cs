@@ -221,9 +221,9 @@ namespace TaskrowSharp
         }
 
         #endregion
-        
-        #region User
-        
+
+        #region ListUsers
+
         public List<User> ListUsers()
         {
             return ListUsers(this.RetryPolicy);
@@ -279,7 +279,7 @@ namespace TaskrowSharp
 
         #endregion
 
-        #region UserDetail
+        #region GetUserDetail
 
         public UserDetail GetUserDetail(int userID)
         {
@@ -335,7 +335,7 @@ namespace TaskrowSharp
 
         #endregion
 
-        #region Group (not implemented)
+        #region ListGroups
 
         public List<Group> ListGroups()
         {
@@ -391,7 +391,7 @@ namespace TaskrowSharp
 
         #endregion
 
-        #region TasksByGroup
+        #region ListTasksByGroup
 
         public List<Task> ListTasksByGroup(int groupID)
         {
@@ -436,14 +436,15 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    //var jObject = client.GetReturnJObject(new Uri(url));
+                    var response = Utils.JsonHelper.Deserialize<ApiModels.TasksByGroupResponseApi>(json);
 
                     var listTasks = new List<Task>();
-                    //foreach (var item in jObject["Entity"]["OpenTasks"])
-                    //{
-                    //    var task = GeTaskFromJToken(item);
-                    //    listTasks.Add(task);
-                    //}
+
+                    foreach (var taskResponse in response.Entity.OpenTasks)
+                        listTasks.Add(new Task(taskResponse, TaskStatus.Open));
+
+                    foreach (var taskResponse in response.Entity.ClosedTasks)
+                        listTasks.Add(new Task(taskResponse, TaskStatus.Closed));
 
                     return listTasks; //Success
                 }
@@ -453,34 +454,19 @@ namespace TaskrowSharp
                         throw;
 
                     if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error listing open tasks from group -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+                        throw new TaskrowException(string.Format("Error listing tasks from group -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error listing open tasks from group after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException(string.Format("Error listing tasks from group after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
                 }
             }
 
             throw new TaskrowException("Unexpected error in attempts control");
         }
 
-        //private Task GeTaskFromJToken(Newtonsoft.Json.Linq.JToken item)
-        //{
-        //    var task = new Task();
-        //    task.TaskNumber = Utils.Parser.ToInt32(item["TaskNumber"]);
-        //    task.TaskID = Utils.Parser.ToInt32(item["TaskID"]);
-        //    task.TaskTitle = item["TaskTitle"].ToString();
-        //    task.CreationDate = Convert.ToDateTime(item["CreationDate"]);
-        //    task.DueDate = Convert.ToDateTime(item["DueDate"]);
-        //    task.JobID = Utils.Parser.ToInt32(item["JobID"]);
-        //    task.JobNumber = Utils.Parser.ToInt32(item["JobNumber"]);
-        //    task.ClientNickName = item["ClientNickName"].ToString();
-        //    task.OwnerUserID = Convert.ToInt32(item["OwnerUserID"]);
-        //    return task;
-        //}
-
         #endregion
 
-        #region Task (not implemented)
+        #region GetTaskDetail (not implemented)
 
         //public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName, int maxAttempts = 1, int timeOutSeconds = 120)
         //{

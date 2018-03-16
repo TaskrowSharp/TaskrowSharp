@@ -417,5 +417,16 @@ namespace TaskrowSharp.Utils
         }
 
         #endregion
+
+        public static DateTime ToDateTimeFromTaskrowDate(string value)
+        {
+            //format = "/Date(\"2018-03-09T00:00:00.000-03:00\")/"
+
+            string text = value;
+            if (text.StartsWith("/Date(\""))
+                text = text.Substring(7, text.Length - 10);
+
+            return ToDateTime(text);
+        }
     }
 }
