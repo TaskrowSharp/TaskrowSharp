@@ -1,5 +1,6 @@
 ﻿{
-  "serviceUrl": "https://test.taskrow.com",
-  "email": "teste@teste.com",
-  "password": "12345"
+  "serviceUrl": "https://yourcompany.taskrow.com",
+  "email": "teste@yourcompany.com",
+  "password": "123456789",
+  "accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa"
 }

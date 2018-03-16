@@ -21,7 +21,7 @@ namespace TaskrowSharp.Utils
         public string ContentType = "application/x-www-form-urlencoded";
         public string Accept = null;
         public Dictionary<string, string> Headers = new Dictionary<string, string>();
-        public bool ValidateHttpErrorStatus = true;
+        public bool ValidateHttpErrors = true;
 
         public JsonWebClient(string userAgent)
         {
@@ -61,20 +61,25 @@ namespace TaskrowSharp.Utils
 
                 var response = request.GetResponse() as HttpWebResponse;
 
-                if (this.ValidateHttpErrorStatus)
-                    CheckHttpStatusCode(response, url);
+                if (this.ValidateHttpErrors)
+                    ValidateHttpStatusCode(response, url);
 
                 return response;
             }
+            catch (TaskrowWebException tex)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), tex.Message));
+                throw;
+            }
             catch (WebException wex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Exception: {0}", wex.Message));
-                throw;
+                System.Diagnostics.Debug.WriteLine(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), wex.Message));
+                throw new TaskrowWebException(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), wex.Message), wex);
             }
             catch (System.Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Exception: {0}", ex.Message));
-                throw;
+                System.Diagnostics.Debug.WriteLine(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), ex.Message));
+                throw new TaskrowWebException(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), ex.Message), ex);
             }
         }
 
@@ -130,38 +135,56 @@ namespace TaskrowSharp.Utils
 
         private WebResponse Post(Uri url, string requestString = null, string contentType = null)
         {
-            System.Net.HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
-            request.Timeout = this.TimeOutMilliseconds;
-            request.Method = "POST";
-            request.ContentType = (!string.IsNullOrEmpty(contentType) ? contentType : this.ContentType);
-            request.UserAgent = this.UserAgent;
-            request.AllowAutoRedirect = this.AllowAutoRedirect;
-            request.CookieContainer = this.Cookies;
-
-            if (!string.IsNullOrEmpty(this.Host))
-                request.Host = this.Host;
-
-            if (!string.IsNullOrEmpty(this.Origin))
-                request.Headers.Add("Origin", this.Origin);
-
-            if (!string.IsNullOrEmpty(this.Referer))
-                request.Referer = this.Referer;
-
-            foreach (var header in this.Headers)
-                request.Headers.Add(header.Key, header.Value);
-
-            using (var writer = new StreamWriter(request.GetRequestStream()))
+            try
             {
-                writer.Write(requestString);
-                writer.Flush();
+                System.Net.HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+                request.Timeout = this.TimeOutMilliseconds;
+                request.Method = "POST";
+                request.ContentType = (!string.IsNullOrEmpty(contentType) ? contentType : this.ContentType);
+                request.UserAgent = this.UserAgent;
+                request.AllowAutoRedirect = this.AllowAutoRedirect;
+                request.CookieContainer = this.Cookies;
+
+                if (!string.IsNullOrEmpty(this.Host))
+                    request.Host = this.Host;
+
+                if (!string.IsNullOrEmpty(this.Origin))
+                    request.Headers.Add("Origin", this.Origin);
+
+                if (!string.IsNullOrEmpty(this.Referer))
+                    request.Referer = this.Referer;
+
+                foreach (var header in this.Headers)
+                    request.Headers.Add(header.Key, header.Value);
+
+                using (var writer = new StreamWriter(request.GetRequestStream()))
+                {
+                    writer.Write(requestString);
+                    writer.Flush();
+                }
+
+                var response = request.GetResponse() as HttpWebResponse;
+
+                if (this.ValidateHttpErrors)
+                    ValidateHttpStatusCode(response, url);
+
+                return response;
             }
-
-            var response = request.GetResponse() as HttpWebResponse;
-
-            if (this.ValidateHttpErrorStatus)
-                CheckHttpStatusCode(response, url);
-
-            return response;
+            catch (TaskrowWebException tex)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), tex.Message));
+                throw;
+            }
+            catch (WebException wex)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), wex.Message));
+                throw new TaskrowWebException(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), wex.Message), wex);
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), ex.Message));
+                throw new TaskrowWebException(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+            }
         }
 
         public string PostValuesReturnString(Uri url, NameValueCollection values)
@@ -221,7 +244,7 @@ namespace TaskrowSharp.Utils
 
         #region Validate
 
-        public static void CheckHttpStatusCode(HttpWebResponse response, Uri uri, bool acceptRedirect = false)
+        public static void ValidateHttpStatusCode(HttpWebResponse response, Uri uri, bool acceptRedirect = false)
         {
             int code = (int)response.StatusCode;
             if (code >= 200 && code <= 299) //Success codes (200 OK, 201 Created, 202 Accepted...)
@@ -248,7 +271,7 @@ namespace TaskrowSharp.Utils
             if (content != null && content.Length > 500)
                 content = string.Concat(content.Substring(0, 500), "...");
 
-            throw new TaskrowException(string.Format("HttpStatusError: {0} ({1}) -- Url: {2} -- {3}",
+            throw new TaskrowWebException(response.StatusCode, string.Format("HttpStatusError: {0} ({1}) -- Url: {2} -- {3}",
                 (int)response.StatusCode, response.StatusCode.ToString(), uri, content));
         }
 

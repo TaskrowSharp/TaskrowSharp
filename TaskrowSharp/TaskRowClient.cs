@@ -94,7 +94,7 @@ namespace TaskrowSharp
                     }
 
                     var response = request.GetResponse() as HttpWebResponse;
-                    Utils.JsonWebClient.CheckHttpStatusCode(response, url, true);
+                    Utils.JsonWebClient.ValidateHttpStatusCode(response, url, true);
 
                     string cookie1 = null;
                     string cookie2 = null;
@@ -117,11 +117,8 @@ namespace TaskrowSharp
                 }
                 catch (System.Exception ex)
                 {
-                    if (Utils.Application.IsTaskrowEception(ex))
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
                         throw;
-
-                    if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error connection in Taskrow -- Url: {0} -- Error: {1}", serviceUrl.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new AuthenticationException(string.Format("Error connecting in Taskrow after {0} attempts(s) -- url: {1} -- email: {2} -- {3} -- TimeOut: {4} seconds", retryPolicy.MaxAttempts, serviceUrl.ToString(), credential.Email, ex.Message, retryPolicy.TimeOutSeconds), ex);
@@ -162,11 +159,8 @@ namespace TaskrowSharp
                 }
                 catch (System.Exception ex)
                 {
-                    if (Utils.Application.IsTaskrowEception(ex))
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
                         throw;
-
-                    if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error connection in Taskrow -- Url: {0} -- Error: {1}", serviceUrl.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new AuthenticationException(string.Format("Error connecting in Taskrow after {0} attempts(s) -- url: {1} -- {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, serviceUrl.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
@@ -198,25 +192,36 @@ namespace TaskrowSharp
             this.AuthAccessKey = null;
         }
 
-        public string KeepAlive()
+        public void KeepAlive()
         {
-            //Example: /Administrative/ListGroups?groupTypeID=2
+            KeepAlive(this.RetryPolicy);
+        }
+
+        public void KeepAlive(RetryPolicy retryPolicy)
+        {
+            //Url: /main/keepalive
 
             ValidateIsConnected();
 
             var url = new Uri(this.ServiceUrl, "/main/keepalive");
 
-            try
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
-                var client = new Utils.JsonWebClient(this.UserAgent);
-                client.TimeOutMilliseconds = 5000; //5 seconds
-                client.Cookies.Add(this.AuthCookies);
+                try
+                {
+                    var client = new Utils.JsonWebClient(this.UserAgent);
+                    client.TimeOutMilliseconds = 5000; //5 seconds
+                    client.Cookies.Add(this.AuthCookies);
 
-                return client.GetReturnString(url);
-            }
-            catch (System.Exception ex)
-            {
-                throw new TaskrowException(string.Format("Error in KeepAlive process -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+                    string json = client.GetReturnString(url);
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
+                        throw;
+
+                    throw new TaskrowException(string.Format("Error in KeepAlive process -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+                }
             }
         }
 
@@ -231,7 +236,7 @@ namespace TaskrowSharp
 
         public List<User> ListUsers(RetryPolicy retryPolicy)
         {
-            //Example: /User/TeamHome
+            //Url: /User/TeamHome
 
             ValidateIsConnected();
 
@@ -263,11 +268,8 @@ namespace TaskrowSharp
                 }
                 catch (System.Exception ex)
                 {
-                    if (Utils.Application.IsTaskrowEception(ex))
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
                         throw;
-
-                    if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error listing users -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new TaskrowException(string.Format("Error listing users after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
@@ -288,7 +290,7 @@ namespace TaskrowSharp
 
         public UserDetail GetUserDetail(int userID, RetryPolicy retryPolicy)
         {
-            //Example: /User/UserDetail?userID=3564
+            //Url: /User/UserDetail?userID=3564
 
             if (userID == 0)
                 throw new ArgumentException(nameof(userID));
@@ -319,11 +321,8 @@ namespace TaskrowSharp
                 }
                 catch (System.Exception ex)
                 {
-                    if (Utils.Application.IsTaskrowEception(ex))
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
                         throw;
-
-                    if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error getting user -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new TaskrowException(string.Format("Error getting user after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
@@ -344,7 +343,7 @@ namespace TaskrowSharp
 
         public List<Group> ListGroups(RetryPolicy retryPolicy)
         {
-            //Example: /Administrative/ListGroups?groupTypeID=2
+            //Url: /Administrative/ListGroups?groupTypeID=2
 
             ValidateIsConnected();
 
@@ -375,11 +374,8 @@ namespace TaskrowSharp
                 }
                 catch (System.Exception ex)
                 {
-                    if (Utils.Application.IsTaskrowEception(ex))
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
                         throw;
-
-                    if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error listing groups -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new TaskrowException(string.Format("Error listing groups after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
@@ -405,7 +401,7 @@ namespace TaskrowSharp
 
         public List<Task> ListTasksByGroup(int groupID, int? userID, RetryPolicy retryPolicy)
         {
-            //Example: /Dashboard/TasksByGroup?groupID=421&hierarchyEnabled=true&userID=3564&closedDays=20&context=1
+            //Url: /Dashboard/TasksByGroup?groupID=421&hierarchyEnabled=true&userID=3564&closedDays=20&context=1
 
             if (groupID == 0)
                 throw new ArgumentException(nameof(groupID));
@@ -450,11 +446,8 @@ namespace TaskrowSharp
                 }
                 catch (System.Exception ex)
                 {
-                    if (Utils.Application.IsTaskrowEception(ex))
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
                         throw;
-
-                    if (!Utils.Application.IsWebException(ex))
-                        throw new TaskrowException(string.Format("Error listing tasks from group -- Url: {0} -- Error: {1}", url.ToString(), ex.Message), ex);
 
                     if (attempt == retryPolicy.MaxAttempts)
                         throw new TaskrowException(string.Format("Error listing tasks from group after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
@@ -468,40 +461,57 @@ namespace TaskrowSharp
 
         #region GetTaskDetail (not implemented)
 
-        //public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName, int maxAttempts = 1, int timeOutSeconds = 120)
-        //{
-        //    //Example: /Task/TaskDetail?clientNickName=[clientName]&jobNumber=[job number]&taskNumber=[task number]
+        public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName)
+        {
+            return GetTaskDetail(jobNumber, taskNumber, clientNickName, this.RetryPolicy);
+        }
 
-        //    ValidateStatusConnected();
+        public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName, RetryPolicy retryPolicy)
+        {
+            //Url: /Task/TaskDetail?clientNickName=[clientName]&jobNumber=[job number]&taskNumber=[task number]
 
-        //    var url = new Uri(this.ServiceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickName={2}", jobNumber, taskNumber, clientNickName));
+            ValidateIsConnected();
 
-        //    for (int attempt = 1; attempt <= maxAttempts; attempt++)
-        //    {
-        //        try
-        //        {
-        //            var client = new Utils.JsonWebClient(this.UserAgent);
-        //            client.TimeOutMilliseconds = timeOutSeconds * 1000;
-        //            client.Cookies.Add(this.Cookies);
+            Uri url = new Uri(this.ServiceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickName={2}", jobNumber, taskNumber, clientNickName));
 
-        //            var jObject = client.GetReturnJObject(url);
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
+            {
+                try
+                {
+                    var client = new Utils.JsonWebClient(this.UserAgent);
 
-        //            var taskData = jObject["TaskData"];
-        //            var jobData = jObject["JobData"];
+                    if (this.AuthCookies != null)
+                        client.Cookies.Add(this.AuthCookies);
 
-        //            var taskDetail = GetTaskDetailFromJson(taskData, jobData);
+                    if (this.AuthAccessKey != null)
+                        client.Headers.Add("__identifier", this.AuthAccessKey);
 
-        //            return taskDetail; //Success
-        //        }
-        //        catch (System.Exception ex)
-        //        {
-        //            if (attempt == maxAttempts)
-        //                throw new TaskrowException(string.Format("Error getting Task details after {0} attempts(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", maxAttempts, url.ToString(), ex.Message, timeOutSeconds), ex);
-        //        }
-        //    }
+                    //var jObject = client.GetReturnJObject(url);
 
-        //    throw new TaskrowException("Unexpected error in attempts control");
-        //}
+                    //var taskData = jObject["TaskData"];
+                    //var jobData = jObject["JobData"];
+
+                    //var taskDetail = GetTaskDetailFromJson(taskData, jobData);
+
+                    var json = client.GetReturnString(url);
+
+                    //TaskDetail taskDetail = null;
+                    //return taskDetail; //Success
+
+                    throw new System.NotImplementedException();
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
+                        throw;
+
+                    if (attempt == retryPolicy.MaxAttempts)
+                        throw new TaskrowException(string.Format("Error getting Task Detail after {0} attempts(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                }
+            }
+
+            throw new TaskrowException("Unexpected error in attempts control");
+        }
 
         //private TaskDetail GetTaskDetailFromJson(Newtonsoft.Json.Linq.JToken taskData, Newtonsoft.Json.Linq.JToken jobData)
         //{
@@ -569,7 +579,7 @@ namespace TaskrowSharp
 
         //public void SaveTask(SaveTaskRequest request, int maxAttempts = 1, int timeOutSeconds = 120)
         //{
-        //    //Example: /Task/SaveTask
+        //    //Url: /Task/SaveTask
 
         //    ValidateStatusConnected();
 

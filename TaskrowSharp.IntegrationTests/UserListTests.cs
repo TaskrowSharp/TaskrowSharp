@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace TaskrowSharp.Tests
+namespace TaskrowSharp.IntegrationTests
 {
     [TestFixture]
     public class UserListTests

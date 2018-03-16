@@ -29,15 +29,9 @@ namespace TaskrowSharp.Utils
             return staticExecutingAssembly;
         }
 
-        public static bool IsTaskrowEception(System.Exception ex)
+        public static bool IsExceptionWithoutRetry(System.Exception ex)
         {
-            return (ex is TaskrowException);
-        }
-
-        public static bool IsWebException(System.Exception ex)
-        {
-            //return (ex is System.Web.HttpException);
-            return !(ex is System.InvalidOperationException || ex is TaskrowException || ex is NullReferenceException || ex is ArgumentException || ex is ArgumentNullException);
+            return !(ex is TaskrowWebException);
         }
     }
 }

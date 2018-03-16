@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskrowSharp.Tests
+namespace TaskrowSharp.IntegrationTests
 {
     internal static class UtilsTest
     {

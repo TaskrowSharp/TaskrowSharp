@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace TaskrowSharp.Tests
+namespace TaskrowSharp.IntegrationTests
 {
     [TestFixture]
     public class ConnectTests
