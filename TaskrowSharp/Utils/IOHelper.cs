@@ -50,11 +50,16 @@ namespace TaskrowSharp.Utils
 
             if (removeDebugPath)
             {
-                string[] debugPaths = new string[] { @"\\bin\\debug", @"\\bin\\release" };
-                foreach (var debugPath in debugPaths)
+                string[] regexDebugPaths = new string[] {
+                    @"\\bin\\debug\\net452", @"\\bin\\release\\net452",
+                    @"\\bin\\debug\\netstandard2\.0", @"\\bin\\release\\netstandard2\.0",
+                    @"\\bin\\debug", @"\\bin\\release",
+                };
+
+                foreach (var regexDebugPath in regexDebugPaths)
                 {
-                    if (System.Text.RegularExpressions.Regex.IsMatch(path, debugPath, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                        path = System.Text.RegularExpressions.Regex.Replace(path, debugPath, @"", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    if (System.Text.RegularExpressions.Regex.IsMatch(path, regexDebugPath, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                        path = System.Text.RegularExpressions.Regex.Replace(path, regexDebugPath, @"", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                 }
             }
 

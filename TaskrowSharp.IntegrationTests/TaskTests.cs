@@ -1,19 +1,26 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace TaskrowSharp.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class TaskTests
     {
-        [TestMethod]
+        TaskrowClient taskrowClient;
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            taskrowClient = UtilsTest.GetTaskrowClient();
+        }
+
+        [Test]
         public void ListTasksOpenByGroup_OK()
         {
-            var taskrowClient = UtilsTest.GetTaskrowClient();
             var groupTest = taskrowClient.ListGroups().First();
 
             var tasks = taskrowClient.ListTasksByGroup(groupTest.GroupID);

@@ -267,7 +267,7 @@ namespace TaskrowSharp.Utils
                 if (sb.Length != 0)
                     sb.Append("&");
 
-                sb.AppendFormat("{0}={1}", key, System.Web.HttpUtility.UrlEncode(values[key]));
+                sb.AppendFormat("{0}={1}", key, WebUtility.UrlEncode(values[key]));
             }
 
             return sb.ToString();

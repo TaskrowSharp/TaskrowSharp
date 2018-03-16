@@ -36,7 +36,8 @@ namespace TaskrowSharp.Utils
 
         public static bool IsWebException(System.Exception ex)
         {
-            return (ex is System.Web.HttpException);
+            //return (ex is System.Web.HttpException);
+            return !(ex is System.InvalidOperationException || ex is TaskrowException || ex is NullReferenceException || ex is ArgumentException || ex is ArgumentNullException);
         }
     }
 }

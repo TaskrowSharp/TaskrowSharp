@@ -78,7 +78,7 @@ namespace TaskrowSharp
                     this.ServiceUrl = null;
 
                     Uri url = new Uri(serviceUrl, "/LoginPassword");
-                    string myParameters = string.Format("email={0}&password={1}", System.Web.HttpUtility.UrlEncode(credential.Email), System.Web.HttpUtility.UrlEncode(credential.Password));
+                    string myParameters = string.Format("email={0}&password={1}", WebUtility.UrlEncode(credential.Email), WebUtility.UrlEncode(credential.Password));
 
                     System.Net.HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
                     request.Method = "POST";

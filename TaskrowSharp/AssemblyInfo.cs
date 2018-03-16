@@ -1,0 +1,9 @@
+﻿using System;
+using System.Runtime.CompilerServices;
+
+//to generate public key:
+//cd TaskrowSharp\TaskrowSharp.IntegrationTests\bin\Debug\net452
+//sn -Tp TaskrowSharp.IntegrationTests.dll
+
+[assembly: InternalsVisibleTo("TaskrowSharp.IntegrationTests, PublicKey=002400000480000094000000060200000024000052534131000400000100010041d8c9473485383df7a6c372d33fab690f229340d75351b11a18db520dad7b709a3eff067773200231296c0cb63b529905680912961db58c957018b5698ece2ac140697dea7fc0fb4c0c4aa22644a87e58ed92e957ef48a748d229cf8aff41d20c0a5f377fb9b717721eddbe50cff39928ff0780272e6afeb3d67dd1ca93d9cd")]
+[assembly: CLSCompliant(true)]

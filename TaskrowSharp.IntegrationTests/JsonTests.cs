@@ -1,17 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace TaskrowSharp.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class JsonTests
     {
-        [TestMethod]
+        [Test]
         public void Json_Serialize()
         {
             Test test = new Test() { Name = "Eduardo Coutinho", Phone = "+55 11 6666-6666", ValueInt = 1, ValueDecimal = 0.35M };

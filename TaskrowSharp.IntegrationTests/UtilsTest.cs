@@ -10,7 +10,7 @@ namespace TaskrowSharp.Tests
     {
         public static ConfigurationFile GetConfigurationFile()
         {
-            string path = Utils.IOHelper.GetFullPathFromRelative("config/main.json", true, true);
+            string path = Utils.IOHelper.GetFullPathFromRelative(@"config\main.json", true, true);
 
             string json;
             using (var reader = new System.IO.StreamReader(path))
