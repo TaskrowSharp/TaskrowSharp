@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TaskrowSharp
 {
-    public enum TaskStatus
+    public enum TaskSituation
     {
         Open,
         Closed

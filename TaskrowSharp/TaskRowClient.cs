@@ -236,11 +236,11 @@ namespace TaskrowSharp
 
         public List<User> ListUsers(RetryPolicy retryPolicy)
         {
-            //Url: /User/TeamHome
+            //Url: /User/ListUsers
 
             ValidateIsConnected();
 
-            var url = new Uri(this.ServiceUrl, "/User/TeamHome");
+            var url = new Uri(this.ServiceUrl, "/User/ListUsers");
             
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -259,9 +259,9 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var userListResponse = Utils.JsonHelper.Deserialize<ApiModels.UserListApiResponse>(json);
+                    var responseUsersList = Utils.JsonHelper.Deserialize<List<ApiModels.UserApi>>(json);
 
-                    foreach (var userResponse in userListResponse.Users)
+                    foreach (var userResponse in responseUsersList)
                         listUsers.Add(new User(userResponse));
                     
                     return listUsers; //Success
@@ -437,10 +437,10 @@ namespace TaskrowSharp
                     var listTasks = new List<Task>();
 
                     foreach (var taskResponse in response.Entity.OpenTasks)
-                        listTasks.Add(new Task(taskResponse, TaskStatus.Open));
+                        listTasks.Add(new Task(taskResponse, TaskSituation.Open));
 
                     foreach (var taskResponse in response.Entity.ClosedTasks)
-                        listTasks.Add(new Task(taskResponse, TaskStatus.Closed));
+                        listTasks.Add(new Task(taskResponse, TaskSituation.Closed));
 
                     return listTasks; //Success
                 }
@@ -495,10 +495,13 @@ namespace TaskrowSharp
 
                     var json = client.GetReturnString(url);
 
+                    var response = Utils.JsonHelper.Deserialize<ApiModels.TaskDetailResponseApi>(json);
+
                     //TaskDetail taskDetail = null;
                     //return taskDetail; //Success
 
-                    throw new System.NotImplementedException();
+                    var taskDetail = new TaskDetail(response);
+                    return taskDetail;
                 }
                 catch (System.Exception ex)
                 {
@@ -512,67 +515,7 @@ namespace TaskrowSharp
 
             throw new TaskrowException("Unexpected error in attempts control");
         }
-
-        //private TaskDetail GetTaskDetailFromJson(Newtonsoft.Json.Linq.JToken taskData, Newtonsoft.Json.Linq.JToken jobData)
-        //{
-        //    var taskDetail = new TaskDetail();
-
-        //    taskDetail.TaskID = Utils.Parser.ToInt32(taskData["TaskID"]);
-        //    taskDetail.TaskNumber = Utils.Parser.ToInt32(taskData["TaskNumber"]);
-        //    taskDetail.TaskTitle = taskData["TaskTitle"].ToString();
-        //    taskDetail.MemberListString = taskData["MemberListString"].ToString();
-        //    taskDetail.RowVersion = taskData["RowVersion"].ToString();
-        //    taskDetail.DueDate = Convert.ToDateTime(taskData["DueDate"].ToString());
-
-        //    taskDetail.TaskItems = new List<TaskItem>();
-        //    foreach (var item in taskData["NewTaskItems"])
-        //    {
-        //        var taskItem = new TaskItem();
-        //        taskItem.TaskItemID = Utils.Parser.ToInt32(item["TaskItemID"]);
-        //        taskItem.OldOwnerUserID = Utils.Parser.ToInt32(item["OldOwnerUserID"]);
-        //        taskItem.OldOwnerName = item["OldOwnerName"].ToString();
-        //        taskItem.NewOwnerUserID = Utils.Parser.ToInt32(item["NewOwnerUserID"]);
-        //        taskItem.NewOwnerName = item["NewOwnerName"].ToString();
-        //        taskItem.TaskItemComment = item["TaskItemComment"].ToString();
-        //        taskDetail.TaskItems.Add(taskItem);
-        //    }
-
-        //    taskDetail.JobID = Utils.Parser.ToInt32(jobData["JobID"]);
-        //    taskDetail.JobNumber = Utils.Parser.ToInt32(jobData["JobNumber"]);
-        //    taskDetail.JobTitle = jobData["JobTitle"].ToString();
-
-        //    var clientData = jobData["Client"];
-        //    taskDetail.ClientNickName = clientData["ClientNickName"].ToString();
-
-        //    taskDetail.Tags = new List<TaskTag>();
-        //    foreach (var item in taskData["Tags"])
-        //        taskDetail.Tags.Add(new TaskTag() { TaskTagID = Utils.Parser.ToInt32(item["TaskTagID"]), TagTitle = item["TagTitle"].ToString() });
-
-        //    taskDetail.SubTasks = new List<SubTask>();
-        //    if (taskData["Subtasks"] != null)
-        //    {
-        //        foreach (var item in taskData["Subtasks"])
-        //        {
-        //            var subTask = new SubTask();
-        //            subTask.SubtaskID = Utils.Parser.ToInt32(item["SubtaskID"]);
-        //            subTask.TaskID = Utils.Parser.ToInt32(item["TaskID"]);
-        //            subTask.ChildTaskID = Utils.Parser.ToInt32(item["ChildTaskID"]);
-        //            subTask.Title = item["Title"].ToString();
-
-        //            var childTaskData = item["ChildTask"];
-        //            if (childTaskData != null)
-        //            {
-        //                TaskDetail childTask = GetTaskDetailFromJson(childTaskData, jobData);
-        //                subTask.ChildTask = childTask;
-        //            }
-
-        //            taskDetail.SubTasks.Add(subTask);
-        //        }
-        //    }
-
-        //    return taskDetail;
-        //}
-
+        
         #endregion
 
         #region SaveTask (not implemented)

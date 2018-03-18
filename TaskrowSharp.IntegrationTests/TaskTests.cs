@@ -19,7 +19,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Test]
-        public void ListTasksByGroup_OK()
+        public void Task_ListTasksByGroup_OK()
         {
             var groupTest = taskrowClient.ListGroups().First();
 

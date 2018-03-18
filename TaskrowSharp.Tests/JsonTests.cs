@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace TaskrowSharp.IntegrationTests
+namespace TaskrowSharp.Tests
 {
     [TestFixture]
     public class JsonTests

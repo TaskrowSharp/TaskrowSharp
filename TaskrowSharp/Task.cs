@@ -27,10 +27,10 @@ namespace TaskrowSharp
         
         public string TaskUrl { get { return string.Format("/#taskcentral/{0}/{1}/{2}", this.ClientNickName, this.JobNumber, this.TaskNumber); } }
 
-        public TaskStatus TaskStatus { get; set; }
+        public TaskSituation TaskSituation { get; set; }
 
         public Task(int taskNumber, int taskID, string taskTitle, DateTime creationDate, DateTime dueDate,
-            int jobID, int jobNumber, string clientNickName, int ownerUserID, TaskStatus taskStatus)
+            int jobID, int jobNumber, string clientNickName, int ownerUserID, TaskSituation taskSituation)
         {
             this.TaskNumber = taskNumber;
             this.TaskID = taskID;
@@ -41,10 +41,10 @@ namespace TaskrowSharp
             this.JobNumber = jobNumber;
             this.ClientNickName = clientNickName;
             this.OwnerUserID = ownerUserID;
-            this.TaskStatus = taskStatus;
+            this.TaskSituation = taskSituation;
         }
 
-        internal Task(ApiModels.TaskApi taskApi, TaskStatus taskStatus)
+        internal Task(ApiModels.TaskApi taskApi, TaskSituation taskSituation)
         {
             this.TaskNumber = taskApi.TaskNumber;
             this.TaskID = taskApi.TaskID;
@@ -55,7 +55,7 @@ namespace TaskrowSharp
             this.JobNumber = taskApi.JobNumber;
             this.ClientNickName = taskApi.ClientNickName;
             this.OwnerUserID = taskApi.OwnerUserID;
-            this.TaskStatus = taskStatus;
+            this.TaskSituation = taskSituation;
         }
     }
 }

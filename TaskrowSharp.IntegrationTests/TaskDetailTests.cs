@@ -25,7 +25,7 @@ namespace TaskrowSharp.IntegrationTests
         [Test]
         public void TaskDetail_Get_OpenTasks()
         {
-            var openTasks = tasksList.Where(a => a.TaskStatus == TaskStatus.Open).OrderBy(a => a.TaskNumber).Take(5).ToList();
+            var openTasks = tasksList.Where(a => a.TaskSituation == TaskSituation.Open).OrderBy(a => a.TaskNumber).Take(5).ToList();
             foreach (var task in openTasks)
             {
                 var taskDetail = taskrowClient.GetTaskDetail(task.JobNumber, task.TaskNumber, task.ClientNickName);
@@ -33,13 +33,15 @@ namespace TaskrowSharp.IntegrationTests
                 Assert.IsTrue(task.TaskID == taskDetail.TaskID);
                 Assert.IsTrue(task.TaskNumber == taskDetail.TaskNumber);
                 Assert.IsTrue(string.Equals(task.TaskTitle, taskDetail.TaskTitle));
+
+                break;
             }
         }
 
         [Test]
         public void TaskDetail_Get_ClosedTasks()
         {
-            var closedTasks = tasksList.Where(a => a.TaskStatus == TaskStatus.Closed).OrderBy(a => a.TaskNumber).Take(5).ToList();
+            var closedTasks = tasksList.Where(a => a.TaskSituation == TaskSituation.Closed).OrderBy(a => a.TaskNumber).Take(5).ToList();
             foreach (var task in closedTasks)
             {
                 var taskDetail = taskrowClient.GetTaskDetail(task.JobNumber, task.TaskNumber, task.ClientNickName);
@@ -47,6 +49,8 @@ namespace TaskrowSharp.IntegrationTests
                 Assert.IsTrue(task.TaskID == taskDetail.TaskID);
                 Assert.IsTrue(task.TaskNumber == taskDetail.TaskNumber);
                 Assert.IsTrue(string.Equals(task.TaskTitle, taskDetail.TaskTitle));
+
+                break;
             }
         }
     }
