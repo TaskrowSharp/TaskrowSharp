@@ -485,22 +485,12 @@ namespace TaskrowSharp
 
                     if (this.AuthAccessKey != null)
                         client.Headers.Add("__identifier", this.AuthAccessKey);
-
-                    //var jObject = client.GetReturnJObject(url);
-
-                    //var taskData = jObject["TaskData"];
-                    //var jobData = jObject["JobData"];
-
-                    //var taskDetail = GetTaskDetailFromJson(taskData, jobData);
-
+                                        
                     var json = client.GetReturnString(url);
 
                     var response = Utils.JsonHelper.Deserialize<ApiModels.TaskDetailResponseApi>(json);
-
-                    //TaskDetail taskDetail = null;
-                    //return taskDetail; //Success
-
-                    var taskDetail = new TaskDetail(response);
+                    
+                    var taskDetail = new TaskDetail(response.TaskData, response.JobData);
                     return taskDetail;
                 }
                 catch (System.Exception ex)

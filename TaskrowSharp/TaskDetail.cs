@@ -33,7 +33,7 @@ namespace TaskrowSharp
         
         public List<SubTask> SubTasks { get; set; }
         
-        public TaskDetail(int taskID, int taskNumber, string taskTitle, int jobID, string memberListString,
+        public TaskDetail(int taskID, int taskNumber, string taskTitle, int jobID, int jobNumber, string jobTitle, string memberListString,
             List<TaskItem> taskItems, List<TaskTag> tags, string clientNickName, string rowVersion,
             DateTime dueDate, List<SubTask> subTasks)
         {
@@ -41,6 +41,8 @@ namespace TaskrowSharp
             this.TaskNumber = taskNumber;
             this.TaskTitle = taskTitle;
             this.JobID = jobID;
+            this.JobNumber = jobNumber;
+            this.JobTitle = jobTitle;
             this.MemberListString = memberListString;
             this.TaskItems = taskItems;
             this.Tags = tags;
@@ -50,20 +52,49 @@ namespace TaskrowSharp
             this.SubTasks = subTasks;
         }
 
-        internal TaskDetail(ApiModels.TaskDetailResponseApi responseApi)
+        internal TaskDetail(ApiModels.TaskDataApi taskDataApi, ApiModels.JobDataApi jobDataApi)
         {
-            this.TaskID = responseApi.TaskData.TaskID;
-            this.TaskNumber = responseApi.TaskData.TaskNumber;
-            this.TaskTitle = responseApi.TaskData.TaskTitle;
-            this.JobID = responseApi.TaskData.JobID;
-            this.MemberListString = responseApi.TaskData.MemberListString;
-            this.ClientNickName = responseApi.JobData.Client.ClientNickName;
-            this.RowVersion = responseApi.TaskData.RowVersion;
-            this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(responseApi.TaskData.DueDate);
-            
-            //this.TaskItems = responseApi.TaskData.NewTaskItems;
-            //this.Tags = responseApi.TaskData.TagListString;
-            //this.SubTasks = ;
+            this.TaskID = taskDataApi.TaskID;
+            this.TaskNumber = taskDataApi.TaskNumber;
+            this.TaskTitle = taskDataApi.TaskTitle;
+            this.JobID = taskDataApi.JobID;
+            this.JobNumber = jobDataApi.JobNumber;
+            this.JobTitle = jobDataApi.JobTitle;
+            this.MemberListString = taskDataApi.MemberListString;
+            this.ClientNickName = jobDataApi.Client.ClientNickName;
+            this.RowVersion = taskDataApi.RowVersion;
+            this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskDataApi.DueDate);
+
+            int ownerUserID = 0;
+            int pipelineStepID = 0;
+            ApiModels.TaskItemApi taskItemApi;
+            this.TaskItems = new List<TaskItem>();
+            for (int i=0; i<taskDataApi.NewTaskItems.Count; i++)
+            {
+                taskItemApi = taskDataApi.NewTaskItems[i];
+
+                if (i == 0)
+                {
+                    ownerUserID = taskItemApi.NewOwnerUserID;
+                    pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
+                }
+
+                bool ownerChanged = (taskItemApi.NewOwnerUserID != 0 && ownerUserID != taskItemApi.NewOwnerUserID);
+                if (ownerChanged)
+                    ownerUserID = taskItemApi.NewOwnerUserID;
+
+                bool pipelineChanged = (taskItemApi.PipelineStepID != 0 && pipelineStepID != taskItemApi.PipelineStepID);
+                if (pipelineChanged)
+                    pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
+
+                this.TaskItems.Add(new TaskItem(taskItemApi, ownerChanged, pipelineChanged));
+            }
+
+            if (taskDataApi.Tags != null)
+                this.Tags = taskDataApi.Tags.Select(a => new TaskTag(a)).ToList();
+
+            if (taskDataApi.Subtasks != null)
+                this.SubTasks = taskDataApi.Subtasks.Select(a => new SubTask(a, jobDataApi)).ToList();
         }
 
         //private TaskDetail GetTaskDetailFromJson(Newtonsoft.Json.Linq.JToken taskData, Newtonsoft.Json.Linq.JToken jobData)

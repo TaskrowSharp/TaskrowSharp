@@ -35,14 +35,14 @@ namespace TaskrowSharp.ApiModels
         public List<MemberTaskApi> Members { get; set; }
         //public List<object> ExternalMembers { get; set; }
         //public List<object> TaskAttachments { get; set; }
-        //public List<object> Tags { get; set; }
+        public List<TagApi> Tags { get; set; }
         public string TagListString { get; set; }
         public string MemberListString { get; set; }
         public string EffortUnitListString { get; set; }
         //public List<object> EffortUnitTask { get; set; }
         //public object ParentTaskID { get; set; }
         //public object Deliverable { get; set; }
-        //public List<object> Subtasks { get; set; }
+        public List<SubTaskApi> Subtasks { get; set; }
         //public object RequestContactID { get; set; }
         //public object RequestContact { get; set; }
         //public List<object> ExternalAttachments { get; set; }
