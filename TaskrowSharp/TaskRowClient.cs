@@ -9,9 +9,11 @@ namespace TaskrowSharp
 {
     public class TaskrowClient
     {
-        private Uri ServiceUrl = null;
-        private CookieCollection AuthCookies;
-        private string AuthAccessKey;
+        private Uri serviceUrl = null;
+        private CookieCollection authCookies;
+        private string authAccessKey;
+
+        public Uri ServiceUrl { get { return this.serviceUrl; } }
 
         public string UserAgent { get; set; }
 
@@ -19,7 +21,7 @@ namespace TaskrowSharp
 
         public bool StatusConnected
         {
-            get { return (this.ServiceUrl != null); }
+            get { return (this.serviceUrl != null); }
         }
 
         public TaskrowClient()
@@ -75,7 +77,7 @@ namespace TaskrowSharp
             {
                 try
                 {
-                    this.ServiceUrl = null;
+                    this.serviceUrl = null;
 
                     Uri url = new Uri(serviceUrl, "/LoginPassword");
                     string myParameters = string.Format("email={0}&password={1}", WebUtility.UrlEncode(credential.Email), WebUtility.UrlEncode(credential.Password));
@@ -107,9 +109,9 @@ namespace TaskrowSharp
                     if (string.IsNullOrEmpty(cookie1) || string.IsNullOrEmpty(cookie2))
                         throw new AuthenticationException(string.Format("Error connecting in Taskrow. Check parameters: ServiceUrl, Email and Password -- URL: {0} -- email: {1}", url.ToString(), credential.Email));
 
-                    this.ServiceUrl = serviceUrl;
-                    this.AuthCookies = cookies;
-                    this.AuthAccessKey = null;
+                    this.serviceUrl = serviceUrl;
+                    this.authCookies = cookies;
+                    this.authAccessKey = null;
 
                     response.Close();
 
@@ -136,7 +138,7 @@ namespace TaskrowSharp
             {
                 try
                 {
-                    this.ServiceUrl = null;
+                    this.serviceUrl = null;
 
                     Uri url = new Uri(serviceUrl, "/User/MyInfo");
 
@@ -151,9 +153,9 @@ namespace TaskrowSharp
                     if (json.IndexOf("<html", StringComparison.CurrentCultureIgnoreCase) != -1)
                         throw new AuthenticationException("Invalid AccessKey");
 
-                    this.ServiceUrl = serviceUrl;
-                    this.AuthCookies = null;
-                    this.AuthAccessKey = credential.AccessKey;
+                    this.serviceUrl = serviceUrl;
+                    this.authCookies = null;
+                    this.authAccessKey = credential.AccessKey;
 
                     return; //Success
                 }
@@ -187,9 +189,9 @@ namespace TaskrowSharp
             if (!StatusConnected)
                 return;
 
-            this.ServiceUrl = null;
-            this.AuthCookies = null;
-            this.AuthAccessKey = null;
+            this.serviceUrl = null;
+            this.authCookies = null;
+            this.authAccessKey = null;
         }
 
         public void KeepAlive()
@@ -203,7 +205,7 @@ namespace TaskrowSharp
 
             ValidateIsConnected();
 
-            var url = new Uri(this.ServiceUrl, "/main/keepalive");
+            var url = new Uri(this.serviceUrl, "/main/keepalive");
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -211,7 +213,7 @@ namespace TaskrowSharp
                 {
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = 5000; //5 seconds
-                    client.Cookies.Add(this.AuthCookies);
+                    client.Cookies.Add(this.authCookies);
 
                     string json = client.GetReturnString(url);
                 }
@@ -240,7 +242,7 @@ namespace TaskrowSharp
 
             ValidateIsConnected();
 
-            var url = new Uri(this.ServiceUrl, "/User/ListUsers");
+            var url = new Uri(this.serviceUrl, "/User/ListUsers");
             
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -251,11 +253,11 @@ namespace TaskrowSharp
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
-                    if (this.AuthCookies != null)
-                        client.Cookies.Add(this.AuthCookies);
+                    if (this.authCookies != null)
+                        client.Cookies.Add(this.authCookies);
 
-                    if (this.AuthAccessKey != null)
-                        client.Headers.Add("__identifier", this.AuthAccessKey);
+                    if (this.authAccessKey != null)
+                        client.Headers.Add("__identifier", this.authAccessKey);
 
                     string json = client.GetReturnString(url);
 
@@ -263,7 +265,9 @@ namespace TaskrowSharp
 
                     foreach (var userResponse in responseUsersList)
                         listUsers.Add(new User(userResponse));
-                    
+
+                    listUsers = listUsers.OrderBy(a => a.UserID).ToList();
+
                     return listUsers; //Success
                 }
                 catch (System.Exception ex)
@@ -297,7 +301,7 @@ namespace TaskrowSharp
 
             ValidateIsConnected();
 
-            var url = new Uri(this.ServiceUrl, string.Format("/User/UserDetail?userID={0}", userID));
+            var url = new Uri(this.serviceUrl, string.Format("/User/UserDetail?userID={0}", userID));
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -306,11 +310,11 @@ namespace TaskrowSharp
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
-                    if (this.AuthCookies != null)
-                        client.Cookies.Add(this.AuthCookies);
+                    if (this.authCookies != null)
+                        client.Cookies.Add(this.authCookies);
 
-                    if (this.AuthAccessKey != null)
-                        client.Headers.Add("__identifier", this.AuthAccessKey);
+                    if (this.authAccessKey != null)
+                        client.Headers.Add("__identifier", this.authAccessKey);
 
                     string json = client.GetReturnString(url);
 
@@ -347,7 +351,7 @@ namespace TaskrowSharp
 
             ValidateIsConnected();
 
-            var url = new Uri(this.ServiceUrl, "/Administrative/ListGroups?groupTypeID=2");
+            var url = new Uri(this.serviceUrl, "/Administrative/ListGroups?groupTypeID=2");
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -356,11 +360,11 @@ namespace TaskrowSharp
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
-                    if (this.AuthCookies != null)
-                        client.Cookies.Add(this.AuthCookies);
+                    if (this.authCookies != null)
+                        client.Cookies.Add(this.authCookies);
 
-                    if (this.AuthAccessKey != null)
-                        client.Headers.Add("__identifier", this.AuthAccessKey);
+                    if (this.authAccessKey != null)
+                        client.Headers.Add("__identifier", this.authAccessKey);
 
                     var json = client.GetReturnString(url);
 
@@ -413,9 +417,9 @@ namespace TaskrowSharp
 
             Uri url;
             if (!userID.HasValue)
-                url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&hierarchyEnabled=true&closedDays=20&context=1", groupID));
+                url = new Uri(this.serviceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&hierarchyEnabled=true&closedDays=20&context=1", groupID));
             else
-                url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&userID={1}&hierarchyEnabled=true&closedDays=20&context=1", groupID, userID.Value));
+                url = new Uri(this.serviceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&userID={1}&hierarchyEnabled=true&closedDays=20&context=1", groupID, userID.Value));
             
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -424,11 +428,11 @@ namespace TaskrowSharp
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
-                    if (this.AuthCookies != null)
-                        client.Cookies.Add(this.AuthCookies);
+                    if (this.authCookies != null)
+                        client.Cookies.Add(this.authCookies);
 
-                    if (this.AuthAccessKey != null)
-                        client.Headers.Add("__identifier", this.AuthAccessKey);
+                    if (this.authAccessKey != null)
+                        client.Headers.Add("__identifier", this.authAccessKey);
 
                     string json = client.GetReturnString(url);
 
@@ -472,7 +476,7 @@ namespace TaskrowSharp
 
             ValidateIsConnected();
 
-            Uri url = new Uri(this.ServiceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickName={2}", jobNumber, taskNumber, clientNickName));
+            Uri url = new Uri(this.serviceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickName={2}", jobNumber, taskNumber, clientNickName));
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -480,11 +484,11 @@ namespace TaskrowSharp
                 {
                     var client = new Utils.JsonWebClient(this.UserAgent);
 
-                    if (this.AuthCookies != null)
-                        client.Cookies.Add(this.AuthCookies);
+                    if (this.authCookies != null)
+                        client.Cookies.Add(this.authCookies);
 
-                    if (this.AuthAccessKey != null)
-                        client.Headers.Add("__identifier", this.AuthAccessKey);
+                    if (this.authAccessKey != null)
+                        client.Headers.Add("__identifier", this.authAccessKey);
                                         
                     var json = client.GetReturnString(url);
 

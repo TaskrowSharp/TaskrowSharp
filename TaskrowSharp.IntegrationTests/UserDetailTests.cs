@@ -34,7 +34,9 @@ namespace TaskrowSharp.IntegrationTests
         public void UserDetail_Get_FirstInactive()
         {
             var listUsers = taskrowClient.ListUsers();
-            var userTest = listUsers.Where(a => !a.Active).First();
+            var userTest = listUsers.Where(a => !a.Active).FirstOrDefault();
+            if (userTest == null)
+                throw new System.InvalidOperationException(string.Format("0 users inactive in {0}", taskrowClient.ServiceUrl.ToString()));
 
             var userDetail = taskrowClient.GetUserDetail(userTest.UserID);
             Assert.IsTrue(userDetail != null);

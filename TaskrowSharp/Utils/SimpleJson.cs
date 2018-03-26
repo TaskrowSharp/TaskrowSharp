@@ -711,14 +711,22 @@ namespace SimpleJson
                         success = false;
                         return null;
                     }
+
                     // value
-                    object value = ParseValue(json, ref index, ref success);
-                    if (!success)
+                    try
                     {
-                        success = false;
-                        return null;
+                        object value = ParseValue(json, ref index, ref success);
+                        if (!success)
+                        {
+                            success = false;
+                            return null;
+                        }
+                        table[name] = value;
                     }
-                    table[name] = value;
+                    catch (System.Exception ex)
+                    {
+                        throw new SerializationException(string.Format("Error parsing value of properry \"{0}\"", name), ex);
+                    }
                 }
             }
             return table;
@@ -1422,11 +1430,21 @@ namespace SimpleJson
                             obj = ConstructorCache[type]();
                             foreach (KeyValuePair<string, KeyValuePair<Type, ReflectionUtils.SetDelegate>> setter in SetCache[type])
                             {
-                                object jsonValue;
-                                if (jsonObject.TryGetValue(setter.Key, out jsonValue))
+                                try
                                 {
-                                    jsonValue = DeserializeObject(jsonValue, setter.Value.Key);
-                                    setter.Value.Value(obj, jsonValue);
+                                    object jsonValue;
+                                    if (jsonObject.TryGetValue(setter.Key, out jsonValue))
+                                    {
+                                        jsonValue = DeserializeObject(jsonValue, setter.Value.Key);
+                                        setter.Value.Value(obj, jsonValue);
+                                    }
+                                }
+                                catch (System.Exception ex)
+                                {
+                                    if (ex is SerializationException)
+                                        throw;
+
+                                    throw new SerializationException(string.Format("Serialization error in property \"{0}\" of object \"{1}\" -- {2}", setter.Key, type.FullName, ex.Message), ex);
                                 }
                             }
                         }

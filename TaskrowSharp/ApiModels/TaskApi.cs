@@ -14,7 +14,7 @@ namespace TaskrowSharp.ApiModels
         public string RequestTypeAcronym { get; set; }
         public string RequestTypeName { get; set; }
         public string PipelineStep { get; set; }
-        public int ColorID { get; set; }
+        public int? ColorID { get; set; }
         public string DueDate { get; set; }
         public int AbsoluteUserOrder { get; set; }
         public int EffortEstimation { get; set; }

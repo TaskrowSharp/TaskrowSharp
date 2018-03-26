@@ -13,7 +13,7 @@ namespace TaskrowSharp
 
         public string OldOwnerName { get; set; }
 
-        public int NewOwnerUserID { get; set; }
+        public int? NewOwnerUserID { get; set; }
 
         public string NewOwnerName { get; set; }
 
@@ -24,7 +24,7 @@ namespace TaskrowSharp
         public bool PipelineChanged { get; set; }
 
         public TaskItem(int taskItemID, int oldOwnerUserID, string oldOwnerName,
-            int newOwnerUserID, string newOwnerName, string taskItemComment, 
+            int? newOwnerUserID, string newOwnerName, string taskItemComment, 
             bool ownerChanged, bool pipelineChanged)
         {
             this.TaskItemID = taskItemID;

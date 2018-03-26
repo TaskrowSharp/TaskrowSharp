@@ -17,7 +17,16 @@ namespace TaskrowSharp.Utils
         
         public static T Deserialize<T>(string json)
         {
-            return (T) SimpleJson.SimpleJson.DeserializeObject(json, typeof(T), new SimpleJson.DataContractJsonSerializerStrategy());
+            try
+            {
+                return (T)SimpleJson.SimpleJson.DeserializeObject(json, typeof(T), new SimpleJson.DataContractJsonSerializerStrategy());
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debugger.Break();
+                throw;
+            }
         }
     }
 }

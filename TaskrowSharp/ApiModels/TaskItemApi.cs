@@ -10,7 +10,7 @@ namespace TaskrowSharp.ApiModels
         public int OldOwnerUserID { get; set; }
         public string OldOwnerName { get; set; }
         public string OldOwnerHashCode { get; set; }
-        public int NewOwnerUserID { get; set; }
+        public int? NewOwnerUserID { get; set; }
         public string NewOwnerName { get; set; }
         public string NewOwnerHashCode { get; set; }
         public string TaskItemComment { get; set; }
