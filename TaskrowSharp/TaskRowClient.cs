@@ -242,7 +242,7 @@ namespace TaskrowSharp
 
             ValidateIsConnected();
 
-            var url = new Uri(this.serviceUrl, "/User/ListUsers");
+            var url = new Uri(this.serviceUrl, "/User/ListUsers?showInactive=true");
             
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -463,20 +463,20 @@ namespace TaskrowSharp
 
         #endregion
 
-        #region GetTaskDetail (not implemented)
+        #region GetTaskDetail
 
-        public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName)
+        public TaskDetail GetTaskDetail(TaskReference taskReference)
         {
-            return GetTaskDetail(jobNumber, taskNumber, clientNickName, this.RetryPolicy);
+            return GetTaskDetail(taskReference, this.RetryPolicy);
         }
 
-        public TaskDetail GetTaskDetail(int jobNumber, int taskNumber, string clientNickName, RetryPolicy retryPolicy)
+        public TaskDetail GetTaskDetail(TaskReference taskReference, RetryPolicy retryPolicy)
         {
-            //Url: /Task/TaskDetail?clientNickName=[clientName]&jobNumber=[job number]&taskNumber=[task number]
+            //Url: /Task/TaskDetail?clientNickname={clientNickname}&jobNumber={jobNumber}&taskNumber={taskNumber}
 
             ValidateIsConnected();
 
-            Uri url = new Uri(this.serviceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickName={2}", jobNumber, taskNumber, clientNickName));
+            Uri url = new Uri(this.serviceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickname={2}", taskReference.JobNumber, taskReference.TaskNumber, taskReference.ClientNickname));
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {

@@ -21,11 +21,11 @@ namespace TaskrowSharp
 
         public int JobNumber { get; set; }
 
-        public string ClientNickName { get; set; }
+        public string ClientNickname { get; set; }
 
         public int OwnerUserID { get; set; }
         
-        public string TaskUrl { get { return string.Format("/#taskcentral/{0}/{1}/{2}", this.ClientNickName, this.JobNumber, this.TaskNumber); } }
+        public string TaskUrl { get { return string.Format("/#taskcentral/{0}/{1}/{2}", this.ClientNickname, this.JobNumber, this.TaskNumber); } }
 
         public TaskSituation TaskSituation { get; set; }
 
@@ -39,7 +39,7 @@ namespace TaskrowSharp
             this.DueDate = dueDate;
             this.JobID = jobID;
             this.JobNumber = jobNumber;
-            this.ClientNickName = clientNickName;
+            this.ClientNickname = clientNickName;
             this.OwnerUserID = ownerUserID;
             this.TaskSituation = taskSituation;
         }
@@ -53,7 +53,7 @@ namespace TaskrowSharp
             this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskApi.DueDate);
             this.JobID = taskApi.JobID;
             this.JobNumber = taskApi.JobNumber;
-            this.ClientNickName = taskApi.ClientNickName;
+            this.ClientNickname = taskApi.ClientNickName;
             this.OwnerUserID = taskApi.OwnerUserID;
             this.TaskSituation = taskSituation;
         }

@@ -25,7 +25,7 @@ namespace TaskrowSharp
         
         public List<TaskTag> Tags { get; set; }
 
-        public string ClientNickName { get; set; }
+        public string ClientNickname { get; set; }
 
         public string RowVersion { get; set; }
 
@@ -34,7 +34,7 @@ namespace TaskrowSharp
         public List<SubTask> SubTasks { get; set; }
         
         public TaskDetail(int taskID, int taskNumber, string taskTitle, int jobID, int jobNumber, string jobTitle, string memberListString,
-            List<TaskItem> taskItems, List<TaskTag> tags, string clientNickName, string rowVersion,
+            List<TaskItem> taskItems, List<TaskTag> tags, string clientNickname, string rowVersion,
             DateTime dueDate, List<SubTask> subTasks)
         {
             this.TaskID = taskID;
@@ -46,7 +46,7 @@ namespace TaskrowSharp
             this.MemberListString = memberListString;
             this.TaskItems = taskItems;
             this.Tags = tags;
-            this.ClientNickName = clientNickName;
+            this.ClientNickname = clientNickname;
             this.RowVersion = rowVersion;
             this.DueDate = dueDate;
             this.SubTasks = subTasks;
@@ -61,7 +61,7 @@ namespace TaskrowSharp
             this.JobNumber = jobDataApi.JobNumber;
             this.JobTitle = jobDataApi.JobTitle;
             this.MemberListString = taskDataApi.MemberListString;
-            this.ClientNickName = jobDataApi.Client.ClientNickName;
+            this.ClientNickname = jobDataApi.Client.ClientNickName;
             this.RowVersion = taskDataApi.RowVersion;
             this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskDataApi.DueDate);
 

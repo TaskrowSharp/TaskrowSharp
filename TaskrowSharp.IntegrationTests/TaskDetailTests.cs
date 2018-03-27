@@ -25,10 +25,10 @@ namespace TaskrowSharp.IntegrationTests
         [Test]
         public void TaskDetail_Get_OpenTasks()
         {
-            var openTasks = tasksList.Where(a => a.TaskSituation == TaskSituation.Open).OrderBy(a => a.TaskNumber).Take(5).ToList();
+            var openTasks = tasksList.Where(a => a.TaskSituation == TaskSituation.Open).OrderBy(a => a.TaskNumber).ToList();
             foreach (var task in openTasks)
             {
-                var taskDetail = taskrowClient.GetTaskDetail(task.JobNumber, task.TaskNumber, task.ClientNickName);
+                var taskDetail = taskrowClient.GetTaskDetail(new TaskReference(task.ClientNickname, task.JobNumber, task.TaskNumber));
 
                 Assert.IsTrue(task.TaskID == taskDetail.TaskID);
                 Assert.IsTrue(task.TaskNumber == taskDetail.TaskNumber);
@@ -41,10 +41,10 @@ namespace TaskrowSharp.IntegrationTests
         [Test]
         public void TaskDetail_Get_ClosedTasks()
         {
-            var closedTasks = tasksList.Where(a => a.TaskSituation == TaskSituation.Closed).OrderBy(a => a.TaskNumber).Take(5).ToList();
+            var closedTasks = tasksList.Where(a => a.TaskSituation == TaskSituation.Closed).OrderBy(a => a.TaskNumber).ToList();
             foreach (var task in closedTasks)
             {
-                var taskDetail = taskrowClient.GetTaskDetail(task.JobNumber, task.TaskNumber, task.ClientNickName);
+                var taskDetail = taskrowClient.GetTaskDetail(new TaskReference(task.ClientNickname, task.JobNumber, task.TaskNumber));
 
                 Assert.IsTrue(task.TaskID == taskDetail.TaskID);
                 Assert.IsTrue(task.TaskNumber == taskDetail.TaskNumber);

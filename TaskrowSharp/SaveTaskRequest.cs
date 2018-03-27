@@ -9,7 +9,7 @@ namespace TaskrowSharp
     {
         public int JobNumber { get; set; }
 
-        public string ClientNickName { get; set; }
+        public string ClientNickname { get; set; }
 
         public int LastTaskItemID { get; set; }
 

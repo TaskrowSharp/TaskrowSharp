@@ -21,5 +21,8 @@ namespace TaskrowSharp.IntegrationTests
 
         [DataMember(Name = "accessKey")]
         public string AccessKey { get; set; }
+
+        [DataMember(Name = "forwardTaskTests")]
+        public List<ForwardTaskConfiguration> ForwardTaskTests { get; set; }
     }
 }
