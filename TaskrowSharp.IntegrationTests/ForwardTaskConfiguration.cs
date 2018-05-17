@@ -13,9 +13,6 @@ namespace TaskrowSharp.IntegrationTests
         [DataMember(Name = "taskUrl")]
         public string TaskUrl { get; set; }
 
-        [DataMember(Name = "groupName")]
-        public string GroupName { get; set; }
-
         [DataMember(Name = "user1Email")]
         public string User1Email { get; set; }
 

@@ -40,10 +40,6 @@ namespace TaskrowSharp.IntegrationTests
             
             foreach (var test in configuration.ForwardTaskTests)
             {
-                var group = groupsList.FirstOrDefault(a => a.Name.Equals(test.GroupName, StringComparison.CurrentCultureIgnoreCase));
-                if (group == null)
-                    throw new System.InvalidOperationException(string.Format("Group name=\"{0}\" not found", test.GroupName));
-
                 var user1 = usersList.Where(a => a.MainEmail.Equals(test.User1Email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 if (user1 == null)
                     throw new System.InvalidOperationException(string.Format("User e-mail=\"{0}\" not found", test.User1Email));
@@ -64,7 +60,22 @@ namespace TaskrowSharp.IntegrationTests
                 var task = taskrowClient.GetTaskDetail(taskReference);
                 if (task == null)
                     throw new System.InvalidOperationException(string.Format("Task {0} not found", test.TaskUrl));
+
+                if (task.Owner.UserID == user1.UserID)
+                {
+                    taskrowClient.SaveTask(new SaveTaskRequest() { OwnerUserID = user2.UserID });
+                }
+                else if (task.Owner.UserID == user2.UserID)
+                {
+                    taskrowClient.SaveTask(new SaveTaskRequest() { OwnerUserID = user1.UserID });
+                }
+                else
+                {
+                    throw new System.InvalidOperationException(string.Format("Task {0} owner not expected", test.TaskUrl));
+                }
             }
+
+            Assert.IsTrue(true);
         }
     }
 }

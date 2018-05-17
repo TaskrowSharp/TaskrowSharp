@@ -36,6 +36,14 @@ namespace TaskrowSharp
                 throw new NotConnectedException();
         }
 
+        private RetryPolicy GetRetryPolicy(RetryPolicy retryPolicy)
+        {
+            if (retryPolicy != null)
+                return retryPolicy;
+
+            return this.RetryPolicy;
+        }
+
         #region Connect
 
         public void Connect(Uri serviceUrl, string accessKey)
@@ -231,16 +239,12 @@ namespace TaskrowSharp
 
         #region ListUsers
 
-        public List<User> ListUsers()
-        {
-            return ListUsers(this.RetryPolicy);
-        }
-
-        public List<User> ListUsers(RetryPolicy retryPolicy)
+        public List<User> ListUsers(RetryPolicy retryPolicy = null)
         {
             //Url: /User/ListUsers
 
             ValidateIsConnected();
+            retryPolicy = GetRetryPolicy(retryPolicy);
 
             var url = new Uri(this.serviceUrl, "/User/ListUsers?showInactive=true");
             
@@ -287,12 +291,7 @@ namespace TaskrowSharp
 
         #region GetUserDetail
 
-        public UserDetail GetUserDetail(int userID)
-        {
-            return GetUserDetail(userID, this.RetryPolicy);
-        }
-
-        public UserDetail GetUserDetail(int userID, RetryPolicy retryPolicy)
+        public UserDetail GetUserDetail(int userID, RetryPolicy retryPolicy = null)
         {
             //Url: /User/UserDetail?userID=3564
 
@@ -300,6 +299,7 @@ namespace TaskrowSharp
                 throw new ArgumentException(nameof(userID));
 
             ValidateIsConnected();
+            retryPolicy = GetRetryPolicy(retryPolicy);
 
             var url = new Uri(this.serviceUrl, string.Format("/User/UserDetail?userID={0}", userID));
 
@@ -340,16 +340,12 @@ namespace TaskrowSharp
 
         #region ListGroups
 
-        public List<Group> ListGroups()
-        {
-            return ListGroups(this.RetryPolicy);
-        }
-
-        public List<Group> ListGroups(RetryPolicy retryPolicy)
+        public List<Group> ListGroups(RetryPolicy retryPolicy = null)
         {
             //Url: /Administrative/ListGroups?groupTypeID=2
 
             ValidateIsConnected();
+            retryPolicy = GetRetryPolicy(retryPolicy);
 
             var url = new Uri(this.serviceUrl, "/Administrative/ListGroups?groupTypeID=2");
 
@@ -393,17 +389,7 @@ namespace TaskrowSharp
 
         #region ListTasksByGroup
 
-        public List<Task> ListTasksByGroup(int groupID)
-        {
-            return ListTasksByGroup(groupID, null, this.RetryPolicy);
-        }
-
-        public List<Task> ListTasksByGroup(int groupID, int userID)
-        {
-            return ListTasksByGroup(groupID, userID, this.RetryPolicy);
-        }
-
-        public List<Task> ListTasksByGroup(int groupID, int? userID, RetryPolicy retryPolicy)
+        public List<Task> ListTasksByGroup(int groupID, int? userID = null, RetryPolicy retryPolicy = null)
         {
             //Url: /Dashboard/TasksByGroup?groupID=421&hierarchyEnabled=true&userID=3564&closedDays=20&context=1
 
@@ -414,6 +400,7 @@ namespace TaskrowSharp
                 throw new ArgumentException(nameof(userID));
 
             ValidateIsConnected();
+            retryPolicy = GetRetryPolicy(retryPolicy);
 
             Uri url;
             if (!userID.HasValue)
@@ -465,16 +452,12 @@ namespace TaskrowSharp
 
         #region GetTaskDetail
 
-        public TaskDetail GetTaskDetail(TaskReference taskReference)
-        {
-            return GetTaskDetail(taskReference, this.RetryPolicy);
-        }
-
-        public TaskDetail GetTaskDetail(TaskReference taskReference, RetryPolicy retryPolicy)
+        public TaskDetail GetTaskDetail(TaskReference taskReference, RetryPolicy retryPolicy = null)
         {
             //Url: /Task/TaskDetail?clientNickname={clientNickname}&jobNumber={jobNumber}&taskNumber={taskNumber}
 
             ValidateIsConnected();
+            retryPolicy = GetRetryPolicy(retryPolicy);
 
             Uri url = new Uri(this.serviceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickname={2}", taskReference.JobNumber, taskReference.TaskNumber, taskReference.ClientNickname));
 
@@ -509,86 +492,98 @@ namespace TaskrowSharp
 
             throw new TaskrowException("Unexpected error in attempts control");
         }
-        
+
         #endregion
 
         #region SaveTask (not implemented)
 
-        //public void SaveTask(SaveTaskRequest request, int maxAttempts = 1, int timeOutSeconds = 120)
-        //{
-        //    //Url: /Task/SaveTask
+        public void SaveTask(SaveTaskRequest request, RetryPolicy retryPolicy = null)
+        {
+            //Url: /Task/SaveTask
+            
+            ValidateIsConnected();
+            retryPolicy = GetRetryPolicy(retryPolicy);
 
-        //    ValidateStatusConnected();
+            var url = new Uri(this.ServiceUrl, "/Task/SaveTask");
 
-        //    var url = new Uri(this.ServiceUrl, "/Task/SaveTask");
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
+            {
+                try
+                {
+                    var client = new Utils.JsonWebClient(this.UserAgent);
+                    client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
 
-        //    for (int attempt = 1; attempt <= maxAttempts; attempt++)
-        //    {
-        //        try
-        //        {
-        //            var client = new Utils.JsonWebClient(this.UserAgent);
-        //            client.TimeOutMilliseconds = timeOutSeconds * 1000;
-        //            client.Cookies.Add(this.Cookies);
-        //            client.AllowAutoRedirect = false;
+                    if (this.authCookies != null)
+                        client.Cookies.Add(this.authCookies);
 
-        //            //client.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-        //            client.Host = this.ServiceUrl.Host;
-        //            client.Origin = this.ServiceUrl.ToString();
-        //            client.Referer = this.ServiceUrl.ToString();
-        //            client.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36";
+                    if (this.authAccessKey != null)
+                        client.Headers.Add("__identifier", this.authAccessKey);
 
-        //            var values = new System.Collections.Specialized.NameValueCollection();
-        //            values.Add("jobNumber", request.JobNumber.ToString());
-        //            values.Add("clientNickName", request.ClientNickName);
-        //            values.Add("lastTaskItemID", request.LastTaskItemID.ToString());
-        //            values.Add("TaskID", request.TaskID.ToString());
-        //            values.Add("MemberListString", request.MemberListString);
-        //            values.Add("TaskNumber", request.TaskNumber.ToString());
+                    throw new System.NotImplementedException();
 
-        //            if (!string.IsNullOrEmpty(request.RowVersion))
-        //                values.Add("RowVersion", request.RowVersion);
+                    /*
+                    //client.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+                    client.Host = this.ServiceUrl.Host;
+                    client.Origin = this.ServiceUrl.ToString();
+                    client.Referer = this.ServiceUrl.ToString();
+                    client.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36";
 
-        //            values.Add("TaskTitle", request.TaskTitle);
-        //            values.Add("TaskItemComment", request.TaskItemComment);
-        //            values.Add("OwnerUserID", request.OwnerUserID.ToString());
-        //            values.Add("SpentTime", request.SpentTime.ToString());
-        //            values.Add("DueDate", request.DueDate.ToString("yyyy-MM-dd"));
-        //            values.Add("PercentComplete", request.PercentComplete.ToString());
+                    var values = new System.Collections.Specialized.NameValueCollection();
+                    values.Add("jobNumber", request.JobNumber.ToString());
+                    values.Add("clientNickName", request.ClientNickName);
+                    values.Add("lastTaskItemID", request.LastTaskItemID.ToString());
+                    values.Add("TaskID", request.TaskID.ToString());
+                    values.Add("MemberListString", request.MemberListString);
+                    values.Add("TaskNumber", request.TaskNumber.ToString());
 
-        //            var jObject = client.PostValuesReturnJObject(url, values);
+                    if (!string.IsNullOrEmpty(request.RowVersion))
+                        values.Add("RowVersion", request.RowVersion);
 
-        //            if (System.Diagnostics.Debugger.IsAttached)
-        //            {
-        //                StringBuilder sb = new StringBuilder();
-        //                foreach (var key in values.AllKeys)
-        //                    sb.AppendFormat("{0}={1}\r\n", key, values[key]);
+                    values.Add("TaskTitle", request.TaskTitle);
+                    values.Add("TaskItemComment", request.TaskItemComment);
+                    values.Add("OwnerUserID", request.OwnerUserID.ToString());
+                    values.Add("SpentTime", request.SpentTime.ToString());
+                    values.Add("DueDate", request.DueDate.ToString("yyyy-MM-dd"));
+                    values.Add("PercentComplete", request.PercentComplete.ToString());
 
-        //                string jsonRequest = sb.ToString();
+                    var jObject = client.PostValuesReturnJObject(url, values);
 
-        //                string jsonReponse = jObject.ToString();
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var key in values.AllKeys)
+                            sb.AppendFormat("{0}={1}\r\n", key, values[key]);
 
-        //                System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- url= {0}", url));
-        //                System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- request= {0}", jsonRequest));
-        //                System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- response= {0}", jsonReponse));
-        //            }
+                        string jsonRequest = sb.ToString();
 
-        //            bool success = Convert.ToBoolean(jObject["Success"]);
-        //            string message = jObject["Message"].ToString();
+                        string jsonReponse = jObject.ToString();
 
-        //            if (!success)
-        //                throw new TaskrowException(message);
+                        System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- url= {0}", url));
+                        System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- request= {0}", jsonRequest));
+                        System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- response= {0}", jsonReponse));
+                    }
 
-        //            return; //Success
-        //        }
-        //        catch (System.Exception ex)
-        //        {
-        //            if (attempt == maxAttempts)
-        //                throw new TaskrowException(string.Format("Error saving task after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", maxAttempts, url.ToString(), ex.Message, timeOutSeconds), ex);
-        //        }
-        //    }
+                    bool success = Convert.ToBoolean(jObject["Success"]);
+                    string message = jObject["Message"].ToString();
 
-        //    throw new TaskrowException("Unexpected error in attempts control");
-        //}
+                    if (!success)
+                        throw new TaskrowException(message);
+
+                    return; //Success
+                    */
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
+                        throw;
+
+                    if (attempt == retryPolicy.MaxAttempts)
+                        throw new TaskrowException(string.Format("Error saving task after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                }
+            }
+
+            throw new TaskrowException("Unexpected error in attempts control");
+        }
 
         #endregion
     }

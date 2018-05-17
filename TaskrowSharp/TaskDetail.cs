@@ -33,7 +33,14 @@ namespace TaskrowSharp
         
         public List<SubTask> SubTasks { get; set; }
         
-        public TaskDetail(int taskID, int taskNumber, string taskTitle, int jobID, int jobNumber, string jobTitle, string memberListString,
+        public Owner Owner { get; set; }
+
+        public void ChangeOwner(Owner owner)
+        {
+            this.Owner = owner;
+        }
+
+        public TaskDetail(int taskID, int taskNumber, string taskTitle, int jobID, int jobNumber, string jobTitle, Owner owner, string memberListString,
             List<TaskItem> taskItems, List<TaskTag> tags, string clientNickname, string rowVersion,
             DateTime dueDate, List<SubTask> subTasks)
         {
@@ -43,6 +50,7 @@ namespace TaskrowSharp
             this.JobID = jobID;
             this.JobNumber = jobNumber;
             this.JobTitle = jobTitle;
+            this.Owner = owner;
             this.MemberListString = memberListString;
             this.TaskItems = taskItems;
             this.Tags = tags;
@@ -60,6 +68,7 @@ namespace TaskrowSharp
             this.JobID = taskDataApi.JobID;
             this.JobNumber = jobDataApi.JobNumber;
             this.JobTitle = jobDataApi.JobTitle;
+            this.Owner = new Owner(taskDataApi.Owner.UserID, taskDataApi.Owner.UserLogin, taskDataApi.Owner.UserHashCode);
             this.MemberListString = taskDataApi.MemberListString;
             this.ClientNickname = jobDataApi.Client.ClientNickName;
             this.RowVersion = taskDataApi.RowVersion;
@@ -79,7 +88,7 @@ namespace TaskrowSharp
                     pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
                 }
 
-                bool ownerChanged = (taskItemApi.NewOwnerUserID != 0 && ownerUserID != taskItemApi.NewOwnerUserID && taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0);
+                bool ownerChanged = (taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0 && ownerUserID != taskItemApi.NewOwnerUserID && taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0);
                 if (ownerChanged)
                     ownerUserID = taskItemApi.NewOwnerUserID.GetValueOrDefault();
 

@@ -25,7 +25,7 @@ namespace TaskrowSharp
                 throw new ArgumentException(nameof(url));
 
             //ex: https://mycompary.taskrow.com/#taskcentral/MyClient/488/1501
-                        
+            
             int index = url.IndexOf("#taskcentral", StringComparison.CurrentCultureIgnoreCase);
             if (index > 0)
                 url = url.Substring(index + "#taskcentral".Length);
