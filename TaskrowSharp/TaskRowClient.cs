@@ -497,7 +497,7 @@ namespace TaskrowSharp
 
         #region SaveTask (not implemented)
 
-        public void SaveTask(SaveTaskRequest request, RetryPolicy retryPolicy = null)
+        public SaveTaskResponse SaveTask(SaveTaskRequest request, RetryPolicy retryPolicy = null)
         {
             //Url: /Task/SaveTask
             
@@ -519,58 +519,8 @@ namespace TaskrowSharp
                     if (this.authAccessKey != null)
                         client.Headers.Add("__identifier", this.authAccessKey);
 
-                    throw new System.NotImplementedException();
-
-                    /*
-                    //client.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                    client.Host = this.ServiceUrl.Host;
-                    client.Origin = this.ServiceUrl.ToString();
-                    client.Referer = this.ServiceUrl.ToString();
-                    client.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36";
-
-                    var values = new System.Collections.Specialized.NameValueCollection();
-                    values.Add("jobNumber", request.JobNumber.ToString());
-                    values.Add("clientNickName", request.ClientNickName);
-                    values.Add("lastTaskItemID", request.LastTaskItemID.ToString());
-                    values.Add("TaskID", request.TaskID.ToString());
-                    values.Add("MemberListString", request.MemberListString);
-                    values.Add("TaskNumber", request.TaskNumber.ToString());
-
-                    if (!string.IsNullOrEmpty(request.RowVersion))
-                        values.Add("RowVersion", request.RowVersion);
-
-                    values.Add("TaskTitle", request.TaskTitle);
-                    values.Add("TaskItemComment", request.TaskItemComment);
-                    values.Add("OwnerUserID", request.OwnerUserID.ToString());
-                    values.Add("SpentTime", request.SpentTime.ToString());
-                    values.Add("DueDate", request.DueDate.ToString("yyyy-MM-dd"));
-                    values.Add("PercentComplete", request.PercentComplete.ToString());
-
-                    var jObject = client.PostValuesReturnJObject(url, values);
-
-                    if (System.Diagnostics.Debugger.IsAttached)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        foreach (var key in values.AllKeys)
-                            sb.AppendFormat("{0}={1}\r\n", key, values[key]);
-
-                        string jsonRequest = sb.ToString();
-
-                        string jsonReponse = jObject.ToString();
-
-                        System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- url= {0}", url));
-                        System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- request= {0}", jsonRequest));
-                        System.Diagnostics.Debug.WriteLine(string.Format("Taskrow -- response= {0}", jsonReponse));
-                    }
-
-                    bool success = Convert.ToBoolean(jObject["Success"]);
-                    string message = jObject["Message"].ToString();
-
-                    if (!success)
-                        throw new TaskrowException(message);
-
-                    return; //Success
-                    */
+                    var response = client.PostObjReturnObject<SaveTaskResponse>(url, request);
+                    return response;
                 }
                 catch (System.Exception ex)
                 {
