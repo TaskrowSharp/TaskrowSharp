@@ -11,8 +11,8 @@ namespace TaskrowSharp.ApiModels
         public string UserHashCode { get; set; }
         public bool Creator { get; set; }
         //public object Notify { get; set; }
-        public bool MustRead { get; set; }
-        public bool Read { get; set; }
+        public bool? MustRead { get; set; }
+        public bool? Read { get; set; }
         public string LastReadDate { get; set; }
         //public object Favorite { get; set; }
         public string LastModificationDate { get; set; }

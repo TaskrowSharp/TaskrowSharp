@@ -1,7 +1,5 @@
 ﻿{
   "serviceUrl": "https://yourcompany.taskrow.com",
-  "email": "teste@yourcompany.com",
-  "password": "123456789",
   "accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa",
   "forwardTaskTests": [
     {

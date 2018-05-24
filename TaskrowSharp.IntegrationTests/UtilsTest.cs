@@ -12,6 +12,9 @@ namespace TaskrowSharp.IntegrationTests
         {
             string path = Utils.IOHelper.GetFullPathFromRelative(@"config\main.json", true, true);
 
+            if (!System.IO.File.Exists(path))
+                throw new System.InvalidOperationException(string.Format("File not found: {0}", path));
+
             string json;
             using (var reader = new System.IO.StreamReader(path))
             {
