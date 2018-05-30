@@ -4,12 +4,12 @@
 
 
 
-## Nuget package
+## 1- Nuget package
 
 (available soon)
 
 
-## Taskrow
+## 2- Taskrow
 
 Taskrow is system to control and organize the Tasks from Teams and Clients.
 
@@ -17,7 +17,7 @@ To create an account, access: http://taskrow.com/
 
 
 
-## AccessKey
+## 3- AccessKey
 
 To create a AccessKey in Taskrow:
 
@@ -29,21 +29,20 @@ To create a AccessKey in Taskrow:
 This AccessKey can be used in Connect() method
 
 
+## 4- Examples
 
-## Basic Example
+### 4.1- Basic Example
 
 ```csharp
-var taskrowClient = new TaskrowSharp.TaskrowClient();
-taskrowClient.Connect("https://yourdomain.taskrow.com", "AccessKey_xxxxslwlqlqlwqlql23234jewjewj");
+var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx");
 var users = taskrowClient.ListUsers();
 ```
 
 
-## Forward Task
+## 4.2- Forward Task
 
 ```csharp
-var taskrowClient = new TaskrowSharp.TaskrowClient();
-taskrowClient.Connect("https://yourdomain.taskrow.com", "AccessKey_xxxxslwlqlqlwqlql23234jewjewj");
+var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx");
 var users = taskrowClient.ListUsers();
 
 var taskReference = new TaskReference("client", 12, 1235);
@@ -58,4 +57,12 @@ var request = new SaveTaskRequest(task.TaskID, task.ClientNickname, task.JobNumb
 
 var response = taskrowClient.SaveTask(request);
 ```
+
+## 5- Changing code
+
+Open solution "TaskrowSharp.sln" in Visual Studio 2017
+
+To Run Tests, you need to create a file "main.json" in folder: \TaskrowSharp.IntegrationTests\config\
+you should include the credentials of your Taskrow account in this file, follow the example file: example.json
+
 

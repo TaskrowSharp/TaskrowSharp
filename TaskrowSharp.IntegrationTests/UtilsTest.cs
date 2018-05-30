@@ -29,10 +29,7 @@ namespace TaskrowSharp.IntegrationTests
         public static TaskrowClient GetTaskrowClient()
         {
             var config = GetConfigurationFile();
-
-            var taskrowClient = new TaskrowClient();
-            taskrowClient.Connect(new Uri(config.ServiceUrl), new AccessKeyCredential(config.AccessKey));
-
+            var taskrowClient = new TaskrowClient(new Uri(config.ServiceUrl), config.AccessKey);           
             return taskrowClient;
         }
     }
