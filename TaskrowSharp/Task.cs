@@ -12,7 +12,7 @@ namespace TaskrowSharp
         public int TaskID { get; set; }
 
         public string TaskTitle { get; set; }
-
+        
         public DateTime CreationDate { get; set; }
 
         public DateTime DueDate { get; set; }
@@ -26,8 +26,12 @@ namespace TaskrowSharp
         public int OwnerUserID { get; set; }
         
         public string TaskUrl { get { return string.Format("/#taskcentral/{0}/{1}/{2}", this.ClientNickname, this.JobNumber, this.TaskNumber); } }
-
+                
         public TaskSituation TaskSituation { get; set; }
+
+        public int EffortEstimation { get; set; }
+
+        public bool Closed { get; set; }
 
         public Task(int taskNumber, int taskID, string taskTitle, DateTime creationDate, DateTime dueDate,
             int jobID, int jobNumber, string clientNickName, int ownerUserID, TaskSituation taskSituation)
@@ -56,6 +60,8 @@ namespace TaskrowSharp
             this.ClientNickname = taskApi.ClientNickName;
             this.OwnerUserID = taskApi.OwnerUserID;
             this.TaskSituation = taskSituation;
+            this.EffortEstimation = taskApi.EffortEstimation;
+            this.Closed = taskApi.Closed;
         }
     }
 }
