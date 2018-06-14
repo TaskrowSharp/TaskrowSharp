@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class TaskApi
+    internal class TaskHeaderApi
     {
         public int AppMainCompanyID { get; set; }
         public int TaskNumber { get; set; }

@@ -195,7 +195,7 @@ namespace TaskrowSharp
 
         #region ListTasksByGroup
 
-        public List<Task> ListTasksByGroup(int groupID, int? userID = null, RetryPolicy retryPolicy = null)
+        public List<TaskHeader> ListTasksByGroup(int groupID, int? userID = null, RetryPolicy retryPolicy = null)
         {
             //Url: /Dashboard/TasksByGroup?groupID=421&hierarchyEnabled=true&userID=3564&closedDays=20&context=1
 
@@ -225,13 +225,13 @@ namespace TaskrowSharp
 
                     var response = Utils.JsonHelper.Deserialize<ApiModels.TasksByGroupResponseApi>(json);
 
-                    var listTasks = new List<Task>();
+                    var listTasks = new List<TaskHeader>();
 
                     foreach (var taskResponse in response.Entity.OpenTasks)
-                        listTasks.Add(new Task(taskResponse, TaskSituation.Open));
+                        listTasks.Add(new TaskHeader(taskResponse, TaskSituation.Open));
 
                     foreach (var taskResponse in response.Entity.ClosedTasks)
-                        listTasks.Add(new Task(taskResponse, TaskSituation.Closed));
+                        listTasks.Add(new TaskHeader(taskResponse, TaskSituation.Closed));
 
                     return listTasks; //Success
                 }
@@ -307,7 +307,11 @@ namespace TaskrowSharp
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
                     client.Headers.Add("__identifier", this.AccessKey);
 
-                    var response = client.PostObjReturnObject<SaveTaskResponse>(url, request);
+                    var requestApi = new ApiModels.SaveTaskRequestApi(request);
+
+                    var responseApi = client.PostObjReturnObject<ApiModels.SaveTaskResponseApi>(url, requestApi);
+
+                    var response = new SaveTaskResponse(responseApi);
                     return response;
                 }
                 catch (System.Exception ex)

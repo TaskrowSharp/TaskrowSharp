@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TaskrowSharp
 {
-    public class Task
+    public class TaskHeader
     {
         public int TaskNumber { get; set; }
 
@@ -29,11 +29,11 @@ namespace TaskrowSharp
                 
         public TaskSituation TaskSituation { get; set; }
 
-        public int EffortEstimation { get; set; }
+        public int EffortEstimationMinutes { get; set; }
 
         public bool Closed { get; set; }
-
-        public Task(int taskNumber, int taskID, string taskTitle, DateTime creationDate, DateTime dueDate,
+        
+        public TaskHeader(int taskNumber, int taskID, string taskTitle, DateTime creationDate, DateTime dueDate,
             int jobID, int jobNumber, string clientNickName, int ownerUserID, TaskSituation taskSituation)
         {
             this.TaskNumber = taskNumber;
@@ -48,20 +48,20 @@ namespace TaskrowSharp
             this.TaskSituation = taskSituation;
         }
 
-        internal Task(ApiModels.TaskApi taskApi, TaskSituation taskSituation)
+        internal TaskHeader(ApiModels.TaskHeaderApi taskHeaderApi, TaskSituation taskSituation)
         {
-            this.TaskNumber = taskApi.TaskNumber;
-            this.TaskID = taskApi.TaskID;
-            this.TaskTitle = taskApi.TaskTitle;
-            this.CreationDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskApi.CreationDate);
-            this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskApi.DueDate);
-            this.JobID = taskApi.JobID;
-            this.JobNumber = taskApi.JobNumber;
-            this.ClientNickname = taskApi.ClientNickName;
-            this.OwnerUserID = taskApi.OwnerUserID;
+            this.TaskNumber = taskHeaderApi.TaskNumber;
+            this.TaskID = taskHeaderApi.TaskID;
+            this.TaskTitle = taskHeaderApi.TaskTitle;
+            this.CreationDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskHeaderApi.CreationDate);
+            this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskHeaderApi.DueDate);
+            this.JobID = taskHeaderApi.JobID;
+            this.JobNumber = taskHeaderApi.JobNumber;
+            this.ClientNickname = taskHeaderApi.ClientNickName;
+            this.OwnerUserID = taskHeaderApi.OwnerUserID;
             this.TaskSituation = taskSituation;
-            this.EffortEstimation = taskApi.EffortEstimation;
-            this.Closed = taskApi.Closed;
+            this.EffortEstimationMinutes = taskHeaderApi.EffortEstimation;
+            this.Closed = taskHeaderApi.Closed;
         }
     }
 }

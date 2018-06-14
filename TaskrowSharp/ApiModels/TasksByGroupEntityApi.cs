@@ -6,10 +6,10 @@ namespace TaskrowSharp.ApiModels
 {
     internal class TasksByGroupEntityApi
     {
-        public List<TaskApi> ClosedTasks { get; set; }
-        public List<TaskApi> OpenTasks { get; set; }
-        public List<TaskApi> OpenTasksDelayed { get; set; }
-        public List<TaskApi> OpenTasksToNextWeek { get; set; }
+        public List<TaskHeaderApi> ClosedTasks { get; set; }
+        public List<TaskHeaderApi> OpenTasks { get; set; }
+        public List<TaskHeaderApi> OpenTasksDelayed { get; set; }
+        public List<TaskHeaderApi> OpenTasksToNextWeek { get; set; }
 
         //public List<object> HierarchyGroups { get; set; }
         public int UserGroupID { get; set; }

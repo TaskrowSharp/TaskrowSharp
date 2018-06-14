@@ -34,6 +34,10 @@ namespace TaskrowSharp
         public List<SubTask> SubTasks { get; set; }
         
         public Owner Owner { get; set; }
+        
+        public int EffortEstimationMinutes { get; set; }
+
+        public bool Closed { get; set; }
 
         public void ChangeOwner(Owner owner)
         {
@@ -42,7 +46,7 @@ namespace TaskrowSharp
 
         public TaskDetail(int taskID, int taskNumber, string taskTitle, int jobID, int jobNumber, string jobTitle, Owner owner, string memberListString,
             List<TaskItem> taskItems, List<TaskTag> tags, string clientNickname, string rowVersion,
-            DateTime dueDate, List<SubTask> subTasks)
+            DateTime dueDate, int effortEstimationMinutes, List<SubTask> subTasks)
         {
             this.TaskID = taskID;
             this.TaskNumber = taskNumber;
@@ -57,6 +61,7 @@ namespace TaskrowSharp
             this.ClientNickname = clientNickname;
             this.RowVersion = rowVersion;
             this.DueDate = dueDate;
+            this.EffortEstimationMinutes = effortEstimationMinutes;
             this.SubTasks = subTasks;
         }
 
@@ -73,6 +78,8 @@ namespace TaskrowSharp
             this.ClientNickname = jobDataApi.Client.ClientNickName;
             this.RowVersion = taskDataApi.RowVersion;
             this.DueDate = Utils.Parser.ToDateTimeFromTaskrowDate(taskDataApi.DueDate);
+            this.EffortEstimationMinutes = taskDataApi.EffortEstimation;
+            this.Closed = taskDataApi.Closed;
 
             int ownerUserID = 0;
             int pipelineStepID = 0;

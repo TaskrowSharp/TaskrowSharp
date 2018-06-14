@@ -72,7 +72,7 @@ namespace TaskrowSharp.IntegrationTests
                     throw new System.InvalidOperationException(string.Format("Task {0}, has a unexpected owner", test.TaskUrl));
 
                 var request = new SaveTaskRequest(task.TaskID, task.ClientNickname, task.JobNumber, task.TaskNumber, task.TaskTitle, taskComment, ownerUserID,
-                    task.RowVersion, task.TaskItems.Last().TaskItemID, dueDate, 0, 0, 0);
+                    task.RowVersion, task.TaskItems.Last().TaskItemID, dueDate, 0, task.EffortEstimationMinutes);
 
                 var response = taskrowClient.SaveTask(request);
 

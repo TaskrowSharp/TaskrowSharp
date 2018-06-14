@@ -11,7 +11,7 @@ namespace TaskrowSharp.IntegrationTests
     public class TaskDetailTests
     {
         TaskrowClient taskrowClient;
-        List<Task> tasksList;
+        List<TaskHeader> tasksList;
 
         [OneTimeSetUp]
         public void Setup()
