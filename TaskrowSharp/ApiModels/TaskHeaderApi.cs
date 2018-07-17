@@ -25,10 +25,10 @@ namespace TaskrowSharp.ApiModels
         public int OwnerUserID { get; set; }
         public string OwnerUserLogin { get; set; }
         public string OwnerUserHashCode { get; set; }
-        public int FunctionGroupID { get; set; }
-        public string FunctionGroupTitle { get; set; }
-        public int UserFunctionID { get; set; }
-        public string UserFunctionTitle { get; set; }
+        //public int? FunctionGroupID { get; set; }
+        //public string FunctionGroupTitle { get; set; }
+        //public int? UserFunctionID { get; set; }
+        //public string UserFunctionTitle { get; set; }
         public string RequestTypeModificationDate { get; set; }
         public int RequestTypeModificationUserID { get; set; }
         public string RequestTypeModificationUserLogin { get; set; }
