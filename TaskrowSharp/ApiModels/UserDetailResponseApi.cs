@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class UserDetailResponse
+    internal class UserDetailResponseApi
     {
         public PermissionsApi Permissions { get; set; }
         public UserApi User { get; set; }
         //public List<ProfileListApi> ProfileList { get; set; }
         //public List<UserRelationTypeApi> UserRelationType { get; set; }
         //public List<UserFunctionGroupApi> UserFunctionGroups { get; set; }
-        //public List<UserFunctionApi> UserFunctions { get; set; }
+        //public List<UserFunctions> UserFunctions { get; set; }
         //public List<ExternalServiceApi> ExternalServices { get; set; }
         //public List<UserScholarityApi> UserScholarity { get; set; }
         //public List<GenderApi> Gender { get; set; }

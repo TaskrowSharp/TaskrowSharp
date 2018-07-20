@@ -130,7 +130,7 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var userDetailresponse = Utils.JsonHelper.Deserialize<ApiModels.UserDetailResponse>(json);
+                    var userDetailresponse = Utils.JsonHelper.Deserialize<ApiModels.UserDetailResponseApi>(json);
 
                     var user = new UserDetail(userDetailresponse);
                     return user; //Success

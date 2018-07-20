@@ -30,5 +30,7 @@ namespace TaskrowSharp.ApiModels
         public bool ExternalUser { get; set; }
         public string RegistrationNumber { get; set; }
         public OfficeApi Office { get; set; }
+
+        public List<UserFunctionPeriodApi> UserFunctionPeriod { get; set; }
     }
 }

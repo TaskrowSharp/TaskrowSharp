@@ -35,5 +35,7 @@ namespace TaskrowSharp.ApiModels
         public string HomeState { get; set; }
         public string HomeZipCode { get; set; }
         public string Information { get; set; }
+
+        public List<UserFunctionPeriodApi> UserFunctionPeriod { get; set; }
     }
 }

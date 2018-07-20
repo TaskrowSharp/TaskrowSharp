@@ -28,8 +28,10 @@ namespace TaskrowSharp
 
         public string ProfileTitle { get; set; }
 
+        public List<UserFunctionPeriod> UserFunctionPeriods { get; set; }
+
         public UserDetail(int userID, string fullName, string mainEmail, string userLogin, bool active, int appMainCompanyID, string userHashCode,
-            string photoUrl, string approvalGroup, string profileTitle)
+            string photoUrl, string approvalGroup, string profileTitle, List<UserFunctionPeriod> userFunctionPeriods)
         {
             this.UserID = userID;
             this.FullName = fullName;
@@ -40,19 +42,22 @@ namespace TaskrowSharp
             this.UserHashCode = userHashCode;
             this.ApprovalGroup = approvalGroup;
             this.ProfileTitle = profileTitle;
+            this.UserFunctionPeriods = userFunctionPeriods;
         }
 
-        internal UserDetail(ApiModels.UserDetailResponse userDetailApi)
+        internal UserDetail(ApiModels.UserDetailResponseApi userDetailResponseApi)
         {
-            this.UserID = userDetailApi.User.UserID;
-            this.FullName = userDetailApi.User.FullName;
-            this.MainEmail = userDetailApi.User.MainEmail;
-            this.UserLogin = userDetailApi.User.UserLogin;
-            this.Active = !userDetailApi.User.Inactive;
-            this.AppMainCompanyID = userDetailApi.User.AppMainCompanyID;
-            this.UserHashCode = userDetailApi.User.UserHashCode;
-            this.ApprovalGroup = userDetailApi.User.ApprovalGroup;
-            this.ProfileTitle = userDetailApi.User.ProfileTitle;
+            this.UserID = userDetailResponseApi.User.UserID;
+            this.FullName = userDetailResponseApi.User.FullName;
+            this.MainEmail = userDetailResponseApi.User.MainEmail;
+            this.UserLogin = userDetailResponseApi.User.UserLogin;
+            this.Active = !userDetailResponseApi.User.Inactive;
+            this.AppMainCompanyID = userDetailResponseApi.User.AppMainCompanyID;
+            this.UserHashCode = userDetailResponseApi.User.UserHashCode;
+            this.ApprovalGroup = userDetailResponseApi.User.ApprovalGroup;
+            this.ProfileTitle = userDetailResponseApi.User.ProfileTitle;
+
+            this.UserFunctionPeriods = (userDetailResponseApi.User.UserFunctionPeriod != null ? userDetailResponseApi.User.UserFunctionPeriod.Select(a => new UserFunctionPeriod(a)).ToList() : new List<UserFunctionPeriod>());
         }
     }
 }

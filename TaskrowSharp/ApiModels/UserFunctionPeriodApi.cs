@@ -24,6 +24,6 @@ namespace TaskrowSharp.ApiModels
         //public object GrossValue { get; set; }
         //public object UserTerminationTypeID { get; set; }
         //public string UserTerminationType { get; set; }
-        //public object TerminationMemo { get; set; }
+        public string TerminationMemo { get; set; }
     }
 }
