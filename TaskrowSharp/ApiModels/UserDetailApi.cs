@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class UserDetailApi
+    public class UserDetailApi
     {
         public string CityBirth { get; set; }
         public string StateBirth { get; set; }
@@ -35,7 +33,5 @@ namespace TaskrowSharp.ApiModels
         public string HomeState { get; set; }
         public string HomeZipCode { get; set; }
         public string Information { get; set; }
-
-        public List<UserFunctionPeriodApi> UserFunctionPeriod { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace TaskrowSharp.IntegrationTests
             var listUsers = taskrowClient.ListUsers();
             var userTest = listUsers.Where(a => a.Active).First();
 
-            var userDetail = taskrowClient.GetUserDetail(userTest.UserID);
+            var userDetail = taskrowClient.GetUser(userTest.UserID);
             Assert.IsTrue(userDetail != null);
             Assert.IsTrue(string.Equals(userTest.UserID, userDetail.UserID));
             Assert.IsTrue(string.Equals(userTest.MainEmail, userDetail.MainEmail));
@@ -38,7 +38,7 @@ namespace TaskrowSharp.IntegrationTests
             if (userTest == null)
                 throw new System.InvalidOperationException(string.Format("0 users inactive in {0}", taskrowClient.ServiceUrl.ToString()));
 
-            var userDetail = taskrowClient.GetUserDetail(userTest.UserID);
+            var userDetail = taskrowClient.GetUser(userTest.UserID);
             Assert.IsTrue(userDetail != null);
             Assert.IsTrue(string.Equals(userTest.UserID, userDetail.UserID));
             Assert.IsTrue(string.Equals(userTest.MainEmail, userDetail.MainEmail));

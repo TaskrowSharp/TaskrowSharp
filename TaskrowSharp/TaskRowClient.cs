@@ -63,7 +63,7 @@ namespace TaskrowSharp
                 
         #region ListUsers
 
-        public List<User> ListUsers(RetryPolicy retryPolicy = null)
+        public List<UserHeader> ListUsers(RetryPolicy retryPolicy = null)
         {
             //Url: /User/ListUsers
 
@@ -75,7 +75,7 @@ namespace TaskrowSharp
             {
                 try
                 {
-                    var listUsers = new List<User>();
+                    var listUsers = new List<UserHeader>();
 
                     var client = new Utils.JsonWebClient(this.UserAgent);
                     client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
@@ -83,10 +83,10 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var responseUsersList = Utils.JsonHelper.Deserialize<List<ApiModels.UserApi>>(json);
+                    var responseUsersList = Utils.JsonHelper.Deserialize<List<ApiModels.UserHeaderApi>>(json);
 
                     foreach (var userResponse in responseUsersList)
-                        listUsers.Add(new User(userResponse));
+                        listUsers.Add(new UserHeader(userResponse));
 
                     listUsers = listUsers.OrderBy(a => a.UserID).ToList();
 
@@ -109,7 +109,7 @@ namespace TaskrowSharp
 
         #region GetUserDetail
 
-        public UserDetail GetUserDetail(int userID, RetryPolicy retryPolicy = null)
+        public User GetUser(int userID, RetryPolicy retryPolicy = null)
         {
             //Url: /User/UserDetail?userID=3564
 
@@ -130,9 +130,9 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var userDetailresponse = Utils.JsonHelper.Deserialize<ApiModels.UserDetailResponseApi>(json);
+                    var userDetailresponse = Utils.JsonHelper.Deserialize<ApiModels.UserResponseApi>(json);
 
-                    var user = new UserDetail(userDetailresponse);
+                    var user = new User(userDetailresponse);
                     return user; //Success
                 }
                 catch (System.Exception ex)

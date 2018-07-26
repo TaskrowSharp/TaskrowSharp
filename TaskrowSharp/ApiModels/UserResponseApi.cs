@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskrowSharp.ApiModels
 {
-    internal class UserDetailResponseApi
+    internal class UserResponseApi
     {
         public PermissionsApi Permissions { get; set; }
         public UserApi User { get; set; }
