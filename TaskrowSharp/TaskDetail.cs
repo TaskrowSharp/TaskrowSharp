@@ -85,25 +85,29 @@ namespace TaskrowSharp
             int pipelineStepID = 0;
             ApiModels.TaskItemApi taskItemApi;
             this.TaskItems = new List<TaskItem>();
-            for (int i=0; i<taskDataApi.NewTaskItems.Count; i++)
+
+            if (taskDataApi.NewTaskItems != null)
             {
-                taskItemApi = taskDataApi.NewTaskItems[i];
-
-                if (i == 0)
+                for (int i = 0; i < taskDataApi.NewTaskItems.Count; i++)
                 {
-                    ownerUserID = taskItemApi.NewOwnerUserID.GetValueOrDefault();
-                    pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
+                    taskItemApi = taskDataApi.NewTaskItems[i];
+
+                    if (i == 0)
+                    {
+                        ownerUserID = taskItemApi.NewOwnerUserID.GetValueOrDefault();
+                        pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
+                    }
+
+                    bool ownerChanged = (taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0 && ownerUserID != taskItemApi.NewOwnerUserID && taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0);
+                    if (ownerChanged)
+                        ownerUserID = taskItemApi.NewOwnerUserID.GetValueOrDefault();
+
+                    bool pipelineChanged = (taskItemApi.PipelineStepID != 0 && pipelineStepID != taskItemApi.PipelineStepID);
+                    if (pipelineChanged)
+                        pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
+
+                    this.TaskItems.Add(new TaskItem(taskItemApi, ownerChanged, pipelineChanged));
                 }
-
-                bool ownerChanged = (taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0 && ownerUserID != taskItemApi.NewOwnerUserID && taskItemApi.NewOwnerUserID.GetValueOrDefault() != 0);
-                if (ownerChanged)
-                    ownerUserID = taskItemApi.NewOwnerUserID.GetValueOrDefault();
-
-                bool pipelineChanged = (taskItemApi.PipelineStepID != 0 && pipelineStepID != taskItemApi.PipelineStepID);
-                if (pipelineChanged)
-                    pipelineStepID = taskItemApi.PipelineStepID.GetValueOrDefault();
-
-                this.TaskItems.Add(new TaskItem(taskItemApi, ownerChanged, pipelineChanged));
             }
 
             if (taskDataApi.Tags != null)
