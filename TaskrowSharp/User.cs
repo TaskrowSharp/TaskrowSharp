@@ -22,7 +22,7 @@ namespace TaskrowSharp
 
         public string UserHashCode { get; set; }
 
-        public string PhotoUrl { get { return string.Format("https://taskrowprod1pics.blob.core.windows.net/company{0}-150x150/{1}.jpg", this.AppMainCompanyID, this.UserHashCode); } }
+        public string PhotoUrl { get { return string.Format("{0}.jpg", this.UserHashCode); } }
 
         public string ApprovalGroup { get; set; }
 

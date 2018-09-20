@@ -60,7 +60,47 @@ namespace TaskrowSharp
             if (!serviceUrl.ToString().StartsWith("https://", StringComparison.CurrentCultureIgnoreCase) || !serviceUrl.ToString().EndsWith(".taskrow.com/", StringComparison.CurrentCultureIgnoreCase))
                 throw new InvalidServiceUrlException("Invalid service url, use the format: https://yourdomain.taskrow.com");
         }
-                
+
+        #region GetIndexData
+
+        public IndexData GetIndexData(RetryPolicy retryPolicy = null)
+        {
+            //Url: /main/indexdata
+
+            retryPolicy = GetRetryPolicy(retryPolicy);
+
+            var url = new Uri(this.ServiceUrl, "/main/indexdata");
+
+            for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
+            {
+                try
+                {
+                    var client = new Utils.JsonWebClient(this.UserAgent);
+                    client.TimeOutMilliseconds = retryPolicy.TimeOutSeconds * 1000;
+                    client.Headers.Add("__identifier", this.AccessKey);
+
+                    string json = client.GetReturnString(url);
+
+                    var apiResponse = Utils.JsonHelper.Deserialize<ApiModels.IndexDataApi>(json);
+
+                    var indexData = new IndexData(apiResponse);
+                    return indexData; //Success
+                }
+                catch (System.Exception ex)
+                {
+                    if (Utils.Application.IsExceptionWithoutRetry(ex))
+                        throw;
+
+                    if (attempt == retryPolicy.MaxAttempts)
+                        throw new TaskrowException(string.Format("Error getting IndexData after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                }
+            }
+
+            throw new TaskrowException("Unexpected error in attempts control");
+        }
+
+        #endregion
+
         #region ListUsers
 
         public List<UserHeader> ListUsers(RetryPolicy retryPolicy = null)
