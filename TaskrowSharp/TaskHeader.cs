@@ -32,9 +32,11 @@ namespace TaskrowSharp
         public int EffortEstimationMinutes { get; set; }
 
         public bool Closed { get; set; }
-        
+
+        public List<String> Tags { get; set; }
+
         public TaskHeader(int taskNumber, int taskID, string taskTitle, DateTime creationDate, DateTime dueDate,
-            int jobID, int jobNumber, string clientNickName, int ownerUserID, TaskSituation taskSituation)
+            int jobID, int jobNumber, string clientNickName, int ownerUserID, TaskSituation taskSituation, List<string> tags)
         {
             this.TaskNumber = taskNumber;
             this.TaskID = taskID;
@@ -46,6 +48,7 @@ namespace TaskrowSharp
             this.ClientNickname = clientNickName;
             this.OwnerUserID = ownerUserID;
             this.TaskSituation = taskSituation;
+            this.Tags = tags;
         }
 
         internal TaskHeader(ApiModels.TaskHeaderApi taskHeaderApi, TaskSituation taskSituation)
@@ -62,6 +65,10 @@ namespace TaskrowSharp
             this.TaskSituation = taskSituation;
             this.EffortEstimationMinutes = taskHeaderApi.EffortEstimation;
             this.Closed = taskHeaderApi.Closed;
+
+            this.Tags = new List<string>();
+            if (!string.IsNullOrEmpty(taskHeaderApi.Tags))
+                this.Tags = taskHeaderApi.Tags.Split(',').Select(a => a.Replace("|", "")).ToList();
         }
     }
 }
