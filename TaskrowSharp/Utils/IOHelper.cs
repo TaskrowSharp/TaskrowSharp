@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace TaskrowSharp.Utils
 {
     internal static class IOHelper
     {
-        public static string GetFullPathFromRelative(string relativePath, bool checkIfExists = false, bool removeDebugPath = false)
+        public static string GetFullPathFromRelative(string relativePath, bool checkIfExists = true)
         {
             string path = relativePath;
 
             try
             {
-                System.IO.DirectoryInfo directoryInfo = new System.IO.DirectoryInfo(GetExecutingAssemblyFolderPath());
+                var directoryInfo = new DirectoryInfo(GetExecutingAssemblyFolderPath());
                 
                 if (string.IsNullOrEmpty(path) || path.Equals(".") || path.Equals("\\") || path.Equals("/"))
                     return directoryInfo.FullName;
@@ -42,29 +39,14 @@ namespace TaskrowSharp.Utils
             }
             catch (System.Exception)
             {
-                throw new TaskrowException(string.Format("Error converting relative path: {0}", relativePath));
+                throw new TaskrowException($"Error converting relative path: {relativePath}");
             }
 
             if (path.EndsWith(@"\"))
                 path = path.Substring(0, path.Length - 1);
 
-            if (removeDebugPath)
-            {
-                string[] regexDebugPaths = new string[] {
-                    @"\\bin\\debug\\net452", @"\\bin\\release\\net452",
-                    @"\\bin\\debug\\netstandard2\.0", @"\\bin\\release\\netstandard2\.0",
-                    @"\\bin\\debug", @"\\bin\\release",
-                };
-
-                foreach (var regexDebugPath in regexDebugPaths)
-                {
-                    if (System.Text.RegularExpressions.Regex.IsMatch(path, regexDebugPath, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                        path = System.Text.RegularExpressions.Regex.Replace(path, regexDebugPath, @"", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-                }
-            }
-
-            if (checkIfExists && !System.IO.File.Exists(path))
-                throw new TaskrowException(string.Format("File not found: {0}", path));
+            if (checkIfExists && !File.Exists(path))
+                throw new TaskrowException($"File not found: {path}");
 
             return path;
         }

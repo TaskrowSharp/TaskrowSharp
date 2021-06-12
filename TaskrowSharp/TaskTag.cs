@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TaskrowSharp
+﻿namespace TaskrowSharp
 {
     public class TaskTag
     {
         public int TaskTagID { get; set; }
-
         public string TagTitle { get; set; }
 
         public TaskTag(int taskTagID, string tagTitle)

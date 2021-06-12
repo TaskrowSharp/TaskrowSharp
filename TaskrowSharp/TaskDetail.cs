@@ -1,42 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TaskrowSharp
 {
     public class TaskDetail
     {
         public int TaskID { get; set; }
-
         public int TaskNumber { get; set; }
-
         public string TaskTitle { get; set; }
-
         public int JobID { get; set; }
-
         public int JobNumber { get; set; }
-
         public string JobTitle { get; set; }
-
         public string MemberListString { get; set; }
-
         public List<TaskItem> TaskItems { get; set; }
-        
         public List<TaskTag> Tags { get; set; }
-
         public string ClientNickname { get; set; }
-
         public string RowVersion { get; set; }
-
         public DateTime DueDate { get; set; }
-        
         public List<SubTask> SubTasks { get; set; }
-        
         public Owner Owner { get; set; }
-        
         public int EffortEstimationMinutes { get; set; }
-
         public bool Closed { get; set; }
 
         public void ChangeOwner(Owner owner)

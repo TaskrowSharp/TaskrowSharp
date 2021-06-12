@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskrowSharp.Utils
+﻿namespace TaskrowSharp.Utils
 {
     internal static class Application
     {
@@ -15,9 +9,9 @@ namespace TaskrowSharp.Utils
             var version = Utils.Application.GetExecutingAssembly().GetName().Version;
 
             if (!includeBuild)
-                return string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
-            else
-                return string.Format("{0}.{1}.{2}{3}", version.Major, version.Minor, version.Build, (version.Revision > 0 ? string.Format(" Build {0}", version.Revision) : string.Empty));
+                return $"{version.Major}.{version.Minor}.{version.Build}";
+            
+            return $"{version.Major}.{version.Minor}.{version.Build}{(version.Revision > 0 ? $" Build {version.Revision}" : "")}";
         }
 
         public static System.Reflection.Assembly GetExecutingAssembly()

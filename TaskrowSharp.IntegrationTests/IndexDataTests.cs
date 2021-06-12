@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using Xunit;
 
 namespace TaskrowSharp.IntegrationTests
 {
-    [TestFixture]
-    public class IndexDataTests
+    public class IndexDataTests : BaseTest
     {
-        TaskrowClient taskrowClient;
+        private readonly TaskrowClient taskrowClient;
 
-        [OneTimeSetUp]
-        public void Setup()
+        public IndexDataTests()
         {
-            taskrowClient = UtilsTest.GetTaskrowClient();
+            taskrowClient = GetTaskrowClient();
         }
 
-        [Test]
+        [Fact]
         public void IndexData_Get()
         {
             var indexData = taskrowClient.GetIndexData();
-            Assert.IsTrue(indexData.Photo != null);
+            Assert.True(indexData.Photo != null);
         }
     }
 }

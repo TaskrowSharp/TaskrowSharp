@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TaskrowSharp.ApiModels
 {
@@ -16,7 +12,7 @@ namespace TaskrowSharp.ApiModels
         public string PermissionListString { get; set; }
         public bool Inactive { get; set; }
         public object ExternalUser { get; set; }
-        public IList<object> Permission { get; set; }
-        public IList<object> Users { get; set; }
+        public List<object> Permission { get; set; }
+        public List<object> Users { get; set; }
     }
 }

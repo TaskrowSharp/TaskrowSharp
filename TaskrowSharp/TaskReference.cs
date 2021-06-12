@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TaskrowSharp
 {
     public class TaskReference
     {
         public string ClientNickname { get; set; }
-
         public int JobNumber { get; set; }
-
         public int TaskNumber { get; set; }
 
         public TaskReference(string clientNickname, int jobNumber, int taskNumber)
@@ -36,17 +32,17 @@ namespace TaskrowSharp
 
             var array = url.Split('/');
             if (array.Length < 3)
-                throw new ArgumentException(string.Format("Invalid task url \"{0}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}", url));
+                throw new ArgumentException($"Invalid task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
 
             this.ClientNickname = array[0];
 
             this.JobNumber = Utils.Parser.ToInt32(array[1]);
             if (this.JobNumber == 0)
-                throw new ArgumentException(string.Format("JobNumber invalid in task url \"{0}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}", url));
+                throw new ArgumentException($"JobNumber invalid in task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
 
             this.TaskNumber = Utils.Parser.ToInt32(array[2]);
             if (this.TaskNumber == 0)
-                throw new ArgumentException(string.Format("TaskNumber invalid in task url \"{0}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}", url));
+                throw new ArgumentException($"TaskNumber invalid in task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
         }
     }
 }

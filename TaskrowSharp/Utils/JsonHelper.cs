@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskrowSharp.Utils
+﻿namespace TaskrowSharp.Utils
 {
     internal class JsonHelper
     {
@@ -14,7 +6,7 @@ namespace TaskrowSharp.Utils
         {
             return SimpleJson.SimpleJson.SerializeObject(obj, new SimpleJson.DataContractJsonSerializerStrategy());
         }
-        
+
         public static T Deserialize<T>(string json)
         {
             try

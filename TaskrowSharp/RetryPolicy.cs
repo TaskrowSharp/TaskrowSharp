@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskrowSharp
+﻿namespace TaskrowSharp
 {
     public class RetryPolicy
     {
@@ -20,7 +14,7 @@ namespace TaskrowSharp
 
         public override string ToString()
         {
-            return string.Format("RetryPolicy (maxAttempts={0}, timeOutSeconds={1}", this.MaxAttempts, this.TimeOutSeconds);
+            return $"RetryPolicy (maxAttempts={this.MaxAttempts}, timeOutSeconds={this.TimeOutSeconds}";
         }
     }
 }

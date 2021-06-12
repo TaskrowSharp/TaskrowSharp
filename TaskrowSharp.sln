@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskrowSharp", "TaskrowSharp\TaskrowSharp.csproj", "{6C2A986E-2791-449E-BC28-2366143D78BC}"
 EndProject
@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskrowSharp.IntegrationTests", "TaskrowSharp.IntegrationTests\TaskrowSharp.IntegrationTests.csproj", "{5C635111-D676-4A28-8EFC-9B91EDF180D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskrowSharp.Tests", "TaskrowSharp.Tests\TaskrowSharp.Tests.csproj", "{99986A57-58C3-427F-ACAC-4F8253DB6EA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskrowSharp.Tests", "TaskrowSharp.Tests\TaskrowSharp.Tests.csproj", "{99986A57-58C3-427F-ACAC-4F8253DB6EA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D4378F48-8FF4-474E-AEF1-D23509EA41DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5C635111-D676-4A28-8EFC-9B91EDF180D8} = {D4378F48-8FF4-474E-AEF1-D23509EA41DD}
+		{99986A57-58C3-427F-ACAC-4F8253DB6EA6} = {D4378F48-8FF4-474E-AEF1-D23509EA41DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE37CECF-AD2C-423B-A8C1-BB8083CF226B}

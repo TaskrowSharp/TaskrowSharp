@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 
 namespace TaskrowSharp
 {
     public class TaskrowClient
     {
         public string AccessKey { get; private set; }
-
         public Uri ServiceUrl { get; private set; }
-
         public string UserAgent { get; set; }
-
         public RetryPolicy RetryPolicy { get; set; }
 
         public TaskrowClient(Uri serviceUrl, string accessKey, RetryPolicy retryPolicy = null)
@@ -25,7 +19,7 @@ namespace TaskrowSharp
             this.ServiceUrl = serviceUrl;
             this.AccessKey = accessKey;
 
-            this.UserAgent = string.Format("TaskrowSharp v{0}", Utils.Application.GetAppVersion());
+            this.UserAgent = $"TaskrowSharp v{Utils.Application.GetAppVersion()}";
             this.RetryPolicy = GetRetryPolicy(retryPolicy);
         }
 
@@ -92,7 +86,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error getting IndexData after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error getting IndexData after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 
@@ -138,7 +132,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error listing users after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error listing users after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 
@@ -158,7 +152,7 @@ namespace TaskrowSharp
 
             retryPolicy = GetRetryPolicy(retryPolicy);
 
-            var url = new Uri(this.ServiceUrl, string.Format("/User/UserDetail?userID={0}", userID));
+            var url = new Uri(this.ServiceUrl, $"/User/UserDetail?userID={userID}");
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -181,7 +175,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error getting user after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error getting user after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 
@@ -224,7 +218,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error listing groups after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error listing groups after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 
@@ -249,9 +243,9 @@ namespace TaskrowSharp
 
             Uri url;
             if (!userID.HasValue)
-                url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&hierarchyEnabled=true&closedDays=20&context=1", groupID));
+                url = new Uri(this.ServiceUrl, $"/Dashboard/TasksByGroup?groupID={groupID}&hierarchyEnabled=true&closedDays=20&context=1");
             else
-                url = new Uri(this.ServiceUrl, string.Format("/Dashboard/TasksByGroup?groupID={0}&userID={1}&hierarchyEnabled=true&closedDays=20&context=1", groupID, userID.Value));
+                url = new Uri(this.ServiceUrl, $"/Dashboard/TasksByGroup?groupID={groupID}&userID={userID}&hierarchyEnabled=true&closedDays=20&context=1");
             
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -281,7 +275,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error listing tasks from group after {0} attempts(s) -- url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error listing tasks from group after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 
@@ -298,7 +292,7 @@ namespace TaskrowSharp
 
             retryPolicy = GetRetryPolicy(retryPolicy);
 
-            Uri url = new Uri(this.ServiceUrl, string.Format("/Task/TaskDetail?jobNumber={0}&taskNumber={1}&clientNickname={2}", taskReference.JobNumber, taskReference.TaskNumber, taskReference.ClientNickname));
+            var url = new Uri(this.ServiceUrl, $"/Task/TaskDetail?jobNumber={taskReference.JobNumber}&taskNumber={taskReference.TaskNumber}&clientNickname={taskReference.ClientNickname}");
 
             for (int attempt = 1; attempt <= retryPolicy.MaxAttempts; attempt++)
             {
@@ -320,7 +314,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error getting Task Detail after {0} attempts(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error getting Task Detail after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 
@@ -360,7 +354,7 @@ namespace TaskrowSharp
                         throw;
 
                     if (attempt == retryPolicy.MaxAttempts)
-                        throw new TaskrowException(string.Format("Error saving task after {0} attempt(s) -- Url: {1} -- Error: {2} -- TimeOut: {3} seconds", retryPolicy.MaxAttempts, url.ToString(), ex.Message, retryPolicy.TimeOutSeconds), ex);
+                        throw new TaskrowException($"Error saving task after {retryPolicy.MaxAttempts} attempt(s) -- Url: {url} -- Error: {ex.Message} -- TimeOut: {retryPolicy.TimeOutSeconds} seconds", ex);
                 }
             }
 

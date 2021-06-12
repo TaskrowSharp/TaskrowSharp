@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TaskrowSharp.Utils
 {
@@ -68,18 +66,18 @@ namespace TaskrowSharp.Utils
             }
             catch (TaskrowWebException tex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), tex.Message));
+                System.Diagnostics.Debug.WriteLine($"Error executing GET {url} -- Error: {tex.Message}");
                 throw;
             }
             catch (WebException wex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), wex.Message));
-                throw new TaskrowWebException(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), wex.Message), wex);
+                System.Diagnostics.Debug.WriteLine($"Error executing GET {url} -- Error: {wex.Message}");
+                throw new TaskrowWebException($"Error executing GET {url} -- Error: {wex.Message}", wex);
             }
             catch (System.Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), ex.Message));
-                throw new TaskrowWebException(string.Format("Error executing GET {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+                System.Diagnostics.Debug.WriteLine($"Error executing GET {url} -- Error: {ex.Message}");
+                throw new TaskrowWebException($"Error executing GET {url} -- Error: {ex.Message}", ex);
             }
         }
 
@@ -125,7 +123,7 @@ namespace TaskrowSharp.Utils
             catch (System.Exception ex)
             {
                 string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new TaskrowException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
+                throw new TaskrowException($"Error converting Http Response to Json -- {ex.Message} -- {content}", ex);
             }
         }
         
@@ -172,18 +170,18 @@ namespace TaskrowSharp.Utils
             }
             catch (TaskrowWebException tex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), tex.Message));
+                System.Diagnostics.Debug.WriteLine($"Error executing POST {url} -- Error: {tex.Message}");
                 throw;
             }
             catch (WebException wex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), wex.Message));
-                throw new TaskrowWebException(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), wex.Message), wex);
+                System.Diagnostics.Debug.WriteLine($"Error executing POST {url} -- Error: {wex.Message}");
+                throw new TaskrowWebException($"Error executing POST {url} -- Error: {wex.Message}", wex);
             }
             catch (System.Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), ex.Message));
-                throw new TaskrowWebException(string.Format("Error executing POST {0} -- Error: {1}", url.ToString(), ex.Message), ex);
+                System.Diagnostics.Debug.WriteLine($"Error executing POST {url} -- Error: {ex.Message}");
+                throw new TaskrowWebException($"Error executing POST {url} -- Error: {ex.Message}", ex);
             }
         }
 
@@ -231,7 +229,7 @@ namespace TaskrowSharp.Utils
             catch (System.Exception ex)
             {
                 string content = (json != null && json.Length > 500 ? string.Concat(json.Substring(0, 500), "...") : json);
-                throw new TaskrowException(string.Format("Error converting Http Response to Json -- {0} -- {1}", ex.Message, content), ex);
+                throw new TaskrowException($"Error converting Http Response to Json -- {ex.Message} -- {content}", ex);
             }
         }
 
@@ -271,8 +269,7 @@ namespace TaskrowSharp.Utils
             if (content != null && content.Length > 500)
                 content = string.Concat(content.Substring(0, 500), "...");
 
-            throw new TaskrowWebException(response.StatusCode, string.Format("HttpStatusError: {0} ({1}) -- Url: {2} -- {3}",
-                (int)response.StatusCode, response.StatusCode.ToString(), uri, content));
+            throw new TaskrowWebException(response.StatusCode, $"HttpStatusError: {(int)response.StatusCode} ({response.StatusCode}) -- Url: {uri} -- {content}");
         }
 
         #endregion

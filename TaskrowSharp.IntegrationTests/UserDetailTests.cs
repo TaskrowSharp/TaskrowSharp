@@ -1,47 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using System.Linq;
+using Xunit;
 
 namespace TaskrowSharp.IntegrationTests
 {
-    [TestFixture]
-    public class UserDetailTests
+    public class UserDetailTests : BaseTest
     {
-        TaskrowClient taskrowClient;
+        private readonly TaskrowClient taskrowClient;
 
-        [OneTimeSetUp]
-        public void Setup()
+        public UserDetailTests()
         {
-            taskrowClient = UtilsTest.GetTaskrowClient();
+            taskrowClient = GetTaskrowClient();
         }
 
-        [Test]
+        [Fact]
         public void UserDetail_Get_FirstActive()
         {
             var listUsers = taskrowClient.ListUsers();
             var userTest = listUsers.Where(a => a.Active).First();
 
             var userDetail = taskrowClient.GetUser(userTest.UserID);
-            Assert.IsTrue(userDetail != null);
-            Assert.IsTrue(string.Equals(userTest.UserID, userDetail.UserID));
-            Assert.IsTrue(string.Equals(userTest.MainEmail, userDetail.MainEmail));
+            Assert.True(userDetail != null);
+            Assert.True(string.Equals(userTest.UserID, userDetail.UserID));
+            Assert.True(string.Equals(userTest.MainEmail, userDetail.MainEmail));
         }
 
-        [Test]
+        [Fact]
         public void UserDetail_Get_FirstInactive()
         {
             var listUsers = taskrowClient.ListUsers();
             var userTest = listUsers.Where(a => !a.Active).FirstOrDefault();
             if (userTest == null)
-                throw new System.InvalidOperationException(string.Format("0 users inactive in {0}", taskrowClient.ServiceUrl.ToString()));
+                throw new System.InvalidOperationException($"No inactive users in {taskrowClient.ServiceUrl}");
 
             var userDetail = taskrowClient.GetUser(userTest.UserID);
-            Assert.IsTrue(userDetail != null);
-            Assert.IsTrue(string.Equals(userTest.UserID, userDetail.UserID));
-            Assert.IsTrue(string.Equals(userTest.MainEmail, userDetail.MainEmail));
+            Assert.True(userDetail != null);
+            Assert.True(string.Equals(userTest.UserID, userDetail.UserID));
+            Assert.True(string.Equals(userTest.MainEmail, userDetail.MainEmail));
         }
     }
 }

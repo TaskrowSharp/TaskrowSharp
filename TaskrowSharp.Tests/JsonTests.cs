@@ -1,30 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 
 namespace TaskrowSharp.Tests
 {
-    [TestFixture]
     public class JsonTests
     {
-        [Test]
+        [Fact]
         public void Json_Serialize()
         {
-            Test test = new Test() { Name = "Eduardo Coutinho", Phone = "+55 11 6666-6666", ValueInt = 1, ValueDecimal = 0.35M };
+            var test = new Test() { Name = "Eduardo Coutinho", Phone = "+55 11 6666-6666", ValueInt = 1, ValueDecimal = 0.35M };
 
-            string json = Utils.JsonHelper.Serialize(test);
+            var json = Utils.JsonHelper.Serialize(test);
 
             Test test2 = Utils.JsonHelper.Deserialize<Test>(json);
 
-            Assert.AreEqual(test.Name, test2.Name);
-            Assert.AreEqual(test.Phone, test2.Phone);
-            Assert.AreEqual(test.ValueInt, test2.ValueInt);
-            Assert.AreEqual(test.ValueIntNulable, test2.ValueIntNulable);
-            Assert.AreEqual(test.ValueDecimal, test2.ValueDecimal);
+            Assert.Equal(test.Name, test2.Name);
+            Assert.Equal(test.Phone, test2.Phone);
+            Assert.Equal(test.ValueInt, test2.ValueInt);
+            Assert.Equal(test.ValueIntNulable, test2.ValueIntNulable);
+            Assert.Equal(test.ValueDecimal, test2.ValueDecimal);
         }
 
         [DataContract]
@@ -40,10 +35,10 @@ namespace TaskrowSharp.Tests
             public int ValueInt { get; set; }
 
             [DataMember(Name = "valueIntNullable")]
-            public Nullable<int> ValueIntNulable { get; set; }
+            public int? ValueIntNulable { get; set; }
 
             [DataMember(Name = "valueDecimal")]
-            public Decimal ValueDecimal { get; set; }
+            public decimal ValueDecimal { get; set; }
         }
     }
 }

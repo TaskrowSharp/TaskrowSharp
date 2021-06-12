@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using Xunit;
 
 namespace TaskrowSharp.IntegrationTests
 {
-    [TestFixture]
-    public class GroupListTests
+    public class GroupListTests : BaseTest
     {
-        TaskrowClient taskrowClient;
+        private readonly TaskrowClient taskrowClient;
 
-        [OneTimeSetUp]
-        public void Setup()
+        public GroupListTests()
         {
-            taskrowClient = UtilsTest.GetTaskrowClient();
+            taskrowClient = GetTaskrowClient();
         }
 
-        [Test]
+        [Fact]
         public void GroupList_OK()
         {
             var listGroups = taskrowClient.ListGroups();
-            Assert.IsTrue(listGroups.Count > 0);
+            Assert.True(listGroups.Count > 0);
         }
     }
 }

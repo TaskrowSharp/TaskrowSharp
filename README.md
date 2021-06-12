@@ -73,11 +73,11 @@ var response = taskrowClient.SaveTask(request);
 
 
 
-## 5- Explore source code
+## 5- Explore source code / debug
 
-Open solution "TaskrowSharp.sln" in Visual Studio 2017
+Open solution "TaskrowSharp.sln" in Visual Studio 2019
 
-To Run Tests, you need to create a file "main.json" in folder: \TaskrowSharp.IntegrationTests\config\
-you should include the credentials of your Taskrow account in this file, follow the example file: example.json
-
-
+To Run Tests, you need to create a file "main.json"
+1- create a file "main.json" in folder: \TaskrowSharp.IntegrationTests\config\ using the example file
+2- add your Taskrow credentials to this file
+3- change main.json file configuration to "Copy if newer"

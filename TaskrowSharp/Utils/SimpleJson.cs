@@ -725,7 +725,7 @@ namespace SimpleJson
                     }
                     catch (System.Exception ex)
                     {
-                        throw new SerializationException(string.Format("Error parsing value of properry \"{0}\"", name), ex);
+                        throw new SerializationException($"Error parsing value of properry \"{name}\"", ex);
                     }
                 }
             }
@@ -1444,7 +1444,7 @@ namespace SimpleJson
                                     if (ex is SerializationException)
                                         throw;
 
-                                    throw new SerializationException(string.Format("Serialization error in property \"{0}\" of object \"{1}\" -- {2}", setter.Key, type.FullName, ex.Message), ex);
+                                    throw new SerializationException($"Serialization error in property \"{setter.Key}\" of object \"{type.FullName}\" -- {ex.Message}", ex);
                                 }
                             }
                         }

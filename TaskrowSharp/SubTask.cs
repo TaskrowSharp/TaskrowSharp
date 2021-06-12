@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TaskrowSharp
+﻿namespace TaskrowSharp
 {
     public class SubTask
     {
         public int SubTaskID { get; set; }
-
         public int TaskID { get; set; }
-
         public int? ChildTaskID { get; set; }
-
         public string Title { get; set; }
-
         public TaskDetail ChildTask { get; set; }
 
         public SubTask(int subTaskID, int taskID, int? childTaskID, string title, TaskDetail childTask)

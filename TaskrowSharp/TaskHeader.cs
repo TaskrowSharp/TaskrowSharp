@@ -1,38 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TaskrowSharp
 {
     public class TaskHeader
     {
         public int TaskNumber { get; set; }
-
         public int TaskID { get; set; }
-
         public string TaskTitle { get; set; }
-
         public DateTime CreationDate { get; set; }
-
         public DateTime DueDate { get; set; }
-
         public int JobID { get; set; }
-
         public int JobNumber { get; set; }
-
         public string ClientNickname { get; set; }
-
         public int OwnerUserID { get; set; }
-
-        public string TaskUrl { get { return string.Format("{0}/{1}/{2}", this.ClientNickname, this.JobNumber, this.TaskNumber); } }
-
+        public string TaskUrl { get { return $"{this.ClientNickname}/{this.JobNumber}/{this.TaskNumber}"; } }
         public TaskSituation TaskSituation { get; set; }
-
         public int EffortEstimationMinutes { get; set; }
-
         public bool Closed { get; set; }
-
         public List<String> Tags { get; set; }
 
         public TaskHeader(int taskNumber, int taskID, string taskTitle, DateTime creationDate, DateTime dueDate,

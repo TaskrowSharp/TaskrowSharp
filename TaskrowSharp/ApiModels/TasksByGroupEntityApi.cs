@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TaskrowSharp.ApiModels
 {
@@ -10,7 +8,6 @@ namespace TaskrowSharp.ApiModels
         public List<TaskHeaderApi> OpenTasks { get; set; }
         public List<TaskHeaderApi> OpenTasksDelayed { get; set; }
         public List<TaskHeaderApi> OpenTasksToNextWeek { get; set; }
-
         //public List<object> HierarchyGroups { get; set; }
         public int UserGroupID { get; set; }
         public bool ViewPanelReportPermission { get; set; }

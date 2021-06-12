@@ -1,30 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TaskrowSharp
+﻿namespace TaskrowSharp
 {
     public class UserHeader
     {
         public int UserID { get; set; }
-
         public string FullName { get; set; }
-
         public string MainEmail { get; set; }
-
         public string UserLogin { get; set; }
-
         public bool Active { get; set; }
-
         public int AppMainCompanyID { get; set; }
-
         public string UserHashCode { get; set; }
-
-        public string PhotoUrl { get { return string.Format("{0}.jpg", this.UserHashCode); } }
-
+        public string PhotoUrl { get { return $"{this.UserHashCode}.jpg"; } }
         public string ApprovalGroup { get; set; }
-
         public string ProfileTitle { get; set; }
 
         public UserHeader(int userID, string fullName, string mainEmail, string userLogin, bool active, int appMainCompanyID, string userHashCode, 

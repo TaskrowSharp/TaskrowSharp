@@ -1,36 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TaskrowSharp
 {
     public class SaveTaskRequest
     {
         public int TaskID { get; set; }
-
         public int JobNumber { get; set; }
-
         public string ClientNickname { get; set; }
-
         public int LastTaskItemID { get; set; }
-
-        public string MemberListString { get; set; }
-                        
+        public string MemberListString { get; set; }                      
         public int TaskNumber { get; set; }
-
-        public string RowVersion { get; set; }
-        
+        public string RowVersion { get; set; }    
         public string TaskTitle { get; set; }
-        
         public string TaskItemComment { get; set; }
-
         public int OwnerUserID { get; set; }
-                
         public DateTime DueDate { get; set; }
-
         public int SpentTimeMinutes { get; set; }
-
         public int EffortEstimationMinutes { get; set; }
 
         public SaveTaskRequest(
