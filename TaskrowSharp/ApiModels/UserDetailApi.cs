@@ -5,7 +5,7 @@
         public string CityBirth { get; set; }
         public string StateBirth { get; set; }
         public string CountryBirth { get; set; }
-        public int Gender { get; set; }
+        public string Gender { get; set; }
         public string GenderName { get; set; }
         public string CivilStatus { get; set; }
         public string CivilStatusName { get; set; }
