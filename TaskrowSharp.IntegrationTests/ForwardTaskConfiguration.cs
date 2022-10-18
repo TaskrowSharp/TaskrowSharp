@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.IntegrationTests
 {
-    [DataContract]
     public class ForwardTaskConfiguration
     {
-        [DataMember(Name = "taskUrl")]
+        [JsonPropertyName("taskUrl")]
         public string TaskUrl { get; set; }
 
-        [DataMember(Name = "user1Email")]
+        [JsonPropertyName("user1Email")]
         public string User1Email { get; set; }
 
-        [DataMember(Name = "user2Email")]
+        [JsonPropertyName("user2Email")]
         public string User2Email { get; set; }
     }
 }

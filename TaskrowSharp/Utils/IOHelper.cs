@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Reflection;
 
 namespace TaskrowSharp.Utils
 {
@@ -11,7 +11,7 @@ namespace TaskrowSharp.Utils
 
             try
             {
-                var directoryInfo = new DirectoryInfo(GetExecutingAssemblyFolderPath());
+                var directoryInfo = new DirectoryInfo(GetExecutingAssemblyDirectoryPath());
                 
                 if (string.IsNullOrEmpty(path) || path.Equals(".") || path.Equals("\\") || path.Equals("/"))
                     return directoryInfo.FullName;
@@ -23,7 +23,7 @@ namespace TaskrowSharp.Utils
                     while (path.StartsWith("..\\"))
                     {
                         directoryInfo = directoryInfo.Parent;
-                        path = path.Substring(3);
+                        path = path[3..];
                     }
 
                     if (path.StartsWith("\\"))
@@ -31,7 +31,7 @@ namespace TaskrowSharp.Utils
 
                     path = System.IO.Path.Combine(directoryInfo.FullName, path);
                 }
-                else if (relativePath.IndexOf(":\\") == -1)
+                else if (!relativePath.Contains(":\\", System.StringComparison.CurrentCulture))
                 {
                     // "log.txt" -> c:\[parent]\[current_path]\log.txt
                     path = System.IO.Path.Combine(directoryInfo.FullName, relativePath);
@@ -51,12 +51,11 @@ namespace TaskrowSharp.Utils
             return path;
         }
 
-        public static string GetExecutingAssemblyFolderPath()
+        public static string GetExecutingAssemblyDirectoryPath()
         {
-            var codeBase = Utils.Application.GetExecutingAssembly().CodeBase;
-            var uri = new UriBuilder(codeBase);
-            var path = System.IO.Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-            return path;
+            var assemblyPath = Assembly.GetEntryAssembly().Location;
+            var directoryPath = Path.GetDirectoryName(assemblyPath);
+            return directoryPath;
         }
     }
 }

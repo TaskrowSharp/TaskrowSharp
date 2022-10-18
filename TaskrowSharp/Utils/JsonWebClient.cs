@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace TaskrowSharp.Utils
 {
@@ -117,7 +118,7 @@ namespace TaskrowSharp.Utils
 
             try
             {
-                var obj = Utils.JsonHelper.Deserialize<T>(json);
+                var obj = JsonSerializer.Deserialize<T>(json);
                 return obj;
             }
             catch (System.Exception ex)
@@ -203,7 +204,7 @@ namespace TaskrowSharp.Utils
         
         public string PostObjReturnString(Uri url, object obj)
         {
-            string requestString = Utils.JsonHelper.Serialize(obj);
+            string requestString = JsonSerializer.Serialize(obj);
             var response = Post(url, requestString, "application/json; charset=utf-8");
             string json;
 
@@ -223,7 +224,7 @@ namespace TaskrowSharp.Utils
 
             try
             {
-                var objRet = Utils.JsonHelper.Deserialize<T>(json);
+                var objRet = JsonSerializer.Deserialize<T>(json);
                 return objRet;
             }
             catch (System.Exception ex)

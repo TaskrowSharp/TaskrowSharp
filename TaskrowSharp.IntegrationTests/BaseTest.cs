@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 
 namespace TaskrowSharp.IntegrationTests
 {
@@ -17,7 +18,7 @@ namespace TaskrowSharp.IntegrationTests
                 json = reader.ReadToEnd();
             }
 
-            var configurationFile = Utils.JsonHelper.Deserialize<ConfigurationFile>(json);
+            var configurationFile = JsonSerializer.Deserialize<ConfigurationFile>(json);
 
             return configurationFile;
         }

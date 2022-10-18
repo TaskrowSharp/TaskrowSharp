@@ -6,7 +6,7 @@
 
         public static string GetAppVersion(bool includeBuild = false)
         {
-            var version = Utils.Application.GetExecutingAssembly().GetName().Version;
+            var version = GetExecutingAssembly().GetName().Version;
 
             if (!includeBuild)
                 return $"{version.Major}.{version.Minor}.{version.Build}";

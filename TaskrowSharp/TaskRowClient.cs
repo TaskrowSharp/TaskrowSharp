@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace TaskrowSharp
 {
@@ -50,7 +51,7 @@ namespace TaskrowSharp
 
             if (serviceUrl.ToString().StartsWith("http://", StringComparison.CurrentCultureIgnoreCase))
                 throw new InvalidServiceUrlException("https:// is required");
-                        
+            
             if (!serviceUrl.ToString().StartsWith("https://", StringComparison.CurrentCultureIgnoreCase) || !serviceUrl.ToString().EndsWith(".taskrow.com/", StringComparison.CurrentCultureIgnoreCase))
                 throw new InvalidServiceUrlException("Invalid service url, use the format: https://yourdomain.taskrow.com");
         }
@@ -75,7 +76,7 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var apiResponse = Utils.JsonHelper.Deserialize<ApiModels.IndexDataApi>(json);
+                    var apiResponse = JsonSerializer.Deserialize<ApiModels.IndexDataApi>(json);
 
                     var indexData = new IndexData(apiResponse);
                     return indexData; //Success
@@ -117,7 +118,7 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var responseUsersList = Utils.JsonHelper.Deserialize<List<ApiModels.UserHeaderApi>>(json);
+                    var responseUsersList = JsonSerializer.Deserialize<List<ApiModels.UserHeaderApi>>(json);
 
                     foreach (var userResponse in responseUsersList)
                         listUsers.Add(new UserHeader(userResponse));
@@ -164,7 +165,7 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var userDetailresponse = Utils.JsonHelper.Deserialize<ApiModels.UserResponseApi>(json);
+                    var userDetailresponse = JsonSerializer.Deserialize<ApiModels.UserResponseApi>(json);
 
                     var user = new User(userDetailresponse);
                     return user; //Success
@@ -204,7 +205,7 @@ namespace TaskrowSharp
 
                     var json = client.GetReturnString(url);
 
-                    var groupsResponse = Utils.JsonHelper.Deserialize<ApiModels.GroupListResponseApi>(json);
+                    var groupsResponse = JsonSerializer.Deserialize<ApiModels.GroupListResponseApi>(json);
 
                     var listGroups = new List<Group>();
                     foreach (var groupApi in groupsResponse.Groups)
@@ -257,7 +258,7 @@ namespace TaskrowSharp
 
                     string json = client.GetReturnString(url);
 
-                    var response = Utils.JsonHelper.Deserialize<ApiModels.TasksByGroupResponseApi>(json);
+                    var response = JsonSerializer.Deserialize<ApiModels.TasksByGroupResponseApi>(json);
 
                     var listTasks = new List<TaskHeader>();
 
@@ -303,7 +304,7 @@ namespace TaskrowSharp
                     
                     var json = client.GetReturnString(url);
 
-                    var response = Utils.JsonHelper.Deserialize<ApiModels.TaskDetailResponseApi>(json);
+                    var response = JsonSerializer.Deserialize<ApiModels.TaskDetailResponseApi>(json);
                     
                     var taskDetail = new TaskDetail(response.TaskData, response.JobData);
                     return taskDetail;
