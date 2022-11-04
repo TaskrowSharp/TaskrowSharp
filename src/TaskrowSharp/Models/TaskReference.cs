@@ -1,0 +1,48 @@
+﻿using System;
+
+namespace TaskrowSharp.Models
+{
+    public class TaskReference
+    {
+        public string ClientNickname { get; set; }
+        public int JobNumber { get; set; }
+        public int TaskNumber { get; set; }
+
+        public TaskReference(string clientNickName, int jobNumber, int taskNumber)
+        {
+            this.ClientNickname = clientNickName;
+            this.JobNumber = jobNumber;
+            this.TaskNumber = taskNumber;
+        }
+
+        public TaskReference(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                throw new ArgumentNullException(nameof(url));
+
+            //ex: https://mycompary.taskrow.com/#taskcentral/MyClient/488/1501
+
+            int index = url.IndexOf("#taskcentral", StringComparison.CurrentCultureIgnoreCase);
+            if (index > 0)
+                url = url.Substring(index + "#taskcentral".Length);
+
+            //ex: /MyClient/488/1501
+            if (url.StartsWith("/"))
+                url = url.Substring(1);
+
+            var array = url.Split('/');
+            if (array.Length < 3)
+                throw new ArgumentException($"Invalid task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
+
+            this.ClientNickname = array[0];
+
+            this.JobNumber = int.Parse(array[1]);
+            if (this.JobNumber == 0)
+                throw new ArgumentException($"JobNumber invalid in task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
+
+            this.TaskNumber = int.Parse(array[2]);
+            if (this.TaskNumber == 0)
+                throw new ArgumentException($"TaskNumber invalid in task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
+        }
+    }
+}

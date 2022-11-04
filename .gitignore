@@ -291,6 +291,5 @@ __pycache__/
 # Custom
 # ------------------------------
 
-TaskrowSharp.Tests/config/main.json
-TaskrowSharp.IntegrationTests/config/main.json
+test/TaskrowSharp.IntegrationTests/config/main.json
 
