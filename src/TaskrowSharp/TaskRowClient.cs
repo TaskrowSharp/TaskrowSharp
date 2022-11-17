@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -76,7 +77,7 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
 
@@ -84,12 +85,37 @@ namespace TaskrowSharp
 
         #region Client
 
+        public async Task<List<SearchClientItem>> SearchClients(string term, bool showInactives = true)
+        {
+            var relativeUrl = new Uri($"/api/v1/Search/SearchClients?&q={term}&showInactives={showInactives}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var list = JsonSerializer.Deserialize<List<SearchClientItem>>(json);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
         public async Task<ClientDetailEntity> GetClientDetailAsync(int clientID)
         {
             var relativeUrl = new Uri($"/api/v1/Client/ClientDetail?clientID={clientID}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
 
-            
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
@@ -107,7 +133,64 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task<InsertClientResponse> InsertClientAsync(InsertClientRequest insertClientRequest)
+        {
+            var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+                request.Content = JsonContent.Create(insertClientRequest);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var model = JsonSerializer.Deserialize<InsertClientResponse>(json);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        #endregion
+
+        #region ClientContact
+
+        public async Task<List<ClientContact>> ListClientContactsAsync(int clientID)
+        {
+            var relativeUrl = new Uri($"/api/v1/Client/ListClientContacts?clientID={clientID}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var list = JsonSerializer.Deserialize<List<ClientContact>>(json);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
 
@@ -137,7 +220,7 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
 
@@ -163,13 +246,13 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
 
         #endregion
 
-        #region ListGroups
+        #region Group
 
         public async Task<List<Group>> ListGroupsAsync()
         {
@@ -193,13 +276,13 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
 
         #endregion
 
-        #region ListCities
+        #region City
 
         public async Task<List<City>> ListCitiesAsync(string stateCode)
         {
@@ -223,13 +306,13 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
 
         #endregion
 
-        #region ListTasksByGroup
+        #region Task
         
         public async Task<TasksByGroupEntity> ListTasksByGroupAsync(int groupID, int? userID = null)
         {
@@ -263,14 +346,10 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
-
-        #endregion
-
-        #region GetTaskDetail
-        
+                
         public async Task<TaskDetailResponse> GetTaskDetailAsync(TaskReference taskReference)
         {
             var relativeUrl = new Uri($"/api/v1/Task/TaskDetail?clientNickname={taskReference.ClientNickname}&jobNumber={taskReference.JobNumber}&taskNumber={taskReference.TaskNumber}", UriKind.Relative);
@@ -293,14 +372,10 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
-
-        #endregion
-
-        #region SaveTask
-        
+                
         public async Task<SaveTaskResponse> SaveTaskAsync(SaveTaskRequest saveTaskRequest)
         {
             var relativeUrl = new Uri("/api/v1/Task/SaveTask", UriKind.Relative);
@@ -324,10 +399,62 @@ namespace TaskrowSharp
             }
             catch (Exception ex)
             {
-                throw new TaskrowException($"Erro in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
             }
         }
-        
+
+        #endregion
+
+        #region ExternalData
+
+        public async Task<Dictionary<string, string?>> GetExternalDataAsync(string provider, string entityName, int id)
+        {
+            entityName = entityName.ToLower();
+            var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification=${id}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var dic = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                return dic;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task SaveExternalDataAsync(string provider, string entityName, int id, Dictionary<string, string?> values)
+        {
+            entityName = entityName.ToLower();
+            var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification=${id}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {               
+                var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+                request.Content = JsonContent.Create(values);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
         #endregion
     }
 }

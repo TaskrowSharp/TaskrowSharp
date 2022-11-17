@@ -22,32 +22,35 @@ namespace TaskrowSharp.IntegrationTests
         public async Task Task_Forward_OK()
         {
             if (_configurationFile.Tasks?.Count == 0)
-                throw new InvalidOperationException("Error in \"tasks\" configuration file, empty list");
+                throw new InvalidOperationException("Error in configuration file, \"tasks\" list is empty");
+
+            if (_configurationFile.Users?.Count < 2)
+                throw new InvalidOperationException("Error in configuration file, \"users\" list should have 2 or more User IDs");
 
             var users = await _taskrowClient.ListUsersAsync();
             
-            foreach (var test in _configurationFile.Tasks)
+            foreach (var taskUrl in _configurationFile.Tasks)
             {
-                var user1 = users.Where(a => a.MainEmail.Equals(test.User1Email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var user1 = users.Where(a => a.UserID == _configurationFile.Users.First()).FirstOrDefault();
                 if (user1 == null)
-                    throw new InvalidOperationException($"User e-mail=\"{test.User1Email}\" not found");
+                    throw new InvalidOperationException($"User userID={_configurationFile.Users.First()} not found");
                 if (user1.Inactive)
-                    throw new InvalidOperationException($"User e-mail=\"{test.User1Email}\" is inactive");
+                    throw new InvalidOperationException($"User userID={_configurationFile.Users.First()} is inactive");
 
-                var user2 = users.Where(a => a.MainEmail.Equals(test.User2Email, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var user2 = users.Where(a => a.UserID == _configurationFile.Users.Skip(1).First()).FirstOrDefault();
                 if (user2 == null)
-                    throw new InvalidOperationException($"User e-mail=\"{test.User2Email}\" not found");
+                    throw new InvalidOperationException($"User userID={_configurationFile.Users.Skip(1).First()} not found");
                 if (user2.Inactive)
-                    throw new InvalidOperationException($"User e-mail=\"{test.User2Email}\" is inactive");
+                    throw new InvalidOperationException($"User userID={_configurationFile.Users.Skip(1).First()} is inactive");
 
                 if (user1.UserID == user2.UserID)
-                    throw new InvalidOperationException($"Error in \"tasks\" configuration fiel, user1 and user2 are the same");
+                    throw new InvalidOperationException($"Error in configuration file, \"tasks\" is invalid, user1 and user2 are the same");
 
-                var taskReference = new TaskReference(test.TaskUrl);
+                var taskReference = new TaskReference(taskUrl);
 
                 var taskResponse = await _taskrowClient.GetTaskDetailAsync(taskReference);
                 if (taskResponse == null)
-                    throw new InvalidOperationException($"Task {test.TaskUrl} not found");
+                    throw new InvalidOperationException($"Task {taskUrl} not found");
                 var task = taskResponse.TaskData;
 
                 var taskComment = $"Task forwarded on {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
@@ -59,7 +62,7 @@ namespace TaskrowSharp.IntegrationTests
                 else if (task.Owner.UserID == user2.UserID)
                     ownerUserID = user1.UserID;
                 else
-                    throw new InvalidOperationException($"Task {test.TaskUrl}, has a unexpected owner");
+                    throw new InvalidOperationException($"Task {taskUrl}, has a unexpected owner");
 
                 var request = new SaveTaskRequest(taskResponse.JobData.Client.ClientNickName, taskResponse.JobData.JobNumber, task.TaskNumber, task.TaskID)
                 {

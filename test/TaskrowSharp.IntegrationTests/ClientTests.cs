@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using TaskrowSharp.Exceptions;
 using TaskrowSharp.IntegrationTests.TestModels;
+using TaskrowSharp.Models;
 using Xunit;
 
 namespace TaskrowSharp.IntegrationTests
@@ -46,6 +49,20 @@ namespace TaskrowSharp.IntegrationTests
                 exception = ex;
             }
             Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public async Task InsertClientAsync()
+        {
+            if (_configurationFile.Users?.Count == 0)
+                throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
+
+            var userID = _configurationFile.Users.First();
+            var clientName = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
+
+            var request = new InsertClientRequest(clientName, clientName, userID);
+            var response = await _taskrowClient.InsertClientAsync(request);
+            Assert.Equal(request.ClientName, response.Entity.ClientName);
         }
     }
 }

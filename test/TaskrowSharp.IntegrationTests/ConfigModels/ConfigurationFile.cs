@@ -12,9 +12,12 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         public string? AccessKey { get; set; }
 
         [JsonPropertyName("tasks")]
-        public List<TaskConfiguration> Tasks { get; set; }
+        public List<string> Tasks { get; set; }
 
         [JsonPropertyName("clients")]
         public List<int> Clients { get; set; }
+
+        [JsonPropertyName("users")]
+        public List<int> Users { get; set; }
     }
 }

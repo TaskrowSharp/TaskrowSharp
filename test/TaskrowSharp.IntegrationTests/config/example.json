@@ -2,13 +2,13 @@
   "serviceUrl": "https://yourcompany.taskrow.com",
   "accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa",
   "tasks": [
-    {
-      "taskUrl": "/CompanyTest/1/1",
-      "user1Email": "user1@email.com",
-      "user2Email": "user2@email.com"
-    }
+    "/CompanyTest/1/1"
   ],
   "clients": [
     100
+  ],
+  "users": [
+    17635,
+    17639
   ]
 }
