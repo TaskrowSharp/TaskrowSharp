@@ -85,7 +85,7 @@ namespace TaskrowSharp
 
         #region Client
 
-        public async Task<List<SearchClientItem>> SearchClients(string term, bool showInactives = true)
+        public async Task<List<SearchClientItem>> SearchClientsAsync(string term, bool showInactives = true)
         {
             var relativeUrl = new Uri($"/api/v1/Search/SearchClients?&q={term}&showInactives={showInactives}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -102,6 +102,32 @@ namespace TaskrowSharp
                 var json = await response.Content.ReadAsStringAsync();
 
                 var list = JsonSerializer.Deserialize<List<SearchClientItem>>(json);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task<ListClientItemResponse> ListClientsAsync(string? nextToken = null)
+        {
+            var relativeUrl = new Uri($"/api/v2/core/client?nextToken={nextToken}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var list = JsonSerializer.Deserialize<ListClientItemResponse>(json);
 
                 return list;
             }
@@ -407,10 +433,10 @@ namespace TaskrowSharp
 
         #region ExternalData
 
-        public async Task<Dictionary<string, string?>> GetExternalDataAsync(string provider, string entityName, int id)
+        public async Task<Dictionary<string, object?>> GetExternalDataAsync(string provider, string entityName, int id)
         {
             entityName = entityName.ToLower();
-            var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification=${id}", UriKind.Relative);
+            var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification={id}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
 
             try
@@ -424,7 +450,7 @@ namespace TaskrowSharp
 
                 var json = await response.Content.ReadAsStringAsync();
 
-                var dic = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                var dic = JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
                 return dic;
             }
             catch (Exception ex)
@@ -433,15 +459,42 @@ namespace TaskrowSharp
             }
         }
 
-        public async Task SaveExternalDataAsync(string provider, string entityName, int id, Dictionary<string, string?> values)
+        public async Task<List<Dictionary<string, object?>>> GetExternalDataByFieldValueAsync(string provider, string entityName, 
+            string fieldName, string fieldValue)
         {
             entityName = entityName.ToLower();
-            var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification=${id}", UriKind.Relative);
+            var relativeUrl = new Uri($"api/v2/externaldata/{entityName}/find?provider={provider}&fieldName={fieldName}&fieldValue={fieldValue}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
 
             try
-            {               
-                var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var dic = JsonSerializer.Deserialize<List<Dictionary<string, object?>>>(json);
+                return dic;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task SaveExternalDataAsync(string provider, string entityName, int id, Dictionary<string, object?> values)
+        {
+            entityName = entityName.ToLower();
+            var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification={id}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, fullUrl);
                 request.Headers.Add("__identifier", this.AccessKey);
                 request.Content = JsonContent.Create(values);
 

@@ -6,7 +6,7 @@
         public string ClientName { get; set; }
         public string DisplayName { get; set; }
         public int ClientID { get; set; }
-        public int? ExternalCode { get; set; }
+        public string? ExternalCode { get; set; }
         public string? SegmentListString { get; set; }
         public int OwnerID { get; set; }
         public string? MemberListString { get; set; }
