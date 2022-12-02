@@ -43,7 +43,7 @@ namespace TaskrowSharp.IntegrationTests
                 Assert.Equal(value1, dicGet["value1"].ToString());
                 Assert.Equal(value2, dicGet["value2"].ToString());
 
-                var listFind = await _taskrowClient.GetExternalDataByFieldValueAsync(PROVIDER, "client", "value1", value1);
+                var listFind = await _taskrowClient.FindExternalDataByFieldValueAsync(PROVIDER, "client", "value1", value1);
                 var dicFind = listFind.First();
 
                 Assert.Equal(value1, dicFind["fieldValue"].ToString());

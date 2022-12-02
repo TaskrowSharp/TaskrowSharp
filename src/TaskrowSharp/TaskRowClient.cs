@@ -459,7 +459,7 @@ namespace TaskrowSharp
             }
         }
 
-        public async Task<List<Dictionary<string, object?>>> GetExternalDataByFieldValueAsync(string provider, string entityName, 
+        public async Task<List<Dictionary<string, object?>>> FindExternalDataByFieldValueAsync(string provider, string entityName, 
             string fieldName, string fieldValue)
         {
             entityName = entityName.ToLower();
