@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
 
 namespace TaskrowSharp.Models
 {
@@ -10,13 +12,13 @@ namespace TaskrowSharp.Models
         public string TaskTitle { get; set; }
         public int EffortEstimation { get; set; }
         public int? RemainingEffortEstimation { get; set; }
+
+        [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
+        public DateTime DueDate { get; set; }
         
-        public string DueDate { get; set; }
-        public DateTime DueDateParsed { get { return Utils.Parser.ToDateTimeFromTaskrowDate(DueDate); } }
-
-        public string CreationDate { get; set; }
-        public DateTime CreationDateParsed { get { return Utils.Parser.ToDateTimeFromTaskrowDate(CreationDate); } }
-
+        [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
+        public DateTime CreationDate { get; set; }
+        
         public bool Closed { get; set; }
         public int JobID { get; set; }
         public List<NewTaskItem>? NewTaskItems { get; set; }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+using System.Collections.Generic;
 
 namespace TaskrowSharp.Models
 {
@@ -16,7 +19,10 @@ namespace TaskrowSharp.Models
         public UserData? UserData { get; set; }
         public InternalClient? InternalClient { get; set; }
         public bool HasJobInternalSupport { get; set; }
-        public string? CompanyDate { get; set; }
+        
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+		public DateTime? CompanyDate { get; set; }
+		
         public List<ApprovalGroup>? ApprovalGroups { get; set; }
         public UserAssets? UserAssets { get; set; }
         public List<object>? UnreadMessages { get; set; }

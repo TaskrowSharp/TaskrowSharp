@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class Member
     {
@@ -9,9 +13,15 @@
         //public object? Notify { get; set; }
         public bool? MustRead { get; set; }
         public bool? Read { get; set; }
-        public string? LastReadDate { get; set; }
+        
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+		public DateTime? LastReadDate { get; set; }
+		
         //public object? Favorite { get; set; }
-        public string? LastModificationDate { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? LastModificationDate { get; set; }
+		
         public User User { get; set; }
         public bool Passed { get; set; }
         public int Order { get; set; }

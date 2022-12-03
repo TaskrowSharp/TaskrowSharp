@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using static TaskrowSharp.Utils.JsonUtils;
+using System.Text.Json.Serialization;
+
+namespace TaskrowSharp.Models
 {
     public class SaveTaskRequest
     {
@@ -13,7 +17,10 @@
         public string? TaskItemComment { get; set; }
         public int? OwnerUserID { get; set; }
         public int? SpentTime { get; set; }
-        public string? DueDate { get; set; }
+
+        [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
+        public DateTime? DueDate { get; set; }
+
         public int? PercentComplete { get; set; }
         public int? EffortEstimation { get; set; }
         public string? EffortUnitListString { get; set; }

@@ -1,8 +1,14 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class DateStartEntity
     {
-        public string DateStart { get; set; }
+		[JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
+        public DateTime DateStart { get; set; }
+		
         public int DayID { get; set; }
     }
 }

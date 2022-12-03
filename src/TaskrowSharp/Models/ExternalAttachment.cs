@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class ExternalAttachment
     {
@@ -8,7 +12,10 @@
         public string? MimeType { get; set; }
         public int AttachmentTypeID { get; set; }
         public int CreationUserID { get; set; }
-        public string? CreationDate { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? CreationDate { get; set; }
+		
         //public object? GroupID { get; set; }
         //public object? NoteID { get; set; }
         //public object? ClientID { get; set; }

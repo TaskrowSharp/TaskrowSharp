@@ -55,8 +55,8 @@ namespace TaskrowSharp.IntegrationTests
 
                 var taskComment = $"Task forwarded on {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
                 int ownerUserID = task.Owner.UserID;
-                var dueDate = (task.DueDateParsed >= DateTime.Now.Date ? task.DueDateParsed : DateTime.Now.Date);
-                
+                var dueDate = (task.DueDate >= DateTime.Now.Date ? task.DueDate : DateTime.Now.Date);
+
                 if (task.Owner.UserID == user1.UserID)
                     ownerUserID = user2.UserID;
                 else if (task.Owner.UserID == user2.UserID)
@@ -71,7 +71,7 @@ namespace TaskrowSharp.IntegrationTests
                     OwnerUserID = ownerUserID,
                     RowVersion = task.RowVersion,
                     LastTaskItemID = task.NewTaskItems.Last().TaskItemID,
-                    DueDate = dueDate.ToString("yyyy-MM-dd"),
+                    DueDate = dueDate,
                     EffortEstimation = task.EffortEstimation
                 };
 

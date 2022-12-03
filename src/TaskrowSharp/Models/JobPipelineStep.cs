@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class JobPipelineStep
     {
@@ -9,7 +13,10 @@
         public string? PluralTitle { get; set; }
         //public object? ColorID { get; set; }
         public int? JobPipelineStepClassID { get; set; }
-        public string? LastModificationDate { get; set; }
+        
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+		public DateTime? LastModificationDate { get; set; }
+		
         public int? LastModificationUserID { get; set; }
     }
 }

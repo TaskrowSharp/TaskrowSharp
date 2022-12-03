@@ -4,6 +4,8 @@
     {
         public int DeliverableID { get; set; }
         public string Name { get; set; }
-        //public object? DueDate { get; set; }
+		
+		//[JsonConverter(typeof(DatetimeNullableTaskrowFormatJsonConverter))]
+        //public DateTime? DueDate { get; set; }
     }
 }

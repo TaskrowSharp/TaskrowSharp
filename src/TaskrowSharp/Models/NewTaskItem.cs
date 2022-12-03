@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+using System.Collections.Generic;
 
 namespace TaskrowSharp.Models
 {
@@ -18,9 +22,16 @@ namespace TaskrowSharp.Models
         public RequestType? RequestType { get; set; }
         public bool HasDynForm { get; set; }
         public int TaskItemTypeID { get; set; }
-        public string? Date { get; set; }
-        public string? DueDate { get; set; }
-        public string? PreviousDueDate { get; set; }
+        
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+		public DateTime? Date { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? DueDate { get; set; }
+
+        [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? PreviousDueDate { get; set; }		
+
         public bool? Closed { get; set; }
         public bool PreviousClosedState { get; set; }
         public bool DiffDueDate { get; set; }

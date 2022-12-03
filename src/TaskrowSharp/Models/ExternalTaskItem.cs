@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+using System.Collections.Generic;
 
 namespace TaskrowSharp.Models
 {
@@ -8,7 +11,10 @@ namespace TaskrowSharp.Models
         public string TaskItemComment { get; set; }
         public int? FromUserID { get; set; }
         public int? ToUserID { get; set; }
-        public string Date { get; set; }
+        
+		[JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
+		public DateTime Date { get; set; }
+		
         public int ExternalTaskItemTypeID { get; set; }
         //public object? Approved { get; set; }
         public User? FromUser { get; set; }

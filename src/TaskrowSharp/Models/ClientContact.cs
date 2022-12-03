@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class ClientContact
     {
@@ -9,7 +13,10 @@
         public string? ContactEmail { get; set; }
         public string? OfficeArea { get; set; }
         //public object? ContactInfo { get; set; }
-        public string? DateModification { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? DateModification { get; set; }
+		
         public int UserModification { get; set; }
         public string? FunctionName { get; set; }
         public int ClientID { get; set; }

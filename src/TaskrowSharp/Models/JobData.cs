@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class JobData
     {
@@ -6,7 +10,10 @@
         public int JobNumber { get; set; }
         public string? JobTitle { get; set; }
         public string? JobDisplayTitle { get; set; }
-        public string? CreationDate { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? CreationDate { get; set; }
+		
         public int CreationUserID { get; set; }
         public int JobTypeID { get; set; }
         public string? JobType { get; set; }

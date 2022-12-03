@@ -1,4 +1,8 @@
-﻿namespace TaskrowSharp.Models
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+
+namespace TaskrowSharp.Models
 {
     public class Office
     {
@@ -8,7 +12,10 @@
         //public object? DailyMinutes { get; set; }
         //public object? ExternalCode { get; set; }
         public int AppMainCompanyID { get; set; }
-        public string? CreationDate { get; set; }
+        
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+		public DateTime? CreationDate { get; set; }
+		
         public int CreationUserID { get; set; }
         public string? LastModificationDate { get; set; }
         public int LastModificationUserID { get; set; }

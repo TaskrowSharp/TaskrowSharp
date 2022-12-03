@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TaskrowSharp.Exceptions;
@@ -66,12 +65,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
                     
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<IndexData>(json);
+                var model = JsonSerializer.Deserialize<IndexData>(jsonResponse);
 
                 return model;
             }
@@ -96,12 +94,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var list = JsonSerializer.Deserialize<List<SearchClientItem>>(json);
+                var list = JsonSerializer.Deserialize<List<SearchClientItem>>(jsonResponse);
 
                 return list;
             }
@@ -122,12 +119,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var list = JsonSerializer.Deserialize<ListClientItemResponse>(json);
+                var list = JsonSerializer.Deserialize<ListClientItemResponse>(jsonResponse);
 
                 return list;
             }
@@ -148,12 +144,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<ClientDetailResponse>(json);
+                var model = JsonSerializer.Deserialize<ClientDetailResponse>(jsonResponse);
 
                 return model.Entity;
             }
@@ -167,20 +162,20 @@ namespace TaskrowSharp
         {
             var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(insertClientRequest);
 
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
-                request.Headers.Add("__identifier", this.AccessKey);
-                request.Content = JsonContent.Create(insertClientRequest);
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
 
-                var response = await this.HttpClient.SendAsync(request);
+                var response = await this.HttpClient.PostAsync(fullUrl, requestContent);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<InsertClientResponse>(json);
+                var model = JsonSerializer.Deserialize<InsertClientResponse>(jsonResponse);
 
                 return model;
             }
@@ -205,12 +200,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var list = JsonSerializer.Deserialize<List<ClientContact>>(json);
+                var list = JsonSerializer.Deserialize<List<ClientContact>>(jsonResponse);
 
                 return list;
             }
@@ -235,12 +229,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var list = JsonSerializer.Deserialize<List<User>>(json);
+                var list = JsonSerializer.Deserialize<List<User>>(jsonResponse);
 
                 return list;
             }
@@ -261,12 +254,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<UserDetailResponse>(json);
+                var model = JsonSerializer.Deserialize<UserDetailResponse>(jsonResponse);
 
                 return model;
             }
@@ -291,12 +283,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<ListGroupResponse>(json);
+                var model = JsonSerializer.Deserialize<ListGroupResponse>(jsonResponse);
 
                 return model.Groups;
             }
@@ -321,12 +312,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var list = JsonSerializer.Deserialize<List<City>>(json);
+                var list = JsonSerializer.Deserialize<List<City>>(jsonResponse);
 
                 return list;
             }
@@ -347,7 +337,7 @@ namespace TaskrowSharp
             
             if (userID.HasValue && userID == 0)
                 throw new ArgumentException(null, nameof(userID));
-                        
+            
             Uri relativeUrl;
             if (!userID.HasValue)
                 relativeUrl = new Uri($"/api/v1/Dashboard/TasksByGroup?groupID={groupID}&hierarchyEnabled=true&closedDays=20&context=1", UriKind.Relative);
@@ -361,12 +351,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<TasksByGroupResponse>(json);
+                var model = JsonSerializer.Deserialize<TasksByGroupResponse>(jsonResponse);
 
                 return model.Entity;
             }
@@ -387,12 +376,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<TaskDetailResponse>(json);
+                var model = JsonSerializer.Deserialize<TaskDetailResponse>(jsonResponse);
 
                 return model;
             }
@@ -406,20 +394,20 @@ namespace TaskrowSharp
         {
             var relativeUrl = new Uri("/api/v1/Task/SaveTask", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(saveTaskRequest);
 
             try
-            {               
-                var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
-                request.Headers.Add("__identifier", this.AccessKey);
-                request.Content = JsonContent.Create(saveTaskRequest);
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
 
-                var response = await this.HttpClient.SendAsync(request);
+                var response = await this.HttpClient.PostAsync(fullUrl, requestContent);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var model = JsonSerializer.Deserialize<SaveTaskResponse>(json);
+                var model = JsonSerializer.Deserialize<SaveTaskResponse>(jsonResponse);
 
                 return model;
             }
@@ -445,12 +433,13 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
                 var json = await response.Content.ReadAsStringAsync();
 
-                var dic = JsonSerializer.Deserialize<Dictionary<string, object?>>(json);
+                var dic = JsonSerializer.Deserialize<Dictionary<string, object?>>(jsonResponse);
                 return dic;
             }
             catch (Exception ex)
@@ -472,12 +461,11 @@ namespace TaskrowSharp
                 request.Headers.Add("__identifier", this.AccessKey);
 
                 var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var dic = JsonSerializer.Deserialize<List<Dictionary<string, object?>>>(json);
+                var dic = JsonSerializer.Deserialize<List<Dictionary<string, object?>>>(jsonResponse);
                 return dic;
             }
             catch (Exception ex)
@@ -491,14 +479,16 @@ namespace TaskrowSharp
             entityName = entityName.ToLower();
             var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification={id}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(values);
 
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, fullUrl);
-                request.Headers.Add("__identifier", this.AccessKey);
-                request.Content = JsonContent.Create(values);
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
 
-                var response = await this.HttpClient.SendAsync(request);
+                var response = await this.HttpClient.PutAsync(fullUrl, requestContent);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
             }

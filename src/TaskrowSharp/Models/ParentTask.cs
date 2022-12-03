@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+using System.Collections.Generic;
 
 namespace TaskrowSharp.Models
 {
@@ -9,9 +12,15 @@ namespace TaskrowSharp.Models
         public int TaskNumber { get; set; }
         public string? TaskTitle { get; set; }
         public string? RequestTypeAcronym { get; set; }
-        public string? DueDate { get; set; }
+        
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+		public DateTime? DueDate { get; set; }
+		
         public int PipelineStepID { get; set; }
-        public string? LastModificationDate { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? LastModificationDate { get; set; }
+		
         //public List<object> Tags { get; set; }
         public List<Subtask>? Subtasks { get; set; }
         public bool ExternalRequest { get; set; }

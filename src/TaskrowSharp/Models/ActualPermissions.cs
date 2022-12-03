@@ -9,7 +9,7 @@
         public bool CloseSubtasks { get; set; }
         public bool AppendTaskItem { get; set; }
         public bool ChangeTitle { get; set; }
-        public bool ChangeDueDate { get; set; }
+        public bool ChangeDueDate { get; set; }	
         public bool ChangeStatus { get; set; }
         public bool ChangeEffortEstimation { get; set; }
         public bool ChangeRequestContact { get; set; }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Text.Json.Serialization;
+using static TaskrowSharp.Utils.JsonUtils;
+using System.Collections.Generic;
 
 namespace TaskrowSharp.Models
 {
@@ -10,7 +13,10 @@ namespace TaskrowSharp.Models
         public bool CompanyDefault { get; set; }
         public bool Extranet { get; set; }
         public bool Inactive { get; set; }
-        public string? LastModificationDate { get; set; }
+		
+		[JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? LastModificationDate { get; set; }
+		
         public int LastModificationUserID { get; set; }
         public List<JobPipelineStep>? JobPipelineSteps { get; set; }
     }
