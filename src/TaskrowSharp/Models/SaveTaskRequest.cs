@@ -1,5 +1,5 @@
 ﻿using System;
-using static TaskrowSharp.Utils.JsonUtils;
+using TaskrowSharp.JsonConverters;
 using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.Models
