@@ -28,6 +28,7 @@
         public string? ZipCode { get; set; }
         public bool NoCNPJ { get; set; }
         public string? CNPJ { get; set; }
+        public string? CPF { get; set; }
         public string? SocialContractName { get; set; }
         public string? InscrEstad { get; set; }
         public string? InscrMunic { get; set; }
