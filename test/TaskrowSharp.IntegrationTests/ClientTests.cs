@@ -22,9 +22,9 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task GetClientDetailAsync_Success()
         {
-            var clients = _configurationFile.Clients;
+            var clientIDs = _configurationFile.Clients;
 
-            foreach (var clientID in clients)
+            foreach (var clientID in clientIDs)
             {
                 var client = await _taskrowClient.GetClientDetailAsync(clientID);
 

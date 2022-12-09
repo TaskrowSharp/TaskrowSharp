@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System;
+using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
+using TaskrowSharp.Models;
 using Xunit;
 
 namespace TaskrowSharp.IntegrationTests
@@ -18,14 +21,46 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task ListClientContactsAsync_Success()
         {
-            var clients = _configurationFile.Clients;
+            var clientIDs = _configurationFile.Clients;
 
-            foreach (var clientID in clients)
+            foreach (var clientID in clientIDs)
             {
                 var clientContacts = await _taskrowClient.ListClientContactsAsync(clientID);
 
                 Assert.NotNull(clientContacts);
             }
+        }
+
+        [Fact]
+        public async Task InsertClientContactAsync()
+        {
+            var clients = _configurationFile.Clients;
+            var clientID = clients.FirstOrDefault();
+
+            if (clientID == 0)
+                throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+            var client = await _taskrowClient.GetClientDetailAsync(clientID);
+            
+            var contactName = $"Teste TaskrowSharp {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
+
+            var request = new InsertClientContactRequest(clientID, client.Client.ClientName, contactName)
+            {
+                ContactEmail = $"{Guid.NewGuid()}@email.com",
+                ContactMainPhone = "+55 (11) 6666-6666",
+                ContactCellPhone = "+55 (11) 9999-9999",
+                OfficeArea = "12",
+                FunctionName = "Gerente",
+                BirthDay = 12,
+                BirthMonth = 7,
+                ContactInfo = "Contato criado pelo teste do TaskrowSharp",
+                IsMainContact = false,
+                IsFinancialDocument = false,
+                Inactive = true
+            };
+
+            var response = await _taskrowClient.InsertClientContactAsync(request);
+            
+            Assert.Equal(request.ContactName, response.Entity.ContactName);
         }
     }
 }

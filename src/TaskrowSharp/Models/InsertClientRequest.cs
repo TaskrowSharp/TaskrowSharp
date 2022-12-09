@@ -34,12 +34,7 @@
         public string? InscrMunic { get; set; }
         public string? Memo { get; set; }
 
-        public InsertClientRequest()
-        {
-
-        }
-
-        public InsertClientRequest(string clientName, string displayName,int ownerID)
+        public InsertClientRequest(string clientName, string displayName, int ownerID)
         {
             this.ClientName = clientName;
             this.DisplayName = displayName;
