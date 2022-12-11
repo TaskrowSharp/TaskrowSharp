@@ -62,7 +62,60 @@ namespace TaskrowSharp.IntegrationTests
 
             var request = new InsertClientRequest(clientName, clientName, userID);
             var response = await _taskrowClient.InsertClientAsync(request);
+            Assert.True(response.Success);
             Assert.Equal(request.ClientName, response.Entity.ClientName);
+        }
+
+        [Fact]
+        public async Task SaveClientAddresAsync()
+        {
+            var clientID = _configurationFile.Clients.First();
+            var client = await _taskrowClient.GetClientDetailAsync(clientID);
+
+            string cnpj = "62.520.218/0001-24";
+            string name = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
+
+            var clientAddress = client.Client.ClientAddress.Where(a => a.CNPJ.Equals(cnpj)).FirstOrDefault();
+
+            if (clientAddress == null)
+            {
+                var request = new InsertClientAddressRequest(
+                    clientID, 
+                    client.Client.ClientNickName, 
+                    name, 
+                    cnpj, 
+                    null, 
+                    31, 
+                    7352, 
+                    "SP", 
+                    "SAO PAULO", 
+                    "Av Paulista", 
+                    "1578");
+
+                var response = await _taskrowClient.InsertClientAddressAsync(request);
+                Assert.True(response.Success);
+                Assert.Equal(request.SocialContractName, response.Entity.SocialContractName);
+            }
+            else
+            {
+                var request = new UpdateClientAddressRequest(
+                    clientID, 
+                    client.Client.ClientNickName, 
+                    clientAddress.ClientAddressID, 
+                    name, 
+                    clientAddress.CNPJ,
+                    clientAddress.CPF,
+                    clientAddress.Country.CountryID,
+                    clientAddress.CityID ?? 0,
+                    clientAddress.StateName,
+                    clientAddress.CityName,
+                    clientAddress.Street,
+                    clientAddress.Number ?? "0");
+
+                var response = await _taskrowClient.UpdateClientAddressAsync(request);
+                Assert.True(response.Success);
+                Assert.Equal(request.SocialContractName, response.Entity.SocialContractName);
+            }
         }
     }
 }

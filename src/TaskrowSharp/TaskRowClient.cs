@@ -185,6 +185,60 @@ namespace TaskrowSharp
             }
         }
 
+        public async Task<InsertClientAddressResponse> InsertClientAddressAsync(InsertClientAddressRequest insertClientAddressRequest)
+        {
+            var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(insertClientAddressRequest);
+
+            try
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.PostAsync(fullUrl, requestContent);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<InsertClientAddressResponse>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task<UpdateClientAddressResponse> UpdateClientAddressAsync(UpdateClientAddressRequest updateClientAddressRequest)
+        {
+            var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(updateClientAddressRequest);
+
+            try
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.PostAsync(fullUrl, requestContent);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<UpdateClientAddressResponse>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
         #endregion
 
         #region ClientContact

@@ -79,9 +79,10 @@ namespace TaskrowSharp.IntegrationTests
 
                 if (!response.Success)
                     throw new InvalidOperationException($"Error saving task: {response.Message}");
-            }
 
-            Assert.True(true);
+                Assert.True(response.Success);
+                Assert.Equal(request.TaskTitle, response.Entity.TaskTitle);
+            }
         }
     }
 }
