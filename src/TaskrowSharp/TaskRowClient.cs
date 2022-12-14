@@ -146,7 +146,11 @@ namespace TaskrowSharp
                 var response = await this.HttpClient.SendAsync(request);
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return null;
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+                }
 
                 var model = JsonSerializer.Deserialize<ClientDetailResponse>(jsonResponse);
 
@@ -337,7 +341,11 @@ namespace TaskrowSharp
                 var response = await this.HttpClient.SendAsync(request);
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return null;
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+                }
 
                 var model = JsonSerializer.Deserialize<UserDetailResponse>(jsonResponse);
 
@@ -459,7 +467,11 @@ namespace TaskrowSharp
                 var response = await this.HttpClient.SendAsync(request);
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return null;
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+                }
 
                 var model = JsonSerializer.Deserialize<TaskDetailResponse>(jsonResponse);
 
@@ -516,7 +528,11 @@ namespace TaskrowSharp
                 var response = await this.HttpClient.SendAsync(request);
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return null;
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+                }
 
                 var json = await response.Content.ReadAsStringAsync();
 
