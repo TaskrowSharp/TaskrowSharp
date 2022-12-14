@@ -27,7 +27,7 @@ namespace TaskrowSharp.Models
         public bool Inactive { get; set; }
         public bool ExtranetEnabled { get; set; }
 
-        public bool FinancialDocument { get; set; }
+        //public bool? FinancialDocument { get; set; }
         public bool IsFinancialDocument { get; set; }
 
         public bool TermsAccepted { get; set; }
