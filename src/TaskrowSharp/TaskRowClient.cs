@@ -597,9 +597,9 @@ namespace TaskrowSharp
 
         #endregion
 
-        #region Invoice
+        #region InvoiceFee
 
-        public async Task<InsertInvoiceResponse> InsertInvoiceAsync(InsertInvoiceRequest insertInvoiceRequest)
+        public async Task<InsertInvoiceFeeResponse> InsertInvoiceFeeAsync(InsertInvoiceFeeRequest insertInvoiceRequest)
         {
             var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceFee", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -616,7 +616,7 @@ namespace TaskrowSharp
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var model = JsonSerializer.Deserialize<InsertInvoiceResponse>(jsonResponse);
+                var model = JsonSerializer.Deserialize<InsertInvoiceFeeResponse>(jsonResponse);
 
                 return model;
             }
@@ -626,7 +626,7 @@ namespace TaskrowSharp
             }
         }
 
-        public async Task<InvoiceFee> GetInvoiceDetailAsync(int jobNumber, int invoiceFeeID)
+        public async Task<InvoiceFee> GetInvoiceFeeDetailAsync(int jobNumber, int invoiceFeeID)
         {
             var relativeUrl = new Uri($"/api/v1/Invoice/InvoiceFeeDetail?jobNumber={jobNumber}&invoiceFeeID={invoiceFeeID}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);

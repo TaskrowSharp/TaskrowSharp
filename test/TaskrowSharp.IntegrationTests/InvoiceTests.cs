@@ -19,7 +19,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task InsertInvoiceAsync()
+        public async Task InsertInvoiceFeeAsync()
         {
             var insertInvoiceData = _configurationFile.InsertInvoiceData;
             if (insertInvoiceData == null)
@@ -30,7 +30,7 @@ namespace TaskrowSharp.IntegrationTests
             var forecastDate = now;
             var dueDate = new DateTime(now.AddMonths(1).Date.Year, now.AddMonths(1).Month, 5);
             
-            var request = new InsertInvoiceRequest(insertInvoiceData.JobNumber, 
+            var request = new InsertInvoiceFeeRequest(insertInvoiceData.JobNumber, 
                 feePeriodDate.Month, feePeriodDate.Year,
                 forecastDate.Month, forecastDate.Year,
                 insertInvoiceData.FromClientAddressID,
@@ -44,22 +44,22 @@ namespace TaskrowSharp.IntegrationTests
                 "Serviços TaskrowSharp Test",
                 null);
 
-            var response = await _taskrowClient.InsertInvoiceAsync(request);
+            var response = await _taskrowClient.InsertInvoiceFeeAsync(request);
             
             Assert.True(response.Success);
             Assert.NotEmpty(response.Entities);
         }
 
         [Fact]
-        public async Task GetInvoiceAsync()
+        public async Task GetInvoiceFeeAsync()
         {
-            var invoiceReferences = _configurationFile.Invoices;
+            var invoiceReferences = _configurationFile.InvoiceFees;
             if (invoiceReferences?.Count == null)
                 throw new InvalidOperationException("Error in configuration file, \"invoices\" null");
 
             foreach (var invoiceReference in invoiceReferences)
             {
-                var invoice = await _taskrowClient.GetInvoiceDetailAsync(invoiceReference.JobNumber, invoiceReference.InvoiceFeeID);
+                var invoice = await _taskrowClient.GetInvoiceFeeDetailAsync(invoiceReference.JobNumber, invoiceReference.InvoiceFeeID);
 
                 Assert.NotNull(invoice);
                 Assert.Equal(invoiceReference.InvoiceFeeID, invoice.InvoiceFeeID);

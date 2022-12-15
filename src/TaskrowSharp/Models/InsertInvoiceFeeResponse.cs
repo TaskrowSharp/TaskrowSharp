@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.Models
 {
-    public class InsertInvoiceResponse
+    public class InsertInvoiceFeeResponse
     {
         public bool Success { get; set; }
         public string? Message { get; set; }

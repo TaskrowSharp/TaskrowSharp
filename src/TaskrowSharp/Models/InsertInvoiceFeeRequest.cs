@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.Models
 {
-    public class InsertInvoiceRequest
+    public class InsertInvoiceFeeRequest
     {
         public int InvoiceFeeID { get; set; }
         public int FeeID { get; set; }
@@ -40,7 +40,7 @@ namespace TaskrowSharp.Models
 
         public string? IAAdmMemo { get; set; }
 
-        public InsertInvoiceRequest(int jobNumber, int feeMonth, int feeYear, int invoiceForecastMonth, int invoiceForecastYear, 
+        public InsertInvoiceFeeRequest(int jobNumber, int feeMonth, int feeYear, int invoiceForecastMonth, int invoiceForecastYear, 
             int fromClientAddressID, int toClientAddressID,
             decimal monthRevenueValue, decimal monthExpectedValue, decimal invoiceValue,
             DateTime dueDate, 

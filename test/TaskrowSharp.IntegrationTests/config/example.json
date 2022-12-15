@@ -17,7 +17,7 @@
     "toClientAddressID": 456,
     "userSigningDocument": 297
   },
-  "invoices": [
+  "invoiceFees": [
     {
       "jobNumber": 1,
       "invoiceFeeID": 734
