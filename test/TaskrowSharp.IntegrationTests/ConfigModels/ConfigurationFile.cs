@@ -23,6 +23,9 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         [JsonPropertyName("insertInvoiceData")]
         public InsertInvoiceDataType InsertInvoiceData { get; set; }
 
+        [JsonPropertyName("invoices")]
+        public List<Invoice> Invoices { get; set; }
+
         internal class InsertInvoiceDataType
         {
             [JsonPropertyName("jobNumber")]
@@ -36,6 +39,15 @@ namespace TaskrowSharp.IntegrationTests.TestModels
 
             [JsonPropertyName("userSigningDocument")]
             public int UserSigningDocument { get; set; }
+        }
+
+        internal class Invoice
+        {
+            [JsonPropertyName("jobNumber")]
+            public int JobNumber { get; set; }
+
+            [JsonPropertyName("invoiceFeeID")]
+            public int InvoiceFeeID { get; set; }
         }
     }
 }

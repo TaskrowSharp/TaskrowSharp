@@ -626,6 +626,35 @@ namespace TaskrowSharp
             }
         }
 
+        public async Task<InvoiceFee> GetInvoiceDetailAsync(int jobNumber, int invoiceFeeID)
+        {
+            var relativeUrl = new Uri($"/api/v1/Invoice/InvoiceFeeDetail?jobNumber={jobNumber}&invoiceFeeID={invoiceFeeID}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return null;
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+                }
+
+                var model = JsonSerializer.Deserialize<InvoiceDetailResponse>(jsonResponse);
+
+                return model.InvoiceFee;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
         #endregion
     }
 }

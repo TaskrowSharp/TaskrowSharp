@@ -49,5 +49,21 @@ namespace TaskrowSharp.IntegrationTests
             Assert.True(response.Success);
             Assert.NotEmpty(response.Entities);
         }
+
+        [Fact]
+        public async Task GetInvoiceAsync()
+        {
+            var invoiceReferences = _configurationFile.Invoices;
+            if (invoiceReferences?.Count == null)
+                throw new InvalidOperationException("Error in configuration file, \"invoices\" null");
+
+            foreach (var invoiceReference in invoiceReferences)
+            {
+                var invoice = await _taskrowClient.GetInvoiceDetailAsync(invoiceReference.JobNumber, invoiceReference.InvoiceFeeID);
+
+                Assert.NotNull(invoice);
+                Assert.Equal(invoiceReference.InvoiceFeeID, invoice.InvoiceFeeID);
+            }
+        }
     }
 }

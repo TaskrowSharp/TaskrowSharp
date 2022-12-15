@@ -16,5 +16,11 @@
     "fromClientAddressID": 123,
     "toClientAddressID": 456,
     "userSigningDocument": 297
-  }
+  },
+  "invoices": [
+    {
+      "jobNumber": 1,
+      "invoiceFeeID": 734
+    }
+  ]
 }
