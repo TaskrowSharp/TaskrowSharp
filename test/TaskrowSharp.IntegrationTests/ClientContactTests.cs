@@ -21,7 +21,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task ListClientContactsAsync_Success()
         {
-            var clientIDs = _configurationFile.Clients;
+            var clientIDs = _configurationFile.ClientIDs;
 
             foreach (var clientID in clientIDs)
             {
@@ -34,7 +34,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task InsertClientContactAsync()
         {
-            var clients = _configurationFile.Clients;
+            var clients = _configurationFile.ClientIDs;
             var clientID = clients.FirstOrDefault();
 
             if (clientID == 0)

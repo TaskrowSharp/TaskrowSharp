@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
 using TaskrowSharp.Models;
@@ -19,50 +18,18 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task InsertInvoiceFeeAsync()
+        public async Task GetInvoiceAsync()
         {
-            var insertInvoiceData = _configurationFile.InsertInvoiceData;
-            if (insertInvoiceData == null)
-                throw new InvalidOperationException("Error in configuration file, \"insertInvoiceData\" null");
-
-            var now = DateTime.Now.Date;
-            var feePeriodDate = now.AddMonths(-1);
-            var forecastDate = now;
-            var dueDate = new DateTime(now.AddMonths(1).Date.Year, now.AddMonths(1).Month, 5);
-            
-            var request = new InsertInvoiceFeeRequest(insertInvoiceData.JobNumber, 
-                feePeriodDate.Month, feePeriodDate.Year,
-                forecastDate.Month, forecastDate.Year,
-                insertInvoiceData.FromClientAddressID,
-                insertInvoiceData.ToClientAddressID,
-                0, 
-                0, 
-                1.20M,
-                dueDate,
-                1,
-                insertInvoiceData.UserSigningDocument,
-                "Serviços TaskrowSharp Test",
-                null);
-
-            var response = await _taskrowClient.InsertInvoiceFeeAsync(request);
-            
-            Assert.True(response.Success);
-            Assert.NotEmpty(response.Entities);
-        }
-
-        [Fact]
-        public async Task GetInvoiceFeeAsync()
-        {
-            var invoiceReferences = _configurationFile.InvoiceFees;
-            if (invoiceReferences?.Count == null)
+            var invoiceIDs = _configurationFile.InvoiceIDs;
+            if (invoiceIDs?.Count == null)
                 throw new InvalidOperationException("Error in configuration file, \"invoices\" null");
 
-            foreach (var invoiceReference in invoiceReferences)
+            foreach (var invoiceID in invoiceIDs)
             {
-                var invoice = await _taskrowClient.GetInvoiceFeeDetailAsync(invoiceReference.JobNumber, invoiceReference.InvoiceFeeID);
+                var invoiceDetail = await _taskrowClient.GetInvoiceDetailAsync(invoiceID);
 
-                Assert.NotNull(invoice);
-                Assert.Equal(invoiceReference.InvoiceFeeID, invoice.InvoiceFeeID);
+                Assert.NotNull(invoiceDetail);
+                Assert.Equal(invoiceID, invoiceDetail.InvoiceID);
             }
         }
     }

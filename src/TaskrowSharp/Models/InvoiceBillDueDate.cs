@@ -14,9 +14,8 @@ namespace TaskrowSharp.Models
         public DateTime? DueDate { get; set; }
 
         public decimal? BillValue { get; set; }
-        
-        [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-        public DateTime? MemoDueDate { get; set; }
+
+        public string? MemoDueDate { get; set; }
 
         [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
         public DateTime? DateCreation { get; set; }

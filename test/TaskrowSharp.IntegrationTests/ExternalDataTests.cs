@@ -24,7 +24,7 @@ namespace TaskrowSharp.IntegrationTests
         {
             try
             {
-                var clients = _configurationFile.Clients;
+                var clients = _configurationFile.ClientIDs;
                 var clientID = clients.First();
 
                 var value1 = Guid.NewGuid().ToString();

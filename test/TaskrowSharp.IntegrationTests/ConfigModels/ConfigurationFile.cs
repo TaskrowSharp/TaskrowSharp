@@ -11,20 +11,23 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         [JsonPropertyName("accessKey")]
         public string? AccessKey { get; set; }
 
-        [JsonPropertyName("tasks")]
-        public List<string> Tasks { get; set; }
+        [JsonPropertyName("taskUrls")]
+        public List<string> TaskUrls { get; set; }
 
-        [JsonPropertyName("clients")]
-        public List<int> Clients { get; set; }
+        [JsonPropertyName("clientIDs")]
+        public List<int> ClientIDs { get; set; }
 
-        [JsonPropertyName("users")]
-        public List<int> Users { get; set; }
+        [JsonPropertyName("userIDs")]
+        public List<int> UserIDs { get; set; }
 
         [JsonPropertyName("insertInvoiceData")]
         public InsertInvoiceDataType InsertInvoiceData { get; set; }
 
         [JsonPropertyName("invoiceFees")]
         public List<InvoiceFee> InvoiceFees { get; set; }
+
+        [JsonPropertyName("invoiceIDs")]
+        public List<int> InvoiceIDs { get; set; }
 
         internal class InsertInvoiceDataType
         {

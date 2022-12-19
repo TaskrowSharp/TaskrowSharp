@@ -21,27 +21,27 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task Task_Forward_OK()
         {
-            if (_configurationFile.Tasks?.Count == 0)
+            if (_configurationFile.TaskUrls?.Count == 0)
                 throw new InvalidOperationException("Error in configuration file, \"tasks\" list is empty");
 
-            if (_configurationFile.Users?.Count < 2)
+            if (_configurationFile.UserIDs?.Count < 2)
                 throw new InvalidOperationException("Error in configuration file, \"users\" list should have 2 or more User IDs");
 
             var users = await _taskrowClient.ListUsersAsync();
             
-            foreach (var taskUrl in _configurationFile.Tasks)
+            foreach (var taskUrl in _configurationFile.TaskUrls)
             {
-                var user1 = users.Where(a => a.UserID == _configurationFile.Users.First()).FirstOrDefault();
+                var user1 = users.Where(a => a.UserID == _configurationFile.UserIDs.First()).FirstOrDefault();
                 if (user1 == null)
-                    throw new InvalidOperationException($"User userID={_configurationFile.Users.First()} not found");
+                    throw new InvalidOperationException($"User userID={_configurationFile.UserIDs.First()} not found");
                 if (user1.Inactive)
-                    throw new InvalidOperationException($"User userID={_configurationFile.Users.First()} is inactive");
+                    throw new InvalidOperationException($"User userID={_configurationFile.UserIDs.First()} is inactive");
 
-                var user2 = users.Where(a => a.UserID == _configurationFile.Users.Skip(1).First()).FirstOrDefault();
+                var user2 = users.Where(a => a.UserID == _configurationFile.UserIDs.Skip(1).First()).FirstOrDefault();
                 if (user2 == null)
-                    throw new InvalidOperationException($"User userID={_configurationFile.Users.Skip(1).First()} not found");
+                    throw new InvalidOperationException($"User userID={_configurationFile.UserIDs.Skip(1).First()} not found");
                 if (user2.Inactive)
-                    throw new InvalidOperationException($"User userID={_configurationFile.Users.Skip(1).First()} is inactive");
+                    throw new InvalidOperationException($"User userID={_configurationFile.UserIDs.Skip(1).First()} is inactive");
 
                 if (user1.UserID == user2.UserID)
                     throw new InvalidOperationException($"Error in configuration file, \"tasks\" is invalid, user1 and user2 are the same");

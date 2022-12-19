@@ -22,7 +22,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task GetClientDetailAsync_Success()
         {
-            var clientIDs = _configurationFile.Clients;
+            var clientIDs = _configurationFile.ClientIDs;
 
             foreach (var clientID in clientIDs)
             {
@@ -54,10 +54,10 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task InsertClientAsync()
         {
-            if (_configurationFile.Users?.Count == 0)
+            if (_configurationFile.UserIDs?.Count == 0)
                 throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
 
-            var userID = _configurationFile.Users.First();
+            var userID = _configurationFile.UserIDs.First();
             var clientName = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
             var request = new InsertClientRequest(clientName, clientName, userID);
@@ -69,7 +69,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task SaveClientAddresAsync()
         {
-            var clientID = _configurationFile.Clients.First();
+            var clientID = _configurationFile.ClientIDs.First();
             var client = await _taskrowClient.GetClientDetailAsync(clientID);
 
             string cnpj = "62.520.218/0001-24";

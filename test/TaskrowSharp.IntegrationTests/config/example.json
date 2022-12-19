@@ -1,13 +1,13 @@
 ﻿{
   "serviceUrl": "https://yourcompany.taskrow.com",
   "accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa",
-  "tasks": [
+  "taskUrls": [
     "/CompanyTest/1/1"
   ],
-  "clients": [
+  "clientIDs": [
     100
   ],
-  "users": [
+  "userIDs": [
     712,
     734
   ],
@@ -22,5 +22,8 @@
       "jobNumber": 1,
       "invoiceFeeID": 734
     }
+  ],
+  "invoiceIDs": [
+    41891
   ]
 }

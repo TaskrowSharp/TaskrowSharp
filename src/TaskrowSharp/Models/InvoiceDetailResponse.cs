@@ -2,7 +2,9 @@
 {
     public class InvoiceDetailResponse
     {
-        public InvoiceFee InvoiceFee { get; set; }
-        public double MonthRevenueValue { get; set; }
+        public bool Success { get; set; }
+        public string? Message { get; set; }
+        public InvoiceDetailResponseEntity Entity { get; set; }
+        public string? TargetURL { get; set; }
     }
 }
