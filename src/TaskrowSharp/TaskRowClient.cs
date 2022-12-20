@@ -545,7 +545,7 @@ namespace TaskrowSharp
             }
         }
 
-        public async Task<List<Dictionary<string, object?>>> FindExternalDataByFieldValueAsync(string provider, string entityName, 
+        public async Task<List<Dictionary<string, object?>>> SearchExternalDataByFieldValueAsync(string provider, string entityName, string entityIdName,
             string fieldName, string fieldValue)
         {
             entityName = entityName.ToLower();
@@ -562,8 +562,23 @@ namespace TaskrowSharp
                 if (!response.IsSuccessStatusCode)
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
-                var dic = JsonSerializer.Deserialize<List<Dictionary<string, object?>>>(jsonResponse);
-                return dic;
+                var listRet = new List<Dictionary<string, object?>>();
+
+                var listSearch = JsonSerializer.Deserialize<List<Dictionary<string, object?>>>(jsonResponse);
+                foreach (var dicSearch in listSearch)
+                {
+                    if (!dicSearch.ContainsKey(entityIdName))
+                        throw new InvalidOperationException($"Invalid entityIdName: \"{entityIdName}\"");
+
+                    var id = Convert.ToInt32(dicSearch[entityIdName].ToString());
+                    var dicRet = await GetExternalDataAsync(provider, entityName, id);
+                    if (!dicRet.ContainsKey(entityIdName))
+                        dicRet.Add(entityIdName, id);
+
+                    listRet.Add(dicRet);
+                }
+
+                return listRet;
             }
             catch (Exception ex)
             {

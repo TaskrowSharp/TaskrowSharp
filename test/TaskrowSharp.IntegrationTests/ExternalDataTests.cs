@@ -12,6 +12,8 @@ namespace TaskrowSharp.IntegrationTests
         private readonly TaskrowClient _taskrowClient;
         private readonly ConfigurationFile _configurationFile;
         private const string PROVIDER = "taskrowsharp-tests";
+        private const string ENTITY_NAME = "client";
+        private const string ENTITY_ID = "clientID";
 
         public ExternalDataTests()
         {
@@ -36,17 +38,17 @@ namespace TaskrowSharp.IntegrationTests
                     { "value2", value2 }
                 };
 
-                await _taskrowClient.SaveExternalDataAsync(PROVIDER, "client", clientID, dic);
+                await _taskrowClient.SaveExternalDataAsync(PROVIDER, ENTITY_NAME, clientID, dic);
 
-                var dicGet = await _taskrowClient.GetExternalDataAsync(PROVIDER, "client", clientID);
+                var dicGet = await _taskrowClient.GetExternalDataAsync(PROVIDER, ENTITY_NAME, clientID);
 
                 Assert.Equal(value1, dicGet["value1"].ToString());
                 Assert.Equal(value2, dicGet["value2"].ToString());
 
-                var listFind = await _taskrowClient.FindExternalDataByFieldValueAsync(PROVIDER, "client", "value1", value1);
+                var listFind = await _taskrowClient.SearchExternalDataByFieldValueAsync(PROVIDER, ENTITY_NAME, ENTITY_ID, "value1", value1);
                 var dicFind = listFind.First();
 
-                Assert.Equal(value1, dicFind["fieldValue"].ToString());
+                Assert.Equal(value1, dicFind["value1"].ToString());
             }
             catch (Exception ex)
             {
