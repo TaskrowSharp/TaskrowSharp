@@ -13,7 +13,7 @@ namespace TaskrowSharp.Models
 
         public decimal InvoiceGrossValue { get; set; }
 
-        public decimal InvoiceTaxValue { get; set; }
+        public decimal? InvoiceTaxValue { get; set; }
 
         public string InvoiceMemo { get; set; }
 
@@ -23,9 +23,9 @@ namespace TaskrowSharp.Models
         [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
         public DateTime? InvoiceIssueDate { get; set; }
 
-        public decimal InvoiceTax1Value { get; set; }
+        public decimal? InvoiceTax1Value { get; set; }
 
-        public decimal InvoiceTax2Value { get; set; }
+        public decimal? InvoiceTax2Value { get; set; }
 
         public bool IsCancelled { get; set; }
 
@@ -40,13 +40,13 @@ namespace TaskrowSharp.Models
         [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
         public DateTime? DateModification { get; set; }
 
-        public decimal InvoiceNetValue { get; set; }
+        public decimal? InvoiceNetValue { get; set; }
 
-        public decimal DirectTax1Value { get; set; }
+        public decimal? DirectTax1Value { get; set; }
 
-        public decimal InvoiceDeductionValue { get; set; }
+        public decimal? InvoiceDeductionValue { get; set; }
 
-        public decimal DirectTax1AliquotValue { get; set; }
+        public decimal? DirectTax1AliquotValue { get; set; }
 
         public string? DeductionMemo { get; set; }
 
@@ -75,9 +75,9 @@ namespace TaskrowSharp.Models
 
         public FromClientAddress FromClientAddress { get; set; }
 
-        public int InvoiceServiceCodeID { get; set; }
+        public int? InvoiceServiceCodeID { get; set; }
 
-        public InvoiceServiceCode InvoiceServiceCode { get; set; }
+        public InvoiceServiceCode? InvoiceServiceCode { get; set; }
 
         public List<InvoiceBill2> InvoiceBill { get; set; }
 

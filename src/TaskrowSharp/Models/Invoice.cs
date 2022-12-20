@@ -4,7 +4,7 @@
     {
         public int InvoiceID { get; set; }
         public string? InvoiceNumber { get; set; }
-        public decimal InvoiceDeductionValue { get; set; }
+        public decimal? InvoiceDeductionValue { get; set; }
         public string? InvoiceMemo { get; set; }
         public int ClientID { get; set; }
         public string ClientNickName { get; set; }
