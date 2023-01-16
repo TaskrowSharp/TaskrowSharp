@@ -30,7 +30,7 @@ namespace TaskrowSharp.Models
         
         public decimal IAValue { get; set; }
 
-        public string IADueDate { get; set; }
+        public DateTime IADueDate { get; set; }
 
         public int IAStatusID { get; set; }
 
@@ -57,7 +57,7 @@ namespace TaskrowSharp.Models
             MonthExpectedValue = monthExpectedValue;
             InvoiceIAValue = invoiceValue;
             IAValue = invoiceValue;
-            IADueDate = dueDate.ToString("dd/MM/yyyy");
+            IADueDate = dueDate;
             IAStatusID = invoiceStatusID;
             UserSigningDocument = userSigningDocument;
             IAMemo = description;
