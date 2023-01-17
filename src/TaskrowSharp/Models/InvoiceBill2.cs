@@ -38,7 +38,9 @@ namespace TaskrowSharp.Models
         public ClientAddress ClientAddress { get; set; }
         public string GuidModification { get; set; }
         public string? CancellationMemo { get; set; }
-        public string BillDueDate { get; set; }
+
+        [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+        public DateTime? BillDueDate { get; set; }
 
         //NOTE: This is the difference to InvoiceBill.cs, here is an array!!!
         public List<InvoiceBillDueDate> InvoiceBillDueDate { get; set; }

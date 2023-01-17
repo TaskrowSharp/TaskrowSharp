@@ -5,7 +5,7 @@ using TaskrowSharp.JsonConverters;
 
 namespace TaskrowSharp.Models
 {
-    public class InvoiceFee
+    public class InvoiceFee : IInvoiceFeeOrProject
     {
         public int InvoiceFeeID { get; set; }
 

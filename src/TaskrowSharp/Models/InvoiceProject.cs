@@ -5,7 +5,7 @@ using TaskrowSharp.JsonConverters;
 
 namespace TaskrowSharp.Models
 {
-    public class InvoiceProject
+    public class InvoiceProject : IInvoiceFeeOrProject
     {
         public int InvoiceProjectID { get; set; }
 
@@ -16,7 +16,7 @@ namespace TaskrowSharp.Models
 
         public string DateReference { get; set; }
 
-        public string IAMemo { get; set; }
+        public string? IAMemo { get; set; }
 
         [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
         public DateTime? DateCreation { get; set; }
