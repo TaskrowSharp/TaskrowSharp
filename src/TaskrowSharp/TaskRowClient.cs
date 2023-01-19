@@ -704,5 +704,44 @@ namespace TaskrowSharp
         }
 
         #endregion
+
+        #region InvoiceAuthorization
+
+        public async Task<SaveInvoiceAuthorization> SaveInvoiceAuthorizationAsync(int jobNumber, int invoiceID, string guidModification, List<int> invoiceFeeIDs)
+        {
+            string parameters = $"jobNumber={jobNumber}";
+            parameters += $"&invoiceID={invoiceID}";
+            parameters += $"&guidModification={guidModification}";
+            for (int i=0; i< invoiceFeeIDs.Count; i++)
+                parameters += $"&invoiceFeeIDs[{i}]={invoiceFeeIDs[i]}";
+
+            var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceAuthorization?{parameters}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return null;
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+                }
+
+                var model = JsonSerializer.Deserialize<SaveInvoiceAuthorization>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        #endregion
     }
 }
