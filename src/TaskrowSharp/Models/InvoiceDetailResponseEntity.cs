@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TaskrowSharp.Models
+﻿namespace TaskrowSharp.Models
 {
     public class InvoiceDetailResponseEntity
     {
