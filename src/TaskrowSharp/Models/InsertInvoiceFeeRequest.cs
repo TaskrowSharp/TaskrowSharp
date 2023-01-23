@@ -6,8 +6,10 @@ namespace TaskrowSharp.Models
     public class InsertInvoiceFeeRequest
     {
         public int InvoiceFeeID { get; set; }
+        
         public int FeeID { get; set; }
-        public int GuidModification { get; set; }
+
+        public string? GuidModification { get; set; }
 
         [JsonPropertyName("jobNumber")]
         public int JobNumber { get; private set; }
