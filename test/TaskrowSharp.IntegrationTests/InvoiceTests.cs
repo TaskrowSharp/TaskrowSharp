@@ -26,10 +26,10 @@ namespace TaskrowSharp.IntegrationTests
 
             foreach (var invoiceID in invoiceIDs)
             {
-                var invoiceDetail = await _taskrowClient.GetInvoiceDetailAsync(invoiceID);
+                var invoiceDetailResponse = await _taskrowClient.GetInvoiceDetailAsync(invoiceID);
 
-                Assert.NotNull(invoiceDetail);
-                Assert.Equal(invoiceID, invoiceDetail.InvoiceID);
+                Assert.NotNull(invoiceDetailResponse);
+                Assert.Equal(invoiceID, invoiceDetailResponse.InvoiceDetail.InvoiceID);
             }
         }
     }

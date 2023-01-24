@@ -1,15 +1,25 @@
-﻿namespace TaskrowSharp.Models
+﻿using System.Collections.Generic;
+
+namespace TaskrowSharp.Models
 {
     public class InvoiceDetailResponseEntity
     {
         public InvoiceDetail InvoiceDetail { get; set; }
-        //public bool AllowEditInvoice { get; set; }
-        //public List<ClientAddressList> ClientAddressList { get; set; }
+        
+        public bool AllowEditInvoice { get; set; }
+        
+        public List<ClientAddress> ClientAddressList { get; set; }
+        
         //public List<InternalClientAddressList> InternalClientAddressList { get; set; }
-        //public List<InvoiceBillTypeList> InvoiceBillTypeList { get; set; }
-        //public List<object> FinancialAccountList { get; set; }
-        //public List<InvoiceServiceCodeList> InvoiceServiceCodeList { get; set; }
+        
+        public List<InvoiceBillType> InvoiceBillTypeList { get; set; }
+        
+        public List<FinancialAccount> FinancialAccountList { get; set; }
+        
+        public List<InvoiceServiceCode> InvoiceServiceCodeList { get; set; }
+
         //public List<object> InvoiceTaxValueList { get; set; }
-        //public Permissions Permissions { get; set; }
+
+        public InvoicePermissions Permissions { get; set; }
     }
 }

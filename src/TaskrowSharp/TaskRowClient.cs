@@ -674,7 +674,7 @@ namespace TaskrowSharp
 
         #region Invoice
 
-        public async Task<InvoiceDetail> GetInvoiceDetailAsync(int invoiceID)
+        public async Task<InvoiceDetailResponseEntity> GetInvoiceDetailAsync(int invoiceID)
         {
             var relativeUrl = new Uri($"/api/v1/Invoice/GetInvoiceDetail?invoiceID={invoiceID}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -695,7 +695,7 @@ namespace TaskrowSharp
 
                 var model = JsonSerializer.Deserialize<InvoiceDetailResponse>(jsonResponse);
 
-                return model.Entity?.InvoiceDetail;
+                return model?.Entity;
             }
             catch (Exception ex)
             {
