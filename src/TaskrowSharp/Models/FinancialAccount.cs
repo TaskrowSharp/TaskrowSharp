@@ -33,7 +33,7 @@ namespace TaskrowSharp.Models
 
         public int BankID { get; set; }
 
-        //public Bank Bank { get; set; }
+        public Bank? Bank { get; set; }
         
         public string? AgencyNumber { get; set; }
         

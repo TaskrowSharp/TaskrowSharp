@@ -11,7 +11,7 @@ namespace TaskrowSharp.Models
         public int InvoiceBillID { get; set; }
         public int InvoiceID { get; set; }
         public string BillNumber { get; set; }
-        //public object BillValue { get; set; }
+        public decimal? BillValue { get; set; }
 
         [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
         public DateTime? DateCreation { get; set; }
@@ -32,8 +32,11 @@ namespace TaskrowSharp.Models
         public string BillType { get; set; }
         public bool IsCancelled { get; set; }
         public bool IsDeleted { get; set; }
+        
         public int? FinancialAccountID { get; set; }
-        //public object FinancialAccount { get; set; }
+        
+        public FinancialAccount? FinancialAccount { get; set; }
+
         public int ClientAddressID { get; set; }
         public ClientAddress ClientAddress { get; set; }
         public string GuidModification { get; set; }
@@ -42,7 +45,7 @@ namespace TaskrowSharp.Models
         [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
         public DateTime? BillDueDate { get; set; }
 
-        //NOTE: This is the difference to InvoiceBill.cs, here is an array!!!
+        //NOTE: This is the difference to InvoiceBill.cs, this property is an array!!!
         public List<InvoiceBillDueDate> InvoiceBillDueDate { get; set; }
 
         public decimal? PaymentDiscountValue { get; set; }
