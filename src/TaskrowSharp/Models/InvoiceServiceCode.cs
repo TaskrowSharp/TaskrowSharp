@@ -6,11 +6,11 @@ namespace TaskrowSharp.Models
     {
         public int InvoiceServiceCodeID { get; set; }
 
-        public string? Code { get; set; }
+        public string Code { get; set; }
 
-        public decimal? Tax { get; set; }
+        public decimal Tax { get; set; }
 
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         public bool Inactive { get; set; }
 
