@@ -44,5 +44,39 @@ namespace TaskrowSharp.Models
             this.ClientAddressID = clientAddressID;
             this.FromClientAddressID = fromClientAddressID;
         }
+
+        public SaveInvoiceRequest(InvoiceDetail invoiceDetail)
+        {
+            this.InvoiceID = invoiceDetail.InvoiceID;
+            this.InvoiceTypeID = invoiceDetail.InvoiceTypeID;
+            this.GuidModification = invoiceDetail.GuidModification;
+            this.ClientAddressID = invoiceDetail.ClientAddressID;
+            this.FromClientAddressID = invoiceDetail.FromClientAddressID;
+            this.InvoiceMemo = invoiceDetail.InvoiceMemo;
+
+            this.InvoiceNumber = invoiceDetail.InvoiceNumber;
+
+            this.InvoiceIssueDate = invoiceDetail.InvoiceIssueDate;
+
+            this.InvoiceServiceCodeID = invoiceDetail.InvoiceServiceCodeID;
+            this.InvoiceGrossValue = invoiceDetail.InvoiceGrossValue;
+
+            this.InvoiceNetValue = invoiceDetail.InvoiceNetValue;
+
+            this.InvoiceDeductionValue = invoiceDetail.InvoiceDeductionValue;
+
+            this.InvoiceTaxValue = invoiceDetail.InvoiceTaxValue;
+            //this.InvoiceTaxValueID = invoiceDetail.InvoiceTaxValueID;
+
+            this.DirectTax1AliquotValue = invoiceDetail.DirectTax1AliquotValue;
+
+            this.DirectTax1Value = invoiceDetail.DirectTax1Value;
+
+            this.InvoiceTax1Value = invoiceDetail.InvoiceTax1Value;
+            //this.InvoiceTax1ValueID = invoiceDetail.InvoiceTax1ValueID;
+
+            this.InvoiceTax2Value = invoiceDetail.InvoiceTax2Value;
+            //this.InvoiceTax2ValueID = invoiceDetail.InvoiceTax2ValueID;
+        }
     }
 }
