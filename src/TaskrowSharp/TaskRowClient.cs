@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 using TaskrowSharp.Exceptions;
 using TaskrowSharp.Models;
 
@@ -730,6 +732,58 @@ namespace TaskrowSharp
             }
         }
 
+        public async Task<CancelInvoiceResponse> CancelInvoiceAsync(int invoiceID, string memo)
+        {
+            var memoEncoded = (!string.IsNullOrEmpty(memo) ? HttpUtility.UrlEncode(memo) : null);
+            var relativeUrl = new Uri($"/api/v1/Invoice/CancelInvoice?invoiceID={invoiceID}&memo={memoEncoded}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<CancelInvoiceResponse>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task<DeleteInvoiceResponse> DeleteInvoiceAsync(int invoiceID, string memo)
+        {
+            var memoEncoded = (!string.IsNullOrEmpty(memo) ? HttpUtility.UrlEncode(memo) : null);
+            var relativeUrl = new Uri($"/api/v1/Invoice/DeleteInvoice?invoiceID={invoiceID}&memo={memoEncoded}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<DeleteInvoiceResponse>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
         #endregion
 
         #region InvoiceAuthorization
@@ -791,6 +845,31 @@ namespace TaskrowSharp
                     throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
 
                 var model = JsonSerializer.Deserialize<SaveInvoiceBillResponse>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        public async Task<CancelInvoiceBillResponse> CancelInvoiceBillAsync(int invoiceBillID)
+        {
+            var relativeUrl = new Uri($"/api/v1/Invoice/CancelInvoiceBill?invoiceBillID={invoiceBillID}", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                request.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.SendAsync(request);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<CancelInvoiceBillResponse>(jsonResponse);
 
                 return model;
             }
