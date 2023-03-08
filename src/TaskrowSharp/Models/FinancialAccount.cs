@@ -31,7 +31,7 @@ namespace TaskrowSharp.Models
 
         public ClientAddress ClientAddres { get; set; }
 
-        public int BankID { get; set; }
+        public int? BankID { get; set; }
 
         public Bank? Bank { get; set; }
         
