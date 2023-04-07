@@ -786,6 +786,37 @@ namespace TaskrowSharp
 
         #endregion
 
+        #region InvoiceStatus
+
+        public async Task<UpdateInvoiceResponse> UpdateInvoiceStatusAsync(UpdateInvoiceStatusRequest updateInvoiceRequest)
+        {
+            var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceIntegrationStatus", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(updateInvoiceRequest);
+
+            try
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
+
+                var response = await this.HttpClient.PostAsync(fullUrl, requestContent);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)response.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<UpdateInvoiceResponse>(jsonResponse);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        #endregion
+
         #region InvoiceAuthorization
 
         public async Task<SaveInvoiceAuthorization> SaveInvoiceAuthorizationAsync(int jobNumber, int invoiceID, string guidModification, List<int> invoiceFeeIDs)
