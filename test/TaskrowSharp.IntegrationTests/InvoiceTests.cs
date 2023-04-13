@@ -118,11 +118,13 @@ namespace TaskrowSharp.IntegrationTests
 
 
                 //-- req 300 - Adicionar autorização do faturamento do faturamento 1 no faturamento 2
-                var responseSaveInvoiceAuthorization = await _taskrowClient.SaveInvoiceAuthorizationAsync(
+                var requestSaveInvoiceAuthorization = new SaveInvoiceAuthorizationRequest(
                     jobNumber: jobNumber,
                     invoiceID: invoice1.InvoiceID,
                     guidModification: invoice1.GuidModification,
-                    invoiceFeeIDs: new List<int>() { invoiceFee2.InvoiceFeeID });
+                    invoiceFeeIDs: new List<int>() { invoiceFee2.InvoiceFeeID }
+                );
+                var responseSaveInvoiceAuthorization = await _taskrowClient.SaveInvoiceAuthorizationAsync(requestSaveInvoiceAuthorization);
 
                 if (!responseSaveInvoiceAuthorization.Success)
                     throw new InvalidOperationException($"SaveInvoiceAuthorizationAsync returned success=false -- {responseSaveInvoiceAuthorization.Message}");
@@ -215,7 +217,7 @@ namespace TaskrowSharp.IntegrationTests
 
                 //-- Update invoiceStatus
 
-                var updateInvoiceStatus = new UpdateInvoiceStatusRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test");
+                var updateInvoiceStatus = new UpdateInvoiceStatusRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test", invoice1.GuidModification);
                 var responseUpdate = await _taskrowClient.UpdateInvoiceStatusAsync(updateInvoiceStatus);
                 if (!responseUpdate.Success)
                     throw new InvalidOperationException($"UpdateInvoiceStatusAsync returned success=false -- {responseUpdate.Message}");
@@ -230,13 +232,17 @@ namespace TaskrowSharp.IntegrationTests
                 }
 
                 //-- Cancel Invoice
-                var responseCancelInvoice = await _taskrowClient.CancelInvoiceAsync(invoiceFee1.InvoiceID, "Inserted and canceled by TaskrowSharp");
+                var requestCancelInvoice = new CancelInvoiceRequest(invoiceFee1.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice1.GuidModification);
+                var responseCancelInvoice = await _taskrowClient.CancelInvoiceAsync(requestCancelInvoice);
                 if (!responseCancelInvoice.Success)
                     throw new InvalidOperationException($"CancelInvoiceAsync returned success=false -- {responseCancelInvoice.Message}");
                 Debug.WriteLine($"Invoice Canceled (invoiceID={invoice1.InvoiceID})");
 
+                invoice1 = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
+
                 //-- Delete Invoice
-                var response = await _taskrowClient.DeleteInvoiceAsync(invoiceFee1.InvoiceID, "Inserted and deleted by TaskrowSharp");
+                var requestDeleteInvoice = new DeleteInvoiceRequest(invoiceFee1.InvoiceID, "Inserted and deleted by TaskrowSharp", invoice1.GuidModification);
+                var response = await _taskrowClient.DeleteInvoiceAsync(requestDeleteInvoice);
                 Debug.WriteLine($"Invoice Deleted (invoiceID={invoice1.InvoiceID})");
 
                 Assert.True(response.Success);

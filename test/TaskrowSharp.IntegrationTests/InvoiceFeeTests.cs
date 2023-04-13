@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
 using TaskrowSharp.Models;
 using Xunit;
+using static TaskrowSharp.IntegrationTests.TestModels.ConfigurationFile;
 
 namespace TaskrowSharp.IntegrationTests
 {
@@ -60,10 +61,13 @@ namespace TaskrowSharp.IntegrationTests
 
                 invoiceFee = await _taskrowClient.GetInvoiceFeeDetailAsync(invoiceFee.Job.JobNumber, invoiceFee.InvoiceFeeID);
 
+                var invoice = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee.InvoiceID)).InvoiceDetail;
+
 
                 //--- Cancel Invoice
 
-                await _taskrowClient.CancelInvoiceAsync(invoiceFee.InvoiceID, "Inserted and canceled by TaskrowSharp");
+                var cancelInvoiceRequest = new CancelInvoiceRequest(invoiceFee.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice.GuidModification);
+                await _taskrowClient.CancelInvoiceAsync(cancelInvoiceRequest);
 
                 Debug.WriteLine($"Invoice canceled (invoiceID={invoiceFee.InvoiceID})");
 

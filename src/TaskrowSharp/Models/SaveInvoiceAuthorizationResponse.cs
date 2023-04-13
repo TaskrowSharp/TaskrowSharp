@@ -1,6 +1,6 @@
 ﻿namespace TaskrowSharp.Models
 {
-    public class SaveInvoiceAuthorization
+    public class SaveInvoiceAuthorizationResponse
     {
         public bool Success { get; set; }
         public string? Message { get; set; }

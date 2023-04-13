@@ -10,13 +10,16 @@ namespace TaskrowSharp.Models
         [JsonConverter(typeof(EnumJsonConverter<IntegrationStatusEnum>))]
         public IntegrationStatusEnum IntegrationStatusID { get; set; }
 
-        public string? Message { get; set; }
+        public string Message { get; set; }
 
-        public UpdateInvoiceStatusRequest(int invoiceID, IntegrationStatusEnum integrationStatusID, string message)
+        public string GuidModification { get; set; }
+
+        public UpdateInvoiceStatusRequest(int invoiceID, IntegrationStatusEnum integrationStatusID, string message, string guidModification)
         {
             InvoiceID = invoiceID;
             IntegrationStatusID = integrationStatusID;
             Message = message;
+            GuidModification = guidModification;
         }
     }
 }

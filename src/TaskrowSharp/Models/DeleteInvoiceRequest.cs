@@ -1,0 +1,16 @@
+﻿namespace TaskrowSharp.Models
+{
+    public class DeleteInvoiceRequest
+    {
+        public int InvoiceID { get; set; }
+        public string Memo { get; set; }
+        public string GuidModification { get; set; }
+
+        public DeleteInvoiceRequest(int invoiceID, string memo, string guidModification)
+        {
+            InvoiceID = invoiceID;
+            Memo = memo;
+            GuidModification = guidModification;
+        }
+    }
+}
