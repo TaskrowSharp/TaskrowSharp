@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -391,9 +392,13 @@ namespace TaskrowSharp
 
         #region City
 
-        public async Task<List<City>> ListCitiesAsync(string stateCode)
+        public async Task<List<City>> ListCitiesAsync(string stateAbbreviation)
         {
-            var relativeUrl = new Uri($"/api/v1/Client/ListCities?uf={stateCode}", UriKind.Relative);
+            if (string.IsNullOrWhiteSpace(stateAbbreviation)) throw new ArgumentNullException(nameof(stateAbbreviation));
+
+            var queryString = $"uf={HttpUtility.UrlEncode(stateAbbreviation)}";
+            var relativeUrl = new Uri($"/api/v1/Client/ListCities?{queryString}", UriKind.Relative);
+
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
             
             try
@@ -416,10 +421,43 @@ namespace TaskrowSharp
             }
         }
 
+        public async Task<City?> GetCityByName(string stateAbbreviation, string cityName)
+        {
+            if (string.IsNullOrWhiteSpace(stateAbbreviation)) throw new ArgumentNullException(nameof(stateAbbreviation));
+            if (string.IsNullOrWhiteSpace(cityName)) throw new ArgumentNullException(nameof(cityName));
+
+            stateAbbreviation = Utils.Text.RemoveDiacritics(stateAbbreviation).ToUpper();
+            cityName = Utils.Text.RemoveDiacritics(cityName).ToUpper();
+
+            var queryString = $"uf={HttpUtility.UrlEncode(stateAbbreviation)}&cityName={HttpUtility.UrlEncode(cityName)}";
+            var relativeUrl = new Uri($"/api/v1/Client/ListCities?{queryString}", UriKind.Relative);
+
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+            try
+            {
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+                httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+                var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+                var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+                if (!httpResponse.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+                var list = JsonSerializer.Deserialize<List<City>>(jsonResponse);
+
+                return list.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
         #endregion
 
         #region Task
-        
+
         public async Task<TasksByGroupEntity> ListTasksByGroupAsync(int groupID, int? userID = null)
         {
             if (groupID == 0)
