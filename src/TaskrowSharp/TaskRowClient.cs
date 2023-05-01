@@ -110,9 +110,15 @@ namespace TaskrowSharp
             }
         }
 
-        public async Task<ListClientItemResponse> ListClientsAsync(string? nextToken = null)
+        public async Task<ListClientItemResponse> ListClientsAsync(string? nextToken = null, bool? includeInactives = null)
         {
-            var relativeUrl = new Uri($"/api/v2/core/client?nextToken={nextToken}", UriKind.Relative);
+            string queryString = null;
+            if (!string.IsNullOrWhiteSpace(nextToken))
+                queryString = $"{queryString}{(queryString == null ? "?" : "&")}nextToken={nextToken}";
+            if (includeInactives != null)
+                queryString = $"{queryString}{(queryString == null ? "?" : "&")}includeInactives={includeInactives.ToString().ToLower()}";
+
+            var relativeUrl = new Uri($"/api/v2/core/client{queryString}", UriKind.Relative);
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
 
             try

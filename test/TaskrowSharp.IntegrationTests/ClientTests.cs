@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskrowSharp.Exceptions;
@@ -17,6 +18,31 @@ namespace TaskrowSharp.IntegrationTests
         {
             _taskrowClient = GetTaskrowClient();
             _configurationFile = GetConfigurationFile();
+        }
+
+        [Fact]
+        public async Task ListClientsAsync_Success()
+        {
+            var clients = await _taskrowClient.ListClientsAsync();
+            Assert.NotNull(clients);
+        }
+
+        [Fact]
+        public async Task ListClientsAsync_IncludeInactives_Success()
+        {
+            var clients = new List<ListClientItem>();
+
+            string? nextToken = null;
+            do
+            {
+                var response = await _taskrowClient.ListClientsAsync(nextToken, true);
+                clients.AddRange(response.Items);
+                nextToken = response.NextToken;
+            } while (nextToken != null);
+
+            Assert.NotNull(clients);
+            var inactives = clients.Where(a => a.Inactive).ToList();
+            Assert.NotEmpty(inactives);
         }
 
         [Fact]
