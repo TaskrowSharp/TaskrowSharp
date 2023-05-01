@@ -427,7 +427,7 @@ namespace TaskrowSharp
             }
         }
 
-        public async Task<City?> GetCityByName(string stateAbbreviation, string cityName)
+        public async Task<City?> GetCityByNameAsync(string stateAbbreviation, string cityName)
         {
             if (string.IsNullOrWhiteSpace(stateAbbreviation)) throw new ArgumentNullException(nameof(stateAbbreviation));
             if (string.IsNullOrWhiteSpace(cityName)) throw new ArgumentNullException(nameof(cityName));

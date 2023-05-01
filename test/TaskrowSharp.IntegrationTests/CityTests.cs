@@ -25,7 +25,7 @@ namespace TaskrowSharp.IntegrationTests
             var stateAbbreviation = "SP";
             var cityName = Utils.Text.RemoveDiacritics("São Paulo").ToUpper();
 
-            var city = await _taskrowClient.GetCityByName(stateAbbreviation, cityName);
+            var city = await _taskrowClient.GetCityByNameAsync(stateAbbreviation, cityName);
             
             Assert.NotNull(city);
             Assert.Equal(stateAbbreviation, city.UF);
