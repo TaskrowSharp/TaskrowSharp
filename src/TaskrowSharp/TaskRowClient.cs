@@ -435,7 +435,7 @@ namespace TaskrowSharp
             stateAbbreviation = Utils.Text.RemoveDiacritics(stateAbbreviation).ToUpper();
             cityName = Utils.Text.RemoveDiacritics(cityName).ToUpper();
 
-            var queryString = $"uf={HttpUtility.UrlEncode(stateAbbreviation)}&cityName={HttpUtility.UrlEncode(cityName)}";
+            var queryString = $"uf={HttpUtility.UrlEncode(stateAbbreviation)}&name={HttpUtility.UrlEncode(cityName)}";
             var relativeUrl = new Uri($"/api/v1/Client/ListCities?{queryString}", UriKind.Relative);
 
             var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
