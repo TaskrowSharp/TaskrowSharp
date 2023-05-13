@@ -954,5 +954,6 @@ namespace TaskrowSharp
         }
 
         #endregion
+        public async Task<SaveInvoiceBillPaymentResponse> SaveInvoiceBillPaymentAsync(SaveInvoiceBillPaymentRequest saveInvoiceBillRequest)
     }
 }
