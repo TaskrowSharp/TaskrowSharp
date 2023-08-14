@@ -954,6 +954,43 @@ namespace TaskrowSharp
         }
 
         #endregion
+
+        #region InvoiceBillPayment
+
         public async Task<SaveInvoiceBillPaymentResponse> SaveInvoiceBillPaymentAsync(SaveInvoiceBillPaymentRequest saveInvoiceBillRequest)
+        {
+            var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceBillPayment", UriKind.Relative);
+            var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+            var jsonRequest = JsonSerializer.Serialize(saveInvoiceBillRequest);
+
+            try
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                requestContent.Headers.Add("__identifier", this.AccessKey);
+
+                var httpResponse = await this.HttpClient.PostAsync(fullUrl, requestContent);
+                var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+                if (!httpResponse.IsSuccessStatusCode)
+                    throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+                var model = JsonSerializer.Deserialize<SaveInvoiceBillPaymentResponse>(jsonResponse);
+
+                if (model.Success == null)
+                    model.Success = true;
+
+                //NOTE: This method returns different types for success or error sittuation
+                // When Success: { InvoiceDetail: {}, InvoiceBill: {}: AllowEditInvoice: true }
+                // When Error:   { "Success": false, "Message": "Cobrança de nota fiscal não encontrada", "Entity": null, "TargetURL": null }
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+            }
+        }
+
+        #endregion
     }
 }

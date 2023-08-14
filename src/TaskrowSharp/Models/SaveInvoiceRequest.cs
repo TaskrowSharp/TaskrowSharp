@@ -45,7 +45,7 @@ namespace TaskrowSharp.Models
             this.FromClientAddressID = fromClientAddressID;
         }
 
-        public SaveInvoiceRequest(InvoiceDetail invoiceDetail)
+        public SaveInvoiceRequest(Invoice invoiceDetail)
         {
             this.InvoiceID = invoiceDetail.InvoiceID;
             this.InvoiceTypeID = invoiceDetail.InvoiceTypeID;

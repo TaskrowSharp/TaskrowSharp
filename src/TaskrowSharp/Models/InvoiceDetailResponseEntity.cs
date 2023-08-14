@@ -4,7 +4,7 @@ namespace TaskrowSharp.Models
 {
     public class InvoiceDetailResponseEntity
     {
-        public InvoiceDetail InvoiceDetail { get; set; }
+        public Invoice InvoiceDetail { get; set; }
         
         public bool AllowEditInvoice { get; set; }
         
