@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
 using TaskrowSharp.Models;
+using TaskrowSharp.Models.TaskModels;
 using Xunit;
 
 namespace TaskrowSharp.IntegrationTests

@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
-using TaskrowSharp.Models;
 using Xunit;
 using System.Diagnostics;
+using TaskrowSharp.Models.InvoiceModels;
 
 namespace TaskrowSharp.IntegrationTests
 {

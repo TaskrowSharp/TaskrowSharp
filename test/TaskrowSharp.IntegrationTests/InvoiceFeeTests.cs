@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
 using TaskrowSharp.Models;
+using TaskrowSharp.Models.InvoiceModels;
 using Xunit;
 using static TaskrowSharp.IntegrationTests.TestModels.ConfigurationFile;
 

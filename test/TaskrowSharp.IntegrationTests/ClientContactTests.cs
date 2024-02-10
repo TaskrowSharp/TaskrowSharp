@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
 using TaskrowSharp.Models;
 using Xunit;
+using TaskrowSharp.Models.ClientModels;
 
 namespace TaskrowSharp.IntegrationTests
 {

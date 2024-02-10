@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskrowSharp.Exceptions;
 using TaskrowSharp.IntegrationTests.TestModels;
-using TaskrowSharp.Models;
+using TaskrowSharp.Models.ClientModels;
 using Xunit;
 
 namespace TaskrowSharp.IntegrationTests
@@ -78,7 +78,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task InsertClientAsync()
+        public async Task InsertClientAsync_Success()
         {
             if (_configurationFile.UserIDs?.Count == 0)
                 throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
@@ -90,6 +90,23 @@ namespace TaskrowSharp.IntegrationTests
             var response = await _taskrowClient.InsertClientAsync(request);
             Assert.True(response.Success);
             Assert.Equal(request.ClientName, response.Entity.ClientName);
+        }
+        
+        [Fact]
+        public async Task UpdateClientAsync_Success()
+        {
+            var clientID = _configurationFile.ClientIDs.First();
+            var clientDetail = await _taskrowClient.GetClientDetailAsync(clientID);
+            var client = clientDetail.Client;
+
+            var request = new UpdateClientRequest(client)
+            {
+                Memo = $"Updated {DateTime.Now:yyyy-MM-dd HH:mm:ss}"
+            };
+
+            var response = await _taskrowClient.UpdateClientAsync(request);
+            Assert.True(response.Success);
+            Assert.Equal(request.Memo, response.Entity.ClientAdministrativeDetail.Memo);
         }
 
         [Fact]
