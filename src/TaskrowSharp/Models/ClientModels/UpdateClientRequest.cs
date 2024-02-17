@@ -5,6 +5,7 @@ public class UpdateClientRequest
     public int ClientID { get; set; }
     public string ClientName { get; set; }
     public string DisplayName { get; set; }
+    public string ClientNickName { get; set; }
     public string ExternalCode { get; set; }
     public int OwnerID { get; set; }
 
@@ -48,6 +49,8 @@ public class UpdateClientRequest
         ClientID = client.ClientID;
         ClientName = client.ClientName;
         DisplayName = client.DisplayName;
+        ClientNickName = client.ClientNickName;
+
         ExternalCode = client.ExternalCode;
         OwnerID = client.OwnerID;
 
