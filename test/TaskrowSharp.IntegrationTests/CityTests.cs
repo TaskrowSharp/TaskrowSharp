@@ -23,7 +23,7 @@ namespace TaskrowSharp.IntegrationTests
         public async Task GetCityByName_Success()
         {
             var stateAbbreviation = "SP";
-            var cityName = Utils.Text.RemoveDiacritics("São Paulo").ToUpper();
+            var cityName = Utils.RemoveDiacritics("São Paulo").ToUpper();
 
             var city = await _taskrowClient.GetCityByNameAsync(stateAbbreviation, cityName);
             

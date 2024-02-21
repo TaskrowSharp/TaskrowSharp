@@ -41,7 +41,7 @@ public class TaskrowClient
 
         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        this.UserAgent = $"TaskrowSharp v{Utils.Application.GetAppVersion()}";
+        this.UserAgent = $"TaskrowSharp v{Utils.GetAppVersion()}";
     }
 
     private static void ValidateAccessKey(string accessKey)
@@ -474,8 +474,8 @@ public class TaskrowClient
         if (string.IsNullOrWhiteSpace(stateAbbreviation)) throw new ArgumentNullException(nameof(stateAbbreviation));
         if (string.IsNullOrWhiteSpace(cityName)) throw new ArgumentNullException(nameof(cityName));
 
-        stateAbbreviation = Utils.Text.RemoveDiacritics(stateAbbreviation).ToUpper();
-        cityName = Utils.Text.RemoveDiacritics(cityName).ToUpper();
+        stateAbbreviation = Utils.RemoveDiacritics(stateAbbreviation).ToUpper();
+        cityName = Utils.RemoveDiacritics(cityName).ToUpper();
 
         var queryString = $"uf={HttpUtility.UrlEncode(stateAbbreviation)}&name={HttpUtility.UrlEncode(cityName)}";
         var relativeUrl = new Uri($"/api/v1/Client/ListCities?{queryString}", UriKind.Relative);
