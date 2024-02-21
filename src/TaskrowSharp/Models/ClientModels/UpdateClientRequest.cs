@@ -5,7 +5,6 @@ public class UpdateClientRequest
     public int ClientID { get; set; }
     public string ClientName { get; set; }
     public string DisplayName { get; set; }
-    public string ClientNickName { get; set; }
     public string ExternalCode { get; set; }
     public int OwnerID { get; set; }
 
@@ -49,38 +48,31 @@ public class UpdateClientRequest
         ClientID = client.ClientID;
         ClientName = client.ClientName;
         DisplayName = client.DisplayName;
-        ClientNickName = client.ClientNickName;
-
+        
         ExternalCode = client.ExternalCode;
         OwnerID = client.OwnerID;
+        /*MemberListString = client.MemberListString;
 
-        //NewClientAddress = client.NewClientAddress;
-        //SegmentListstring = client.SegmentListstring;
-        //MemberListstring = client.MemberListstring;
-        //JobRequiredProduct = client.JobRequiredProduct;
+        client.ClientAdministrativeDetail.SupplierComissionPercentage;
+        client.ClientAdministrativeDetail.Memo;
+        client.ExtranetRestrictedAccessTime*/
 
-        IsSupplier = client.IsSupplier;
-        NotToSearchAsClient = client.NotToSearchAsClient;
-        //ContactName = client.ContactName;
-        //ContactMainPhone = client.ContactMainPhone;
-        //ContactEmail = client.ContactEmail;
-        //Location = client.Location;
-        //CountryID = client.CountryID;
-        //CityID = client.CityID;
-        //StateName = client.StateName;
-        //CityName = client.CityName;
-        //District = client.District;
-        //Street = client.Street;
-        //Number = client.Number;
-        //Complement = client.Complement;
-        //ZipCode = client.ZipCode;
-        //NoCNPJ = client.NoCNPJ;
-        //CNPJ = client.CNPJ;
-        //CPF = client.CPF;
-        //SocialContractName = client.SocialContractName;
-        //InscrEstad = client.InscrEstad;
-        //InscrMunic = client.InscrMunic;
-
-        //Memo = client.Memo;
-}
+        //"SegmentListString": "",
+        //"OwnerID": "5380",
+        //"MemberListString": "5380,6429,6430,9986,9987,10232,10233,11785,13918,23461,24170,24886,28845",
+        //"JobRequiredProduct": "false",
+        //"IsSupplier": "false",
+        //"NotToSearchAsClient": "false",
+        //"ExtranetPipelineID": "1116",
+        //"JobPipelineID": "173",
+        //"DefaultPipelineID": "",
+        //"DefaultContractID": "",
+        //"SupplierComissionPercentage": "0.00",
+        //"AdComissionPercentage": "0.00",
+        //"AddComissionTax": "false",
+        //"Memo": "",
+        //"ExtranetRestrictedAccessTime": "false",
+        //"ExtranetAccessInitialTime": "",
+        //"ExtranetAccessEndTime": ""
+    }
 }

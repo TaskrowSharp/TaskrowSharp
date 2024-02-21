@@ -143,8 +143,8 @@ namespace TaskrowSharp.IntegrationTests
             {
                 var request = new UpdateClientAddressRequest(
                     clientID, 
-                    client.Client.ClientNickName, 
                     clientAddress.ClientAddressID, 
+                    client.Client.ClientNickName, 
                     name, 
                     clientAddress.CNPJ,
                     clientAddress.CPF,
@@ -153,7 +153,7 @@ namespace TaskrowSharp.IntegrationTests
                     clientAddress.StateName,
                     clientAddress.CityName,
                     clientAddress.Street,
-                    clientAddress.Number ?? "0");
+                    clientAddress.Number);
 
                 var response = await _taskrowClient.UpdateClientAddressAsync(request);
                 Assert.True(response.Success);
