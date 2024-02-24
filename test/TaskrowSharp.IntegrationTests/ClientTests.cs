@@ -48,7 +48,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task GetClientDetailAsync_Success()
         {
-            var clientIDs = _configurationFile.ClientIDs;
+            List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
 
             foreach (var clientID in clientIDs)
             {
@@ -95,7 +95,9 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task UpdateClientAsync_Success()
         {
-            var clientID = _configurationFile.ClientIDs.First();
+            List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
+            var clientID = clientIDs.First();
+
             var clientDetail = await _taskrowClient.GetClientDetailAsync(clientID);
             var client = clientDetail.Client;
 
@@ -112,7 +114,8 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task SaveClientAddresAsync()
         {
-            var clientID = _configurationFile.ClientIDs.First();
+            List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
+            var clientID = clientIDs.First();
             var client = await _taskrowClient.GetClientDetailAsync(clientID);
 
             string cnpj = "62.520.218/0001-24";

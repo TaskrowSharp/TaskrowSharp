@@ -5,6 +5,7 @@ using TaskrowSharp.IntegrationTests.TestModels;
 using TaskrowSharp.Models;
 using Xunit;
 using TaskrowSharp.Models.ClientModels;
+using System.Collections.Generic;
 
 namespace TaskrowSharp.IntegrationTests
 {
@@ -22,7 +23,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task ListClientContactsAsync_Success()
         {
-            var clientIDs = _configurationFile.ClientIDs;
+            List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
 
             foreach (var clientID in clientIDs)
             {
@@ -35,8 +36,8 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task InsertClientContactAsync()
         {
-            var clients = _configurationFile.ClientIDs;
-            var clientID = clients.FirstOrDefault();
+            List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
+            var clientID = clientIDs.FirstOrDefault();
 
             if (clientID == 0)
                 throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");

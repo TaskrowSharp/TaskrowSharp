@@ -26,8 +26,8 @@ namespace TaskrowSharp.IntegrationTests
         {
             try
             {
-                var clients = _configurationFile.ClientIDs;
-                var clientID = clients.First();
+                List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
+                var clientID = clientIDs.First();
 
                 var value1 = Guid.NewGuid().ToString();
                 var value2 = Guid.NewGuid().ToString();

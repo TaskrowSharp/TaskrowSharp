@@ -504,6 +504,96 @@ public class TaskrowClient
 
     #endregion
 
+    #region Job
+
+    public async Task<JobDetailEntity> GetJobDetailAsync(string clientNickName, int jobNumber)
+    {
+        var relativeUrl = new Uri($"/api/v1/Job/JobDetail?clientNickName={clientNickName}&JobNumber={jobNumber}", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+        try
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                if (httpResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+            }
+
+            var model = JsonSerializer.Deserialize<JobDetailEntity>(jsonResponse);
+
+            if (model.Job == null)
+                return null;
+
+            return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    public async Task<InsertJobResponse> InsertJobAsync(InsertJobRequest insertJobRequest)
+    {
+        var relativeUrl = new Uri($"/api/v1/Job/SaveJob", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+        var jsonRequest = JsonSerializer.Serialize(insertJobRequest, jsonSerializerOptions);
+
+        try
+        {
+            var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            requestContent.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.PostAsync(fullUrl, requestContent);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var model = JsonSerializer.Deserialize<InsertJobResponse>(jsonResponse);
+
+            return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    /*public async Task<UpdateJobResponse> UpdateJobAsync(UpdateJobRequest updateJobRequest)
+    {
+        var relativeUrl = new Uri($"/api/v1/Job/SaveJob", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+        var jsonRequest = JsonSerializer.Serialize(updateJobRequest, jsonSerializerOptions);
+
+        try
+        {
+            var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            requestContent.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.PostAsync(fullUrl, requestContent);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var model = JsonSerializer.Deserialize<UpdateJobResponse>(jsonResponse);
+
+            return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }*/
+
+    #endregion
+
     #region Task
 
     public async Task<TasksByGroupEntity> ListTasksByGroupAsync(int groupID, int? userID = null)

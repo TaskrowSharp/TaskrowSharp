@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.IntegrationTests.TestModels
@@ -14,16 +15,31 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         [JsonPropertyName("taskUrls")]
         public List<string> TaskUrls { get; set; }
 
-        [JsonPropertyName("clientIDs")]
-        public List<int> ClientIDs { get; set; }
+        [JsonPropertyName("clients")]
+        public List<ClientConfigurationItem>? Clients { get; set; }
 
         [JsonPropertyName("userIDs")]
         public List<int> UserIDs { get; set; }
 
         [JsonPropertyName("insertInvoiceData")]
-        public InsertInvoiceDataType InsertInvoiceData { get; set; }
+        public InsertInvoiceDataConfigurationItem InsertInvoiceData { get; set; }
 
-        internal class InsertInvoiceDataType
+        [JsonPropertyName("insertJobData")]
+        public InsertJobDataConfigurationItem InsertJobData { get; set; }
+
+        internal class ClientConfigurationItem
+        {
+            [JsonPropertyName("clientID")]
+            public int ClientID { get; set; }
+
+            [JsonPropertyName("clientNickName")]
+            public string ClientNickName { get; set; }
+
+            [JsonPropertyName("jobNumbers")]
+            public List<int> JobNumbers { get; set; }
+        }
+
+        internal class InsertInvoiceDataConfigurationItem
         {
             [JsonPropertyName("jobNumber")]
             public int JobNumber { get; set; }
@@ -38,13 +54,55 @@ namespace TaskrowSharp.IntegrationTests.TestModels
             public int UserSigningDocument { get; set; }
         }
 
-        internal class InvoiceFee
+        internal class InsertJobDataConfigurationItem
         {
-            [JsonPropertyName("jobNumber")]
-            public int JobNumber { get; set; }
+            [JsonPropertyName("clientID")]
+            public int ClientID { get; set; }
 
-            [JsonPropertyName("invoiceFeeID")]
-            public int InvoiceFeeID { get; set; }
+            [JsonPropertyName("clientNickName")]
+            public string ClientNickName { get; set; }
+
+            [JsonPropertyName("jobTitle")]
+            public string JobTitle { get; set; }
+
+            [JsonPropertyName("ownerUserID")]
+            public int OwnerUserID { get; set; }
+
+            [JsonPropertyName("jobTypeID")]
+            public int JobTypeID { get; set; }
+
+            [JsonPropertyName("requiredProduct")]
+            public bool RequiredProduct { get; set; }
+
+            [JsonPropertyName("public")]
+            public bool Public { get; set; }
+
+            [JsonPropertyName("externalUserAccess")]
+            public bool ExternalUserAccess { get; set; }
+
+            [JsonPropertyName("healthReference")]
+            public int HealthReference { get; set; }
+
+            [JsonPropertyName("isPrivate")]
+            public bool IsPrivate { get; set; }
+
+            [JsonPropertyName("effortRequired")]
+            public bool EffortRequired { get; set; }
+
+            [JsonPropertyName("looseEntriesAllowed")]
+            public bool LooseEntriesAllowed { get; set; }
+
+            [JsonPropertyName("deliverableRequired")]
+            public bool DeliverableRequired { get; set; }
+
+            [JsonPropertyName("requestDeliveryEnforceabilityID")]
+            public int RequestDeliveryEnforceabilityID { get; set; }
+
+            [JsonPropertyName("clientAreaID")]
+            public int ClientAreaID { get; set; }
+
+            [JsonPropertyName("jobSubTypeID")]
+            public int JobSubTypeID { get; set; }
         }
     }
 }
