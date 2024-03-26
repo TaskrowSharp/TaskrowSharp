@@ -1,4 +1,4 @@
-﻿namespace TaskrowSharp.Models.TaskModels;
+﻿namespace TaskrowSharp.Models.JobModels;
 
 public class InsertJobRequest
 {
@@ -24,21 +24,21 @@ public class InsertJobRequest
 
     //Minimum Required
     public InsertJobRequest(
-        int clientID, 
-        string clientNickName, 
-        string jobTitle, 
-        int ownerUserID, 
-        int jobTypeID, 
-        bool requiredProduct, 
-        bool isPublic, 
-        bool externalUserAccess, 
-        int healthReference, 
-        bool isPrivate, 
-        bool effortRequired, 
-        bool looseEntriesAllowed, 
-        bool deliverableRequired, 
-        int requestDeliveryEnforceabilityID, 
-        int clientAreaID, 
+        int clientID,
+        string clientNickName,
+        string jobTitle,
+        int ownerUserID,
+        int jobTypeID,
+        bool requiredProduct,
+        bool isPublic,
+        bool externalUserAccess,
+        int healthReference,
+        bool isPrivate,
+        bool effortRequired,
+        bool looseEntriesAllowed,
+        bool deliverableRequired,
+        int requestDeliveryEnforceabilityID,
+        int clientAreaID,
         int jobSubTypeID)
     {
         ClientID = clientID;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using TaskrowSharp.JsonConverters;
-using TaskrowSharp.Models.TaskModels;
+using TaskrowSharp.Models.JobModels;
 using TaskrowSharp.Models.UserModels;
 
 namespace TaskrowSharp.Models.InvoiceModels;

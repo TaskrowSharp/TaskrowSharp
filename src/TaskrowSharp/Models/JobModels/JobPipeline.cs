@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using TaskrowSharp.JsonConverters;
 using System.Collections.Generic;
 
-namespace TaskrowSharp.Models.TaskModels;
+namespace TaskrowSharp.Models.JobModels;
 
 public class JobPipeline
 {

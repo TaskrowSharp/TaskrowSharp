@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using TaskrowSharp.Models.ClientModels;
-using TaskrowSharp.Models.TaskModels;
+using TaskrowSharp.Models.JobModels;
 
 namespace TaskrowSharp.Models.UserModels;
 

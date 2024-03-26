@@ -2,8 +2,9 @@
 using System.Text.Json.Serialization;
 using TaskrowSharp.JsonConverters;
 using TaskrowSharp.Models.ClientModels;
+using TaskrowSharp.Models.TaskModels;
 
-namespace TaskrowSharp.Models.TaskModels;
+namespace TaskrowSharp.Models.JobModels;
 
 public class JobData
 {

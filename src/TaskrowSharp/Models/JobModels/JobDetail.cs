@@ -1,4 +1,4 @@
-﻿namespace TaskrowSharp.Models.TaskModels;
+﻿namespace TaskrowSharp.Models.JobModels;
 
 public class JobDetail
 {

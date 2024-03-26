@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using TaskrowSharp.JsonConverters;
 
-namespace TaskrowSharp.Models.TaskModels;
+namespace TaskrowSharp.Models.JobModels;
 
 public class JobPipelineStep
 {

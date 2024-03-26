@@ -1,6 +1,6 @@
 ﻿using TaskrowSharp.Models.ClientModels;
 
-namespace TaskrowSharp.Models.TaskModels;
+namespace TaskrowSharp.Models.JobModels;
 
 public class JobDetailEntity
 {

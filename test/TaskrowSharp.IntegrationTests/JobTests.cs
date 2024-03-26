@@ -3,8 +3,8 @@ using TaskrowSharp.IntegrationTests.TestModels;
 using Xunit;
 using TaskrowSharp.Exceptions;
 using System.Linq;
-using TaskrowSharp.Models.TaskModels;
 using System;
+using TaskrowSharp.Models.JobModels;
 
 namespace TaskrowSharp.IntegrationTests;
 
@@ -62,9 +62,6 @@ public class JobTests : BaseTest
     [Fact]
     public async Task InsertJobAsync_Success()
     {
-        if (_configurationFile.Clients?.Count == 0)
-            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
-
         var jobInsertData = _configurationFile.InsertJobData;
 
         var request = new InsertJobRequest(
