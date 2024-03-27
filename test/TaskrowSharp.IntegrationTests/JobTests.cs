@@ -87,4 +87,18 @@ public class JobTests : BaseTest
         Assert.Equal(request.JobTitle, response.Entity.JobTitle);
         Assert.Equal(request.ClientNickName, response.Entity.Client.ClientNickName);
     }
+
+    [Fact]
+    public async Task ListJobClientDependeciesAsync_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.First();
+
+        var response = await _taskrowClient.ListJobClientDependeciesAsync(client.ClientID);
+
+        Assert.NotNull(response);
+        Assert.NotEmpty(response.Entity.ClientAreas);
+    }
 }

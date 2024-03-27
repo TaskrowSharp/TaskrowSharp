@@ -595,6 +595,35 @@ public class TaskrowClient
 
     #endregion
 
+    #region JobClientDependecies
+
+    public async Task<ListJobClientDependeciesResponse> ListJobClientDependeciesAsync(int clientID)
+    {
+        var relativeUrl = new Uri($"/api/v1/Job/ListJobClientDependecies?clientID={clientID}", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+        try
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var list = JsonSerializer.Deserialize<ListJobClientDependeciesResponse>(jsonResponse);
+
+            return list;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    #endregion
+
     #region Task
 
     public async Task<TasksByGroupEntity> ListTasksByGroupAsync(int groupID, int? userID = null)
