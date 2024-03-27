@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using TaskrowSharp.Exceptions;
+using TaskrowSharp.Models.AdministrativeModels;
 using TaskrowSharp.Models.BasicDataModels;
 using TaskrowSharp.Models.ClientModels;
 using TaskrowSharp.Models.IndexDataModels;
@@ -1177,6 +1178,35 @@ public class TaskrowClient
             var model = JsonSerializer.Deserialize<InsertOpportunityResponse>(jsonResponse);
 
             return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    #endregion
+
+    #region Administrative
+
+    public async Task<ListAdministrativeJobSubTypesResponse> ListAdministrativeJobSubTypesAsync()
+    {
+        var relativeUrl = new Uri($"/api/v1/Administrative/ListJobSubType", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+        try
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var list = JsonSerializer.Deserialize<ListAdministrativeJobSubTypesResponse>(jsonResponse);
+
+            return list;
         }
         catch (Exception ex)
         {
