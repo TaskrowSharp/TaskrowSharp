@@ -16,8 +16,8 @@ public class InsertJobRequest
     public bool LooseEntriesAllowed { get; set; }
     public bool DeliverableRequired { get; set; }
     public int RequestDeliveryEnforceabilityID { get; set; }
-    public int ClientAreaID { get; set; }
-    public int JobSubTypeID { get; set; }
+    public int? ClientAreaID { get; set; }
+    public int? JobSubTypeID { get; set; }
 
     public int? PipelineID { get; set; }
     public int? JobTemplateID { get; set; }
@@ -38,8 +38,8 @@ public class InsertJobRequest
         bool looseEntriesAllowed,
         bool deliverableRequired,
         int requestDeliveryEnforceabilityID,
-        int clientAreaID,
-        int jobSubTypeID)
+        int? clientAreaID,
+        int? jobSubTypeID)
     {
         ClientID = clientID;
         ClientNickName = clientNickName;
@@ -74,8 +74,8 @@ public class InsertJobRequest
         bool looseEntriesAllowed,
         bool deliverableRequired,
         int requestDeliveryEnforceabilityID,
-        int clientAreaID,
-        int jobSubTypeID,
+        int? clientAreaID,
+        int? jobSubTypeID,
 
         int? pipelineID,
         int? jobTemplateID)
