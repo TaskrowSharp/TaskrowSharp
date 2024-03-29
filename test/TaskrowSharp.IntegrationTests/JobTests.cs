@@ -101,4 +101,22 @@ public class JobTests : BaseTest
         Assert.NotNull(response);
         Assert.NotEmpty(response.Entity.ClientAreas);
     }
+
+    [Fact]
+    public async Task UpdateJobStatusAsyncAsync_Inactivate_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.First();
+        var jobNumber = client.JobNumbers.First();
+
+        var jobStatusID = 4;
+
+        var response = await _taskrowClient.UpdateJobStatusAsync(client.ClientNickName, jobNumber, jobStatusID);
+
+        Assert.NotNull(response);
+        Assert.True(response.Success);
+        Assert.Equal(jobStatusID, response.Entity.JobStatusID);
+    }
 }

@@ -293,3 +293,6 @@ __pycache__/
 
 test/TaskrowSharp.IntegrationTests/config/main.json
 
+_copy_taskrowsharp.bat
+
+

@@ -594,6 +594,32 @@ public class TaskrowClient
         }
     }*/
 
+    public async Task<UpdateJobStatusResponse> UpdateJobStatusAsync(string clientNickName, int jobNumber, int jobStatusID)
+    {
+        var relativeUrl = new Uri($"api/v1/Job/UpdateJobStatus?clientNickName={clientNickName}&jobNumber={jobNumber}&status={jobStatusID}", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+        
+        try
+        {
+            var requestContent = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+            requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            requestContent.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.PostAsync(fullUrl, requestContent);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var model = JsonSerializer.Deserialize<UpdateJobStatusResponse>(jsonResponse);
+
+            return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
     #endregion
 
     #region JobClientDependecies

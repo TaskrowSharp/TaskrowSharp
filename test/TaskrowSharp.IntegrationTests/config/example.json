@@ -4,7 +4,7 @@
   "taskUrls": [
     "/CompanyTest/1/1"
   ],
-  "clientIDs": [
+  "clients": [
     {
       "clientID": 100,
       "clientNickName": "company1",
