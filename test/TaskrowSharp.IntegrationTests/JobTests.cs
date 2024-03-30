@@ -119,4 +119,37 @@ public class JobTests : BaseTest
         Assert.True(response.Success);
         Assert.Equal(jobStatusID, response.Entity.JobStatusID);
     }
+
+    [Fact]
+    public async Task GetJobHomeAsync_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.First();
+        var jobNumber = client.JobNumbers.First();
+
+        var jobHome = await _taskrowClient.GetJobHomeAsync(client.ClientNickName, jobNumber);
+
+        Assert.NotNull(jobHome);
+        Assert.NotNull(jobHome.Job);
+        Assert.Equal(jobNumber, jobHome.Job.JobNumber);
+    }
+
+    [Fact]
+    public async Task SaveJobWallPostAsync_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.First();
+        var jobNumber = client.JobNumbers.First();
+        var jobHome = await _taskrowClient.GetJobHomeAsync(client.ClientNickName, jobNumber);
+
+        var request = new SaveJobWallPostRequest(jobHome.JobWall.WallID, jobNumber, $"TaskrowSharp Test -- {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff)}");
+        var response = await _taskrowClient.SaveJobWallPostAsync(request);
+
+        Assert.NotNull(response);
+        Assert.True(response.Success);
+    }
 }

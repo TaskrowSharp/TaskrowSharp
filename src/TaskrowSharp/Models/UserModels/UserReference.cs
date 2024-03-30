@@ -6,6 +6,11 @@ public class UserReference
     public string UserLogin { get; private set; }
     public string UserHashCode { get; private set; }
 
+    public UserReference()
+    {
+
+    }
+
     public UserReference(int userID, string userLogin, string userHashCode = null)
     {
         UserID = userID;

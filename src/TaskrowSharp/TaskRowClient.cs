@@ -651,6 +651,62 @@ public class TaskrowClient
 
     #endregion
 
+    #region JobHome + JobWall
+
+    public async Task<JobHome> GetJobHomeAsync(string clientNickname, int jobNumber)
+    {
+        var relativeUrl = new Uri($"/api/v1/Job/JobHome?clientNickName={clientNickname}&jobNumber={jobNumber}", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+
+        try
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var jobHome = JsonSerializer.Deserialize<JobHome>(jsonResponse);
+
+            return jobHome;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    public async Task<SaveJobWallPostResponse> SaveJobWallPostAsync(SaveJobWallPostRequest saveJobWallPostRequest)
+    {
+        var relativeUrl = new Uri($"/api/v1/Wall/SaveWallPost", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+        var jsonRequest = JsonSerializer.Serialize(saveJobWallPostRequest, jsonSerializerOptions);
+
+        try
+        {
+            var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            requestContent.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.PostAsync(fullUrl, requestContent);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var model = JsonSerializer.Deserialize<SaveJobWallPostResponse>(jsonResponse);
+
+            return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    #endregion
+
     #region Task
 
     public async Task<TasksByGroupEntity> ListTasksByGroupAsync(int groupID, int? userID = null)
