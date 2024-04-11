@@ -5,6 +5,7 @@ using TaskrowSharp.Exceptions;
 using System.Linq;
 using System;
 using TaskrowSharp.Models.JobModels;
+using TaskrowSharp.Models.TaskModels;
 
 namespace TaskrowSharp.IntegrationTests;
 
@@ -86,6 +87,26 @@ public class JobTests : BaseTest
         Assert.True(response.Success);
         Assert.Equal(request.JobTitle, response.Entity.JobTitle);
         Assert.Equal(request.ClientNickName, response.Entity.Client.ClientNickName);
+    }
+
+    [Fact]
+    public async Task UpdateJobAsync_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.Where(a => a.JobNumbers.Count > 0).First();
+        var jobNumbers = client.JobNumbers;
+        var jobNumber = jobNumbers.First();
+
+        var jobEntity = await _taskrowClient.GetJobDetailAsync(client.ClientNickName, jobNumber);
+
+        var request = new UpdateJobRequest(jobEntity.Job);
+
+        var response = await _taskrowClient.UpdateJobAsync(request);
+        Assert.True(response.Success);
+        Assert.Equal(request.JobNumber, response.Entity.JobNumber);
+        Assert.Equal(request.JobTitle, response.Entity.JobTitle);
     }
 
     [Fact]

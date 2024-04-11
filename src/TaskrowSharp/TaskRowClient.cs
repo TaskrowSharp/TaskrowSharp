@@ -527,12 +527,12 @@ public class TaskrowClient
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
             }
 
-            var model = JsonSerializer.Deserialize<JobDetailEntity>(jsonResponse);
+            var response = JsonSerializer.Deserialize<JobDetailEntity>(jsonResponse);
 
-            if (model.Job == null)
+            if (response.Job == null)
                 return null;
 
-            return model;
+            return response;
         }
         catch (Exception ex)
         {
@@ -567,7 +567,7 @@ public class TaskrowClient
         }
     }
 
-    /*public async Task<UpdateJobResponse> UpdateJobAsync(UpdateJobRequest updateJobRequest)
+    public async Task<UpdateJobResponse> UpdateJobAsync(UpdateJobRequest updateJobRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Job/SaveJob", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -592,7 +592,7 @@ public class TaskrowClient
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
         }
-    }*/
+    }
 
     public async Task<UpdateJobStatusResponse> UpdateJobStatusAsync(string clientNickName, int jobNumber, int jobStatusID)
     {
