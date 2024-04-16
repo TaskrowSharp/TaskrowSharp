@@ -49,12 +49,13 @@ public class InsertClientAddressRequest
         CityID = cityID;
         Street = street;
         Number = number;
+
         Inactive = false;
     }
 
     public InsertClientAddressRequest(int clientID, string clientNickName, string socialContractName,
-        string? cnpj, string? cpf,
-        int countryID, int cityID, string stateName, string cityName, string street, string? number)
+        string? cnpj = null, string? cpf = null,
+        int countryID = 31, int cityID = 1, string? stateName = null, string? cityName = null, string? street = null, string? number = null, string? complement = null)
     {
         ClientID = clientID;
         ClientAddressID = 0;
@@ -73,16 +74,15 @@ public class InsertClientAddressRequest
             CPF = cpf;
             NoCNPJ = true;
         }
-        else
-        {
-            throw new ArgumentException(null, nameof(cnpj));
-        }
-
+        
         CountryID = countryID;
         CityID = cityID;
         StateName = stateName;
         CityName = cityName;
         Street = street;
         Number = number;
+        Complement = complement;
+
+        Inactive = false;
     }
 }
