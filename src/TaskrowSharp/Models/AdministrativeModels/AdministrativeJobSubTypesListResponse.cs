@@ -2,7 +2,7 @@
 
 namespace TaskrowSharp.Models.AdministrativeModels;
 
-public class ListAdministrativeJobSubTypesResponse
+public class AdministrativeJobSubTypesListResponse
 {
     public List<AdministrativeJobSubType> JobSubTypeList { get; set; }
 }

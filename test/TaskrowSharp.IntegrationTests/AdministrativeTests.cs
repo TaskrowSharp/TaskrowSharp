@@ -18,7 +18,7 @@ public class AdministrativeTests : BaseTest
     [Fact]
     public async Task ListAdministrativeJobSubTypesAsync_Success()
     {
-        var response = await _taskrowClient.ListAdministrativeJobSubTypesAsync();
+        var response = await _taskrowClient.AdministrativeJobSubTypesListAsync();
 
         Assert.NotNull(response);
         Assert.NotEmpty(response.JobSubTypeList);

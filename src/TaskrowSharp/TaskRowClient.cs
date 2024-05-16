@@ -15,6 +15,7 @@ using TaskrowSharp.Models.ClientModels;
 using TaskrowSharp.Models.IndexDataModels;
 using TaskrowSharp.Models.InvoiceModels;
 using TaskrowSharp.Models.JobModels;
+using TaskrowSharp.Models.OpportunityModels;
 using TaskrowSharp.Models.TaskModels;
 using TaskrowSharp.Models.UserModels;
 
@@ -1240,11 +1241,11 @@ public class TaskrowClient
 
     #region Opportunity
 
-    public async Task<InsertOpportunityResponse> InsertOpportunityAsync(InsertOpportunityRequest insertOpportunityRequest)
+    public async Task<OpportunityInsertResponse> OpportunityInsertAsync(OpportunityInsertRequest opportunityInsertRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Opportunity/SaveOpportunity", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
-        var jsonRequest = JsonSerializer.Serialize(insertOpportunityRequest, jsonSerializerOptions);
+        var jsonRequest = JsonSerializer.Serialize(opportunityInsertRequest, jsonSerializerOptions);
 
         try
         {
@@ -1257,7 +1258,34 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<InsertOpportunityResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<OpportunityInsertResponse>(jsonResponse);
+
+            return model;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    public async Task<OpportunityTransferToClientResponse> OpportunityTransferToClientAsync(OpportunityTransferToClientRequest opportunityTransferToClientRequest)
+    {
+        var relativeUrl = new Uri($"/api/v1/Opportunity/TransferToClient", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+        var jsonRequest = JsonSerializer.Serialize(opportunityTransferToClientRequest, jsonSerializerOptions);
+
+        try
+        {
+            var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+            requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            requestContent.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.PostAsync(fullUrl, requestContent);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var model = JsonSerializer.Deserialize<OpportunityTransferToClientResponse>(jsonResponse);
 
             return model;
         }
@@ -1271,7 +1299,7 @@ public class TaskrowClient
 
     #region Administrative
 
-    public async Task<ListAdministrativeJobSubTypesResponse> ListAdministrativeJobSubTypesAsync()
+    public async Task<AdministrativeJobSubTypesListResponse> AdministrativeJobSubTypesListAsync()
     {
         var relativeUrl = new Uri($"/api/v1/Administrative/ListJobSubType", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1286,7 +1314,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var list = JsonSerializer.Deserialize<ListAdministrativeJobSubTypesResponse>(jsonResponse);
+            var list = JsonSerializer.Deserialize<AdministrativeJobSubTypesListResponse>(jsonResponse);
 
             return list;
         }
