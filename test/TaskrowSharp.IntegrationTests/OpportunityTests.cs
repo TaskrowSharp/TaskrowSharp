@@ -58,7 +58,7 @@ public class OpportunityTests : BaseTest
         var transferRequest = new OpportunityTransferToClientRequest(
             clientNickName: client1.ClientNickName, 
             opportunityID: insertResponse.Entity.Opportunity.OpportunityID, 
-            newClientNickname: client2.ClientNickName);
+            newClientNickName: client2.ClientNickName);
         var transferResponse = await _taskrowClient.OpportunityTransferToClientAsync(transferRequest);
 
         Assert.True(transferResponse.Success);
