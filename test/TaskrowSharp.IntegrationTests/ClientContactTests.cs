@@ -45,7 +45,7 @@ namespace TaskrowSharp.IntegrationTests
             
             var contactName = $"Teste TaskrowSharp {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
-            var request = new InsertClientContactRequest(clientID, client.Client.ClientName, contactName)
+            var request = new InsertClientContactRequest(clientID, client.Client.ClientNickName, contactName)
             {
                 ContactEmail = $"{Guid.NewGuid()}@email.com",
                 ContactMainPhone = "+55 (11) 6666-6666",

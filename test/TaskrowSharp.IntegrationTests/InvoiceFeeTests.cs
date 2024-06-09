@@ -52,6 +52,9 @@ namespace TaskrowSharp.IntegrationTests
                     null);
 
                 var insertResponse = await _taskrowClient.InsertInvoiceFeeAsync(request);
+                if (!insertResponse.Success)
+                    throw new InvalidOperationException($"Error inserting invoice -- {insertResponse.Message}");
+
 
                 var invoiceFee = insertResponse.Entities!.OrderByDescending(a => a.InvoiceFeeID).First();
 
