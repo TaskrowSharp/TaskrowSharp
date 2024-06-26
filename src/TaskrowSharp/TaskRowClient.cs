@@ -1241,7 +1241,7 @@ public class TaskrowClient
 
     #region Opportunity
 
-    public async Task<OpportunityInsertResponse> OpportunityInsertAsync(OpportunityInsertRequest opportunityInsertRequest)
+    public async Task<Opportunity> OpportunityInsertAsync(OpportunityInsertRequest opportunityInsertRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Opportunity/SaveOpportunity", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1258,9 +1258,11 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<OpportunityInsertResponse>(jsonResponse);
+            var response = JsonSerializer.Deserialize<OpportunityInsertResponse>(jsonResponse);
+            if (!response.Success)
+                throw new TaskrowException($"Error {response.Message}");
 
-            return model;
+            return response.Entity.Opportunity;
         }
         catch (Exception ex)
         {
@@ -1268,7 +1270,34 @@ public class TaskrowClient
         }
     }
 
-    public async Task<OpportunityTransferToClientResponse> OpportunityTransferToClientAsync(OpportunityTransferToClientRequest opportunityTransferToClientRequest)
+    public async Task<Opportunity?> OpportunityGetAsync(string clientNickName, int opportunityID)
+    {
+        var relativeUrl = new Uri($"/api/v1/Opportunity/GetOpportunity?clientNickName={clientNickName}&opportunityID={opportunityID}", UriKind.Relative);
+        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
+        
+        try
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            //TODO: API Taskrow retorna erro 500 quando não encontra o registro, deveria retornar erro 404
+            if (httpResponse.StatusCode == System.Net.HttpStatusCode.NotFound || httpResponse.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                return null;
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var response = JsonSerializer.Deserialize<Opportunity>(jsonResponse);
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
+        }
+    }
+
+    public async Task<Opportunity> OpportunityTransferToClientAsync(OpportunityTransferToClientRequest opportunityTransferToClientRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Opportunity/TransferToClient", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1285,9 +1314,11 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<OpportunityTransferToClientResponse>(jsonResponse);
+            var response = JsonSerializer.Deserialize<OpportunityTransferToClientResponse>(jsonResponse);
+            if (!response.Success)
+                throw new TaskrowException($"Error {response.Message}");
 
-            return model;
+            return response.Entity;
         }
         catch (Exception ex)
         {

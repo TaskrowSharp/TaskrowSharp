@@ -1,47 +1,52 @@
 ﻿{
-  "serviceUrl": "https://yourcompany.taskrow.com",
-  "accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa",
-  "taskUrls": [
-    "/CompanyTest/1/1"
-  ],
-  "clients": [
-    {
-      "clientID": 100,
-      "clientNickName": "company1",
-      "jobNumbers": [ 134, 134 ]
-    },
-    {
-      "clientID": 200,
-      "clientNickName": "company2",
-      "jobNumbers": [ 275 ]
-    }
-  ],
-  "userIDs": [
-    712,
-    734
-  ],
-  "insertInvoiceData": {
-    "jobNumber": 1,
-    "fromClientAddressID": 123,
-    "toClientAddressID": 456,
-    "userSigningDocument": 297
-  },
-  "insertJobData": {
-    "clientID": 100,
-    "clientNickName": "company1",
-    "jobTitle": "Projeto Teste 1",
-    "ownerUserID": 1,
-    "jobTypeID": 4,
-    "requiredProduct": false,
-    "public": false,
-    "externalUserAccess": false,
-    "healthReference": 0,
-    "isPrivate": false,
-    "effortRequired": false,
-    "looseEntriesAllowed": false,
-    "deliverableRequired": false,
-    "requestDeliveryEnforceabilityID": 1,
-    "clientAreaID": 20364,
-    "jobSubTypeID": 845
-  }
+	"serviceUrl": "https://yourcompany.taskrow.com",
+	"accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa",
+	"taskUrls": [
+		"/CompanyTest/1/1"
+	],
+	"clients": [
+		{
+			"clientID": 100,
+			"clientNickName": "company1",
+			"jobNumbers": [
+				134,
+				134
+			]
+		},
+		{
+			"clientID": 200,
+			"clientNickName": "company2",
+			"jobNumbers": [
+				275
+			]
+		}
+	],
+	"userIDs": [
+		712,
+		734
+	],
+	"insertInvoiceData": {
+		"jobNumber": 1,
+		"fromClientAddressID": 123,
+		"toClientAddressID": 456,
+		"userSigningDocument": 297
+	},
+	"insertJobData": {
+		"clientID": 100,
+		"clientNickName": "company1",
+		"jobTitle": "Projeto Teste 1",
+		"ownerUserID": 1,
+		"jobTypeID": 4,
+		"requiredProduct": false,
+		"public": false,
+		"externalUserAccess": false,
+		"healthReference": 0,
+		"isPrivate": false,
+		"effortRequired": false,
+		"looseEntriesAllowed": false,
+		"deliverableRequired": false,
+		"requestDeliveryEnforceabilityID": 1,
+		"clientAreaID": 20364,
+		"jobSubTypeID": 845
+	}
 }

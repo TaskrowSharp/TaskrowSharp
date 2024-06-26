@@ -32,9 +32,13 @@ public class OpportunityTests : BaseTest
             name: $"Oportunidade_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}",
             description: "Teste Taskrow");
 
-        var response = await _taskrowClient.OpportunityInsertAsync(request);
-        Assert.True(response.Success);
-        Assert.Equal(request.Name, response.Entity.Opportunity.Name);
+        var opportunity = await _taskrowClient.OpportunityInsertAsync(request);
+        Assert.NotNull(opportunity);
+        Assert.Equal(request.Name, opportunity.Name);
+
+        var opportunityGet = await _taskrowClient.OpportunityGetAsync(client.ClientNickName, opportunity.OpportunityID);
+        Assert.NotNull(opportunityGet);
+        Assert.Equal(request.Name, opportunityGet.Name);
     }
 
     [Fact]
@@ -57,11 +61,11 @@ public class OpportunityTests : BaseTest
 
         var transferRequest = new OpportunityTransferToClientRequest(
             clientNickName: client1.ClientNickName, 
-            opportunityID: insertResponse.Entity.Opportunity.OpportunityID, 
+            opportunityID: insertResponse.OpportunityID, 
             newClientNickName: client2.ClientNickName);
-        var transferResponse = await _taskrowClient.OpportunityTransferToClientAsync(transferRequest);
+        var opportunity = await _taskrowClient.OpportunityTransferToClientAsync(transferRequest);
 
-        Assert.True(transferResponse.Success);
-        Assert.Equal(client2.ClientNickName, transferResponse.Entity.Client.ClientNickName);
+        Assert.NotNull(opportunity);
+        Assert.Equal(client2.ClientNickName, opportunity.Client.ClientNickName);
     }
 }
