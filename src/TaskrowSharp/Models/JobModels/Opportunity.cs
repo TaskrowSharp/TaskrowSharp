@@ -7,14 +7,15 @@ public class Opportunity
 {
     public int OpportunityID { get; set; }
     public int OpportunityNumber { get; set; }
+    public string Name { get; set; }
+    public decimal OpportunityValue { get; set; }
     public string Number { get; set; }
     public int OpportunityStatusID { get; set; }
     public string OpportunityStatus { get; set; }
-    public string Name { get; set; }
     public int ClientID { get; set; }
     public Client Client { get; set; }
-    public object ProductID { get; set; }
-    public object Product { get; set; }
+    public int? ProductID { get; set; }
+    //public object Product { get; set; }
     public string Description { get; set; }
     public string CreationDate { get; set; }
     public int CreationUserID { get; set; }
