@@ -27,7 +27,7 @@ namespace TaskrowSharp.IntegrationTests
 
             foreach (var clientID in clientIDs)
             {
-                var clientContacts = await _taskrowClient.ListClientContactsAsync(clientID);
+                var clientContacts = await _taskrowClient.ClientContactListAsync(clientID);
 
                 Assert.NotNull(clientContacts);
             }
@@ -41,11 +41,11 @@ namespace TaskrowSharp.IntegrationTests
 
             if (clientID == 0)
                 throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
-            var client = await _taskrowClient.GetClientDetailAsync(clientID);
+            var client = await _taskrowClient.ClientDetailGetAsync(clientID);
             
             var contactName = $"Teste TaskrowSharp {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
-            var request = new InsertClientContactRequest(clientID, client.Client.ClientNickName, contactName)
+            var request = new ClientContactInsertRequest(clientID, client.Client.ClientNickName, contactName)
             {
                 ContactEmail = $"{Guid.NewGuid()}@email.com",
                 ContactMainPhone = "+55 (11) 6666-6666",
@@ -60,7 +60,7 @@ namespace TaskrowSharp.IntegrationTests
                 Inactive = true
             };
 
-            var response = await _taskrowClient.InsertClientContactAsync(request);
+            var response = await _taskrowClient.ClientContactInsertAsync(request);
             
             Assert.Equal(request.ContactName, response.Entity.ContactName);
         }

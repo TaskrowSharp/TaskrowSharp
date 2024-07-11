@@ -56,7 +56,7 @@ namespace TaskrowSharp.IntegrationTests
 
 
                 //-- req 100 - Cria faturamento 1
-                var invoiceFeeRequest1 = new InsertInvoiceFeeRequest(
+                var invoiceFeeRequest1 = new InvoiceFeeInsertRequest(
                     jobNumber: jobNumber,
                     feeMonth: feePeriodDate.Month,
                     feeYear: feePeriodDate.Year,
@@ -73,7 +73,7 @@ namespace TaskrowSharp.IntegrationTests
                     description: "Serviços IntegracaoOmie Test",
                     administrativeNotes: null);
 
-                var invoiceFeeResponse1 = await _taskrowClient.InsertInvoiceFeeAsync(invoiceFeeRequest1);
+                var invoiceFeeResponse1 = await _taskrowClient.InvoiceFeeInsertAsync(invoiceFeeRequest1);
                 if (!invoiceFeeResponse1.Success)
                     throw new InvalidOperationException($"InsertInvoiceFeeAsync returned success=false -- {invoiceFeeResponse1.Message}");
 
@@ -83,11 +83,11 @@ namespace TaskrowSharp.IntegrationTests
 
 
                 //-- Obtém invoice1
-                var invoice1 = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
+                var invoice1 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
 
 
                 //-- req 200 - Cria faturamento 2
-                var invoiceFeeRequest2 = new InsertInvoiceFeeRequest(
+                var invoiceFeeRequest2 = new InvoiceFeeInsertRequest(
                     jobNumber: jobNumber,
                     feeMonth: feePeriodDate.Month,
                     feeYear: feePeriodDate.Year,
@@ -104,7 +104,7 @@ namespace TaskrowSharp.IntegrationTests
                     description: "Serviços IntegracaoOmie Test",
                     administrativeNotes: null);
 
-                var invoiceFeeResponse2 = await _taskrowClient.InsertInvoiceFeeAsync(invoiceFeeRequest2);
+                var invoiceFeeResponse2 = await _taskrowClient.InvoiceFeeInsertAsync(invoiceFeeRequest2);
                 if (!invoiceFeeResponse2.Success)
                     throw new InvalidOperationException($"InsertInvoiceFeeAsync returned success=false -- {invoiceFeeResponse2.Message}");
 
@@ -112,28 +112,28 @@ namespace TaskrowSharp.IntegrationTests
 
 
                 //-- Obtém invoice2
-                var invoice2 = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee2.InvoiceID)).InvoiceDetail;
+                var invoice2 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee2.InvoiceID)).InvoiceDetail;
 
                 Debug.WriteLine($"InvoiceFee inserted (invoiceFeeID={invoiceFee2.InvoiceFeeID}, invoiceID={invoiceFee2.InvoiceID})");
 
 
                 //-- req 300 - Adicionar autorização do faturamento do faturamento 1 no faturamento 2
-                var requestSaveInvoiceAuthorization = new SaveInvoiceAuthorizationRequest(
+                var requestSaveInvoiceAuthorization = new InvoiceAuthorizationSaveRequest(
                     jobNumber: jobNumber,
                     invoiceID: invoice1.InvoiceID,
                     guidModification: invoice1.GuidModification,
                     invoiceFeeIDs: new List<int>() { invoiceFee2.InvoiceFeeID }
                 );
-                var responseSaveInvoiceAuthorization = await _taskrowClient.SaveInvoiceAuthorizationAsync(requestSaveInvoiceAuthorization);
+                var responseSaveInvoiceAuthorization = await _taskrowClient.InvoiceAuthorizationSaveAsync(requestSaveInvoiceAuthorization);
 
                 if (!responseSaveInvoiceAuthorization.Success)
                     throw new InvalidOperationException($"SaveInvoiceAuthorizationAsync returned success=false -- {responseSaveInvoiceAuthorization.Message}");
 
-                invoice1 = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
+                invoice1 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
 
 
                 //-- req 400 - Adicionar informacoes de faturamento (data, numero previsto, etc)
-                var saveInvoiceRequest = new SaveInvoiceRequest(
+                var saveInvoiceRequest = new InvoiceSaveRequest(
                     invoiceID: invoice1.InvoiceID,
                     invoiceTypeID: invoice1.InvoiceTypeID,
                     guidModification: invoice1.GuidModification,
@@ -164,13 +164,13 @@ namespace TaskrowSharp.IntegrationTests
                     InvoiceTax2ValueID = null
                 };
 
-                var saveInvoiceResponse = await _taskrowClient.SaveInvoiceAsync(saveInvoiceRequest);
+                var saveInvoiceResponse = await _taskrowClient.InvoiceSaveAsync(saveInvoiceRequest);
                 if (!saveInvoiceResponse.Success)
                     throw new InvalidOperationException($"SaveInvoiceAsync returned success=false -- {saveInvoiceResponse.Message}");
 
 
                 //-- req 500 - Gerar cobrança 1
-                var saveInvoiceBill1Request = new SaveInvoiceBillRequest(
+                var saveInvoiceBill1Request = new InvoiceBillSaveRequest(
                     invoiceID: invoice1.InvoiceID,
                     billTypeID: 2,
                     billValue: bill1Value,
@@ -183,7 +183,7 @@ namespace TaskrowSharp.IntegrationTests
                     MemoDueDate = null
                 };
 
-                var saveInvoiceBill1Response = await _taskrowClient.SaveInvoiceBillAsync(saveInvoiceBill1Request);
+                var saveInvoiceBill1Response = await _taskrowClient.InvoiceBillSaveAsync(saveInvoiceBill1Request);
                 if (!saveInvoiceBill1Response.Success)
                     throw new InvalidOperationException($"SaveInvoiceBillAsync returned success=false -- {saveInvoiceBill1Response.Message}");
 
@@ -191,7 +191,7 @@ namespace TaskrowSharp.IntegrationTests
 
 
                 //-- req 500 - Gerar cobrança 2
-                var saveInvoiceBill2Request = new SaveInvoiceBillRequest(
+                var saveInvoiceBill2Request = new InvoiceBillSaveRequest(
                     invoiceID: invoice1.InvoiceID,
                     billTypeID: 2,
                     billValue: bill2Value,
@@ -204,45 +204,45 @@ namespace TaskrowSharp.IntegrationTests
                     MemoDueDate = null
                 };
 
-                var saveInvoiceBill2Response = await _taskrowClient.SaveInvoiceBillAsync(saveInvoiceBill2Request);
+                var saveInvoiceBill2Response = await _taskrowClient.InvoiceBillSaveAsync(saveInvoiceBill2Request);
                 if (!saveInvoiceBill2Response.Success)
                     throw new InvalidOperationException($"SaveInvoiceBillAsync returned success=false -- {saveInvoiceBill2Response.Message}");
 
                 Debug.WriteLine($"InvoiceBill inserted (invoiceID={invoice1.InvoiceID})");
 
 
-                invoice1 = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
+                invoice1 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
 
                 Debug.WriteLine($"Invoice inserted successfully (invoiceID={invoice1.InvoiceID})");
 
                 //-- Update invoiceStatus
 
-                var updateInvoiceStatus = new UpdateInvoiceStatusRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test", invoice1.GuidModification);
-                var responseUpdate = await _taskrowClient.UpdateInvoiceStatusAsync(updateInvoiceStatus);
+                var updateInvoiceStatus = new InvoiceStatusUpdateRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test", invoice1.GuidModification);
+                var responseUpdate = await _taskrowClient.InvoiceStatusUpdateAsync(updateInvoiceStatus);
                 if (!responseUpdate.Success)
                     throw new InvalidOperationException($"UpdateInvoiceStatusAsync returned success=false -- {responseUpdate.Message}");
                 
                 //-- Cancel Invoice Bills
                 foreach (var invoiceBill in invoice1.InvoiceBill)
                 {
-                    var responseCancelInvoiceBill = await _taskrowClient.CancelInvoiceBillAsync(invoiceBill.InvoiceBillID);
+                    var responseCancelInvoiceBill = await _taskrowClient.InvoiceBillCancelAsync(invoiceBill.InvoiceBillID);
                     if (!responseCancelInvoiceBill.Success)
                         throw new InvalidOperationException($"CancelInvoiceBillAsync returned success=false -- {responseCancelInvoiceBill.Message}");
                     Debug.WriteLine($"InvoiceBill Canceled (invoiceBillID={invoiceBill.InvoiceBillID}, invoiceID={invoice1.InvoiceID})");
                 }
 
                 //-- Cancel Invoice
-                var requestCancelInvoice = new CancelInvoiceRequest(invoiceFee1.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice1.GuidModification);
-                var responseCancelInvoice = await _taskrowClient.CancelInvoiceAsync(requestCancelInvoice);
+                var requestCancelInvoice = new InvoiceCancelRequest(invoiceFee1.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice1.GuidModification);
+                var responseCancelInvoice = await _taskrowClient.InvoiceCancelAsync(requestCancelInvoice);
                 if (!responseCancelInvoice.Success)
                     throw new InvalidOperationException($"CancelInvoiceAsync returned success=false -- {responseCancelInvoice.Message}");
                 Debug.WriteLine($"Invoice Canceled (invoiceID={invoice1.InvoiceID})");
 
-                invoice1 = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
+                invoice1 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
 
                 //-- Delete Invoice
-                var requestDeleteInvoice = new DeleteInvoiceRequest(invoiceFee1.InvoiceID, "Inserted and deleted by TaskrowSharp", invoice1.GuidModification);
-                var response = await _taskrowClient.DeleteInvoiceAsync(requestDeleteInvoice);
+                var requestDeleteInvoice = new InvoiceDeleteRequest(invoiceFee1.InvoiceID, "Inserted and deleted by TaskrowSharp", invoice1.GuidModification);
+                var response = await _taskrowClient.InvoiceDeleteAsync(requestDeleteInvoice);
                 Debug.WriteLine($"Invoice Deleted (invoiceID={invoice1.InvoiceID})");
 
                 Assert.True(response.Success);

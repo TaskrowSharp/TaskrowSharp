@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TaskrowSharp.Models.TaskModels;
+﻿namespace TaskrowSharp.Models.TaskModels;
 
 public class TaskReference
 {
@@ -15,7 +13,7 @@ public class TaskReference
         TaskNumber = taskNumber;
     }
 
-    public TaskReference(string url)
+    /*public TaskReference(string url)
     {
         if (string.IsNullOrWhiteSpace(url))
             throw new ArgumentNullException(nameof(url));
@@ -43,5 +41,10 @@ public class TaskReference
         TaskNumber = int.Parse(array[2]);
         if (TaskNumber == 0)
             throw new ArgumentException($"TaskNumber invalid in task url \"{url}\". Please use the format: /{{MyClient}}/{{JobNumber}}/{{TaskNumber}}");
+    }*/
+
+    public override string ToString()
+    {
+        return $"/{ClientNickname}/{JobNumber}/{TaskNumber}";
     }
 }

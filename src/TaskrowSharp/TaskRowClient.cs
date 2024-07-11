@@ -70,7 +70,7 @@ public class TaskrowClient
 
     #region IndexData
 
-    public async Task<IndexData> GetIndexDataAsync()
+    public async Task<IndexData> IndexDataGetAsync()
     {
         var relativeUrl = new Uri("/api/v1/Main/IndexData", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -99,7 +99,7 @@ public class TaskrowClient
 
     #region Client
 
-    public async Task<List<SearchClientItem>> SearchClientsAsync(string term, bool showInactives = true)
+    public async Task<List<ClientItemSearch>> ClientSearchAsync(string term, bool showInactives = true)
     {
         var relativeUrl = new Uri($"/api/v1/Search/SearchClients?&q={term}&showInactives={showInactives}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -114,7 +114,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var list = JsonSerializer.Deserialize<List<SearchClientItem>>(jsonResponse);
+            var list = JsonSerializer.Deserialize<List<ClientItemSearch>>(jsonResponse);
 
             return list;
         }
@@ -124,7 +124,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<ListClientItemResponse> ListClientsAsync(string? nextToken = null, bool? includeInactives = null)
+    public async Task<ClientListItemResponse> ClientListAsync(string? nextToken = null, bool? includeInactives = null)
     {
         string queryString = null;
         if (!string.IsNullOrWhiteSpace(nextToken))
@@ -145,7 +145,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var list = JsonSerializer.Deserialize<ListClientItemResponse>(jsonResponse);
+            var list = JsonSerializer.Deserialize<ClientListItemResponse>(jsonResponse);
 
             return list;
         }
@@ -155,7 +155,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<ClientDetailEntity> GetClientDetailAsync(int clientID)
+    public async Task<ClientDetailEntity> ClientDetailGetAsync(int clientID)
     {
         var relativeUrl = new Uri($"/api/v1/Client/ClientDetail?clientID={clientID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -184,7 +184,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<InsertClientResponse> InsertClientAsync(InsertClientRequest insertClientRequest)
+    public async Task<ClientInsertResponse> ClientInsertAsync(ClientInsertRequest insertClientRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -201,7 +201,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<InsertClientResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<ClientInsertResponse>(jsonResponse);
 
             return model;
         }
@@ -211,7 +211,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<UpdateClientResponse> UpdateClientAsync(UpdateClientRequest updateClientRequest)
+    public async Task<ClientUpdateResponse> ClientUpdateAsync(ClientUpdateRequest updateClientRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -228,7 +228,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<UpdateClientResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<ClientUpdateResponse>(jsonResponse);
 
             return model;
         }
@@ -242,7 +242,7 @@ public class TaskrowClient
 
     #region ClientAddress
 
-    public async Task<InsertClientAddressResponse> InsertClientAddressAsync(InsertClientAddressRequest insertClientAddressRequest)
+    public async Task<ClientAddressInsertResponse> ClientAddressInsertAsync(ClientAddressInsertRequest insertClientAddressRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -259,7 +259,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<InsertClientAddressResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<ClientAddressInsertResponse>(jsonResponse);
 
             return model;
         }
@@ -269,7 +269,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<UpdateClientAddressResponse> UpdateClientAddressAsync(UpdateClientAddressRequest updateClientAddressRequest)
+    public async Task<ClientAddressUpdateResponse> ClientAddressUpdateAsync(ClientAddressUpdateRequest updateClientAddressRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -286,7 +286,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<UpdateClientAddressResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<ClientAddressUpdateResponse>(jsonResponse);
 
             return model;
         }
@@ -300,7 +300,7 @@ public class TaskrowClient
 
     #region ClientContact
 
-    public async Task<List<ClientContact>> ListClientContactsAsync(int clientID)
+    public async Task<List<ClientContact>> ClientContactListAsync(int clientID)
     {
         var relativeUrl = new Uri($"/api/v1/Client/ListClientContacts?clientID={clientID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -325,7 +325,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<InsertClientContactResponse> InsertClientContactAsync(InsertClientContactRequest insertClientContactRequest)
+    public async Task<ClientContactInsertResponse> ClientContactInsertAsync(ClientContactInsertRequest insertClientContactRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Client/SaveContact", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -342,7 +342,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<InsertClientContactResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<ClientContactInsertResponse>(jsonResponse);
 
             return model;
         }
@@ -356,7 +356,7 @@ public class TaskrowClient
 
     #region User
 
-    public async Task<List<User>> ListUsersAsync(bool showInactive = false)
+    public async Task<List<User>> UserListAsync(bool showInactive = false)
     {
         var relativeUrl = new Uri($"/api/v1/User/ListUsers?showInactive={showInactive.ToString().ToLower()}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -381,7 +381,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<UserDetailResponse> GetUserDetailAsync(int userID)
+    public async Task<UserDetailResponse> UserDetailGetAsync(int userID)
     {
         var relativeUrl = new Uri($"/api/v1/User/UserDetail?userID={userID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -414,7 +414,7 @@ public class TaskrowClient
 
     #region Group
 
-    public async Task<List<UserGroup>> ListGroupsAsync()
+    public async Task<List<UserGroup>> UserGroupListAsync()
     {
         var relativeUrl = new Uri("/api/v1/Administrative/ListGroups?groupTypeID=2", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -429,7 +429,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<ListGroupResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<UserGroupListResponse>(jsonResponse);
 
             return model.Groups;
         }
@@ -443,7 +443,7 @@ public class TaskrowClient
 
     #region City
 
-    public async Task<List<City>> ListCitiesAsync(string stateAbbreviation)
+    public async Task<List<City>> CityListAsync(string stateAbbreviation)
     {
         if (string.IsNullOrWhiteSpace(stateAbbreviation)) throw new ArgumentNullException(nameof(stateAbbreviation));
 
@@ -472,7 +472,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<City?> GetCityByNameAsync(string stateAbbreviation, string cityName)
+    public async Task<City?> CityGetByNameAsync(string stateAbbreviation, string cityName)
     {
         if (string.IsNullOrWhiteSpace(stateAbbreviation)) throw new ArgumentNullException(nameof(stateAbbreviation));
         if (string.IsNullOrWhiteSpace(cityName)) throw new ArgumentNullException(nameof(cityName));
@@ -509,7 +509,7 @@ public class TaskrowClient
 
     #region Job
 
-    public async Task<JobDetailEntity> GetJobDetailAsync(string clientNickName, int jobNumber)
+    public async Task<JobDetailEntity> JobDetailGetAsync(string clientNickName, int jobNumber)
     {
         var relativeUrl = new Uri($"/api/v1/Job/JobDetail?clientNickName={clientNickName}&JobNumber={jobNumber}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -541,7 +541,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<InsertJobResponse> InsertJobAsync(InsertJobRequest insertJobRequest)
+    public async Task<JobInsertResponse> JobInsertAsync(JobInsertRequest insertJobRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Job/SaveJob", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -558,7 +558,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<InsertJobResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<JobInsertResponse>(jsonResponse);
 
             return model;
         }
@@ -568,7 +568,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<UpdateJobResponse> UpdateJobAsync(UpdateJobRequest updateJobRequest)
+    public async Task<JobUpdateResponse> JobUpdateAsync(JobUpdateRequest updateJobRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Job/SaveJob", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -585,7 +585,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<UpdateJobResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<JobUpdateResponse>(jsonResponse);
 
             return model;
         }
@@ -595,7 +595,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<UpdateJobStatusResponse> UpdateJobStatusAsync(string clientNickName, int jobNumber, int jobStatusID)
+    public async Task<JobStatusUpdateResponse> JobStatusUpdateAsync(string clientNickName, int jobNumber, int jobStatusID)
     {
         var relativeUrl = new Uri($"api/v1/Job/UpdateJobStatus?clientNickName={clientNickName}&jobNumber={jobNumber}&status={jobStatusID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -611,7 +611,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<UpdateJobStatusResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<JobStatusUpdateResponse>(jsonResponse);
 
             return model;
         }
@@ -625,7 +625,7 @@ public class TaskrowClient
 
     #region JobClientDependecies
 
-    public async Task<ListJobClientDependeciesResponse> ListJobClientDependeciesAsync(int clientID)
+    public async Task<JobClientDependencyListResponse> JobClientDependecyListAsync(int clientID)
     {
         var relativeUrl = new Uri($"/api/v1/Job/ListJobClientDependecies?clientID={clientID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -640,7 +640,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var list = JsonSerializer.Deserialize<ListJobClientDependeciesResponse>(jsonResponse);
+            var list = JsonSerializer.Deserialize<JobClientDependencyListResponse>(jsonResponse);
 
             return list;
         }
@@ -654,7 +654,7 @@ public class TaskrowClient
 
     #region JobHome + JobWall
 
-    public async Task<JobHome> GetJobHomeAsync(string clientNickname, int jobNumber)
+    public async Task<JobHome> JobHomeGetAsync(string clientNickname, int jobNumber)
     {
         var relativeUrl = new Uri($"/api/v1/Job/JobHome?clientNickName={clientNickname}&jobNumber={jobNumber}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -679,7 +679,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<SaveJobWallPostResponse> SaveJobWallPostAsync(SaveJobWallPostRequest saveJobWallPostRequest)
+    public async Task<JobWallPostSaveResponse> JobWallPostSaveAsync(JobWallPostSaveRequest saveJobWallPostRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Wall/SaveWallPost", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -696,7 +696,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<SaveJobWallPostResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<JobWallPostSaveResponse>(jsonResponse);
 
             return model;
         }
@@ -710,7 +710,7 @@ public class TaskrowClient
 
     #region Task
 
-    public async Task<TasksByGroupEntity> ListTasksByGroupAsync(int groupID, int? userID = null)
+    public async Task<TaskListByGroupEntity> TaskListByGroupAsync(int groupID, int? userID = null)
     {
         if (groupID == 0)
             throw new ArgumentException(null, nameof(groupID));
@@ -745,7 +745,7 @@ public class TaskrowClient
         }
     }
             
-    public async Task<TaskDetailResponse> GetTaskDetailAsync(TaskReference taskReference)
+    public async Task<TaskDetailResponse> TaskDetailGetAsync(TaskReference taskReference)
     {
         var relativeUrl = new Uri($"/api/v1/Task/TaskDetail?clientNickname={taskReference.ClientNickname}&jobNumber={taskReference.JobNumber}&taskNumber={taskReference.TaskNumber}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -773,8 +773,8 @@ public class TaskrowClient
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
         }
     }
-            
-    public async Task<SaveTaskResponse> SaveTaskAsync(SaveTaskRequest saveTaskRequest)
+    
+    public async Task<TaskSaveResponse> TaskSaveAsync(TaskSaveRequest saveTaskRequest)
     {
         var relativeUrl = new Uri("/api/v1/Task/SaveTask", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -791,7 +791,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<SaveTaskResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<TaskSaveResponse>(jsonResponse);
 
             return model;
         }
@@ -805,7 +805,7 @@ public class TaskrowClient
 
     #region ExternalData
 
-    public async Task<Dictionary<string, object?>> GetExternalDataAsync(string provider, string entityName, int id)
+    public async Task<Dictionary<string, object?>> ExternalDataGetAsync(string provider, string entityName, int id)
     {
         entityName = entityName.ToLower();
         var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification={id}", UriKind.Relative);
@@ -836,7 +836,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<List<Dictionary<string, object?>>> SearchExternalDataByFieldValueAsync(string provider, string entityName, string entityIdName,
+    public async Task<List<Dictionary<string, object?>>> ExternalDataSearchByFieldValueAsync(string provider, string entityName, string entityIdName,
         string fieldName, string fieldValue)
     {
         entityName = entityName.ToLower();
@@ -862,7 +862,7 @@ public class TaskrowClient
                     throw new InvalidOperationException($"Invalid entityIdName: \"{entityIdName}\"");
 
                 var id = Convert.ToInt32(dicSearch[entityIdName].ToString());
-                var dicRet = await GetExternalDataAsync(provider, entityName, id);
+                var dicRet = await ExternalDataGetAsync(provider, entityName, id);
                 if (!dicRet.ContainsKey(entityIdName))
                     dicRet.Add(entityIdName, id);
 
@@ -877,7 +877,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task SaveExternalDataAsync(string provider, string entityName, int id, Dictionary<string, object?> values)
+    public async Task ExternalDataSaveAsync(string provider, string entityName, int id, Dictionary<string, object?> values)
     {
         entityName = entityName.ToLower();
         var relativeUrl = new Uri($"/api/v2/externaldata/{entityName}?provider={provider}&identification={id}", UriKind.Relative);
@@ -905,7 +905,7 @@ public class TaskrowClient
 
     #region InvoiceFee
 
-    public async Task<InsertInvoiceFeeResponse> InsertInvoiceFeeAsync(InsertInvoiceFeeRequest insertInvoiceRequest)
+    public async Task<InvoiceFeeInsertResponse> InvoiceFeeInsertAsync(InvoiceFeeInsertRequest insertInvoiceRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceFee", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -922,7 +922,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<InsertInvoiceFeeResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceFeeInsertResponse>(jsonResponse);
             
             return model;
         }
@@ -932,7 +932,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<InvoiceFee> GetInvoiceFeeDetailAsync(int jobNumber, int invoiceFeeID)
+    public async Task<InvoiceFee> InvoiceFeeDetailGetAsync(int jobNumber, int invoiceFeeID)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/InvoiceFeeDetail?jobNumber={jobNumber}&invoiceFeeID={invoiceFeeID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -965,7 +965,7 @@ public class TaskrowClient
 
     #region Invoice
 
-    public async Task<InvoiceDetailResponseEntity> GetInvoiceDetailAsync(int invoiceID)
+    public async Task<InvoiceDetailResponseEntity> InvoiceDetailGetAsync(int invoiceID)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/GetInvoiceDetail?invoiceID={invoiceID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -994,7 +994,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<SaveInvoiceResponse> SaveInvoiceAsync(SaveInvoiceRequest saveInvoiceRequest)
+    public async Task<InvoiceSaveResponse> InvoiceSaveAsync(InvoiceSaveRequest saveInvoiceRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoice", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1011,7 +1011,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<SaveInvoiceResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceSaveResponse>(jsonResponse);
 
             return model;
         }
@@ -1021,7 +1021,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<CancelInvoiceResponse> CancelInvoiceAsync(CancelInvoiceRequest request)
+    public async Task<InvoiceCancelResponse> InvoiceCancelAsync(InvoiceCancelRequest request)
     {
         var memoEncoded = (!string.IsNullOrEmpty(request.Memo) ? HttpUtility.UrlEncode(request.Memo) : null);
         var relativeUrl = new Uri($"/api/v1/Invoice/CancelInvoice?invoiceID={request.InvoiceID}&memo={memoEncoded}", UriKind.Relative);
@@ -1037,7 +1037,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<CancelInvoiceResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceCancelResponse>(jsonResponse);
 
             return model;
         }
@@ -1047,7 +1047,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<DeleteInvoiceResponse> DeleteInvoiceAsync(DeleteInvoiceRequest request)
+    public async Task<InvoiceDeleteResponse> InvoiceDeleteAsync(InvoiceDeleteRequest request)
     {
         var memoEncoded = (!string.IsNullOrEmpty(request.Memo) ? HttpUtility.UrlEncode(request.Memo) : null);
         var relativeUrl = new Uri($"/api/v1/Invoice/DeleteInvoice?invoiceID={request.InvoiceID}&memo={memoEncoded}", UriKind.Relative);
@@ -1063,7 +1063,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<DeleteInvoiceResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceDeleteResponse>(jsonResponse);
 
             return model;
         }
@@ -1077,7 +1077,7 @@ public class TaskrowClient
 
     #region InvoiceStatus
 
-    public async Task<UpdateInvoiceResponse> UpdateInvoiceStatusAsync(UpdateInvoiceStatusRequest updateInvoiceRequest)
+    public async Task<InvoiceUpdateResponse> InvoiceStatusUpdateAsync(InvoiceStatusUpdateRequest updateInvoiceRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceIntegrationStatus", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1094,7 +1094,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<UpdateInvoiceResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceUpdateResponse>(jsonResponse);
 
             return model;
         }
@@ -1108,7 +1108,7 @@ public class TaskrowClient
 
     #region InvoiceAuthorization
 
-    public async Task<SaveInvoiceAuthorizationResponse> SaveInvoiceAuthorizationAsync(SaveInvoiceAuthorizationRequest request)
+    public async Task<InvoiceAuthorizationSaveResponse> InvoiceAuthorizationSaveAsync(InvoiceAuthorizationSaveRequest request)
     {
         string parameters = $"jobNumber={request.JobNumber}";
         parameters += $"&invoiceID={request.InvoiceID}";
@@ -1133,7 +1133,7 @@ public class TaskrowClient
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
             }
 
-            var model = JsonSerializer.Deserialize<SaveInvoiceAuthorizationResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceAuthorizationSaveResponse>(jsonResponse);
 
             return model;
         }
@@ -1147,7 +1147,7 @@ public class TaskrowClient
 
     #region InvoiceBill
 
-    public async Task<SaveInvoiceBillResponse> SaveInvoiceBillAsync(SaveInvoiceBillRequest saveInvoiceBillRequest)
+    public async Task<InvoiceBillSaveResponse> InvoiceBillSaveAsync(InvoiceBillSaveRequest saveInvoiceBillRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceBill", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1164,7 +1164,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<SaveInvoiceBillResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceBillSaveResponse>(jsonResponse);
 
             return model;
         }
@@ -1174,7 +1174,7 @@ public class TaskrowClient
         }
     }
 
-    public async Task<CancelInvoiceBillResponse> CancelInvoiceBillAsync(int invoiceBillID)
+    public async Task<InvoiceBillCancelResponse> InvoiceBillCancelAsync(int invoiceBillID)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/CancelInvoiceBill?invoiceBillID={invoiceBillID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1189,7 +1189,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<CancelInvoiceBillResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceBillCancelResponse>(jsonResponse);
 
             return model;
         }
@@ -1203,7 +1203,7 @@ public class TaskrowClient
 
     #region InvoiceBillPayment
 
-    public async Task<SaveInvoiceBillPaymentResponse> SaveInvoiceBillPaymentAsync(SaveInvoiceBillPaymentRequest saveInvoiceBillRequest)
+    public async Task<InvoiceBillPaymentSaveResponse> InvoiceBillPaymentSaveAsync(InvoiceBillPaymentSaveRequest saveInvoiceBillRequest)
     {
         var relativeUrl = new Uri($"/api/v1/Invoice/SaveInvoiceBillPayment", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
@@ -1220,7 +1220,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<SaveInvoiceBillPaymentResponse>(jsonResponse);
+            var model = JsonSerializer.Deserialize<InvoiceBillPaymentSaveResponse>(jsonResponse);
 
             if (model.Success == null)
                 model.Success = true;

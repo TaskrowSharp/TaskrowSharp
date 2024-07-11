@@ -37,7 +37,7 @@ namespace TaskrowSharp.IntegrationTests
 
                 //--- Insert
 
-                var request = new InsertInvoiceFeeRequest(insertInvoiceData.JobNumber,
+                var request = new InvoiceFeeInsertRequest(insertInvoiceData.JobNumber,
                     feePeriodDate.Month, feePeriodDate.Year,
                     forecastDate.Month, forecastDate.Year,
                     insertInvoiceData.FromClientAddressID,
@@ -51,7 +51,7 @@ namespace TaskrowSharp.IntegrationTests
                     "Serviços TaskrowSharp Test",
                     null);
 
-                var insertResponse = await _taskrowClient.InsertInvoiceFeeAsync(request);
+                var insertResponse = await _taskrowClient.InvoiceFeeInsertAsync(request);
                 if (!insertResponse.Success)
                     throw new InvalidOperationException($"Error inserting invoice -- {insertResponse.Message}");
 
@@ -63,15 +63,15 @@ namespace TaskrowSharp.IntegrationTests
 
                 //--- Get
 
-                invoiceFee = await _taskrowClient.GetInvoiceFeeDetailAsync(invoiceFee.Job.JobNumber, invoiceFee.InvoiceFeeID);
+                invoiceFee = await _taskrowClient.InvoiceFeeDetailGetAsync(invoiceFee.Job.JobNumber, invoiceFee.InvoiceFeeID);
 
-                var invoice = (await _taskrowClient.GetInvoiceDetailAsync(invoiceFee.InvoiceID)).InvoiceDetail;
+                var invoice = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee.InvoiceID)).InvoiceDetail;
 
 
                 //--- Cancel Invoice
 
-                var cancelInvoiceRequest = new CancelInvoiceRequest(invoiceFee.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice.GuidModification);
-                await _taskrowClient.CancelInvoiceAsync(cancelInvoiceRequest);
+                var cancelInvoiceRequest = new InvoiceCancelRequest(invoiceFee.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice.GuidModification);
+                await _taskrowClient.InvoiceCancelAsync(cancelInvoiceRequest);
 
                 Debug.WriteLine($"Invoice canceled (invoiceID={invoiceFee.InvoiceID})");
 

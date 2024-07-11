@@ -15,7 +15,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task CityList_Success()
         {
-            var list = await _taskrowClient.ListCitiesAsync("SP");
+            var list = await _taskrowClient.CityListAsync("SP");
             Assert.NotEmpty(list);
         }
 
@@ -25,7 +25,7 @@ namespace TaskrowSharp.IntegrationTests
             var stateAbbreviation = "SP";
             var cityName = Utils.RemoveDiacritics("São Paulo").ToUpper();
 
-            var city = await _taskrowClient.GetCityByNameAsync(stateAbbreviation, cityName);
+            var city = await _taskrowClient.CityGetByNameAsync(stateAbbreviation, cityName);
             
             Assert.NotNull(city);
             Assert.Equal(stateAbbreviation, city.UF);

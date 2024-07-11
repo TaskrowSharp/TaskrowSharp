@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
-using TaskrowSharp.Models;
 using TaskrowSharp.Models.TaskModels;
 using Xunit;
 
@@ -22,15 +21,15 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task Task_Forward_OK()
         {
-            if (_configurationFile.TaskUrls?.Count == 0)
+            if (_configurationFile.Tasks?.Count == 0)
                 throw new InvalidOperationException("Error in configuration file, \"tasks\" list is empty");
 
             if (_configurationFile.UserIDs?.Count < 2)
                 throw new InvalidOperationException("Error in configuration file, \"users\" list should have 2 or more User IDs");
 
-            var users = await _taskrowClient.ListUsersAsync();
+            var users = await _taskrowClient.UserListAsync();
             
-            foreach (var taskUrl in _configurationFile.TaskUrls)
+            foreach (var taskItem in _configurationFile.Tasks)
             {
                 var user1 = users.Where(a => a.UserID == _configurationFile.UserIDs.First()).FirstOrDefault();
                 if (user1 == null)
@@ -47,11 +46,11 @@ namespace TaskrowSharp.IntegrationTests
                 if (user1.UserID == user2.UserID)
                     throw new InvalidOperationException($"Error in configuration file, \"tasks\" is invalid, user1 and user2 are the same");
 
-                var taskReference = new TaskReference(taskUrl);
+                var taskReference = new TaskReference(taskItem.ClientNickName, taskItem.JobNumber, taskItem.TaskNumber);
 
-                var taskResponse = await _taskrowClient.GetTaskDetailAsync(taskReference);
+                var taskResponse = await _taskrowClient.TaskDetailGetAsync(taskReference);
                 if (taskResponse == null)
-                    throw new InvalidOperationException($"Task {taskUrl} not found");
+                    throw new InvalidOperationException($"Task {taskReference} not found");
                 var task = taskResponse.TaskData;
 
                 var taskComment = $"Task forwarded on {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
@@ -63,9 +62,9 @@ namespace TaskrowSharp.IntegrationTests
                 else if (task.Owner.UserID == user2.UserID)
                     ownerUserID = user1.UserID;
                 else
-                    throw new InvalidOperationException($"Task {taskUrl}, has a unexpected owner");
+                    throw new InvalidOperationException($"Task {taskReference}, has an unexpected owner");
 
-                var request = new SaveTaskRequest(taskResponse.JobData.Client.ClientNickName, taskResponse.JobData.JobNumber, task.TaskNumber, task.TaskID)
+                var request = new TaskSaveRequest(taskResponse.JobData.Client.ClientNickName, taskResponse.JobData.JobNumber, task.TaskNumber, task.TaskID)
                 {
                     TaskTitle = task.TaskTitle,
                     TaskItemComment = taskComment,
@@ -76,7 +75,7 @@ namespace TaskrowSharp.IntegrationTests
                     EffortEstimation = task.EffortEstimation
                 };
 
-                var response = await _taskrowClient.SaveTaskAsync(request);
+                var response = await _taskrowClient.TaskSaveAsync(request);
 
                 if (!response.Success)
                     throw new InvalidOperationException($"Error saving task: {response.Message}");

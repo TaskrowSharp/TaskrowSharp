@@ -12,8 +12,8 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         [JsonPropertyName("accessKey")]
         public string? AccessKey { get; set; }
 
-        [JsonPropertyName("taskUrls")]
-        public List<string> TaskUrls { get; set; }
+        [JsonPropertyName("tasks")]
+        public List<TaskConfigurationItem> Tasks { get; set; }
 
         [JsonPropertyName("clients")]
         public List<ClientConfigurationItem>? Clients { get; set; }
@@ -26,6 +26,18 @@ namespace TaskrowSharp.IntegrationTests.TestModels
 
         [JsonPropertyName("insertJobData")]
         public InsertJobDataConfigurationItem InsertJobData { get; set; }
+
+        internal class TaskConfigurationItem
+        {
+            [JsonPropertyName("clientNickName")]
+            public string ClientNickName { get; set; }
+
+            [JsonPropertyName("jobNumber")]
+            public int JobNumber { get; set; }
+
+            [JsonPropertyName("taskNumber")]
+            public int TaskNumber { get; set; }
+        }
 
         internal class ClientConfigurationItem
         {

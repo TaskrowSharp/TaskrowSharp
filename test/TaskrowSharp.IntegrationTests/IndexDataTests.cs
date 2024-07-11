@@ -15,7 +15,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task GetIndexDataAsync_Success()
         {
-            var indexData = await _taskrowClient.GetIndexDataAsync();
+            var indexData = await _taskrowClient.IndexDataGetAsync();
             
             Assert.NotNull(indexData);
             Assert.NotEqual(0, indexData.InternalClient.AppMainCompanyID);

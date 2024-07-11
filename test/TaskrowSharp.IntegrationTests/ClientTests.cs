@@ -23,19 +23,19 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task ListClientsAsync_Success()
         {
-            var clients = await _taskrowClient.ListClientsAsync();
+            var clients = await _taskrowClient.ClientListAsync();
             Assert.NotNull(clients);
         }
 
         [Fact]
         public async Task ListClientsAsync_IncludeInactives_Success()
         {
-            var clients = new List<ListClientItem>();
+            var clients = new List<ClientListItem>();
 
             string? nextToken = null;
             do
             {
-                var response = await _taskrowClient.ListClientsAsync(nextToken, true);
+                var response = await _taskrowClient.ClientListAsync(nextToken, true);
                 clients.AddRange(response.Items);
                 nextToken = response.NextToken;
             } while (nextToken != null);
@@ -52,7 +52,7 @@ namespace TaskrowSharp.IntegrationTests
 
             foreach (var clientID in clientIDs)
             {
-                var client = await _taskrowClient.GetClientDetailAsync(clientID);
+                var client = await _taskrowClient.ClientDetailGetAsync(clientID);
 
                 Assert.NotNull(client);
                 Assert.Equal(clientID, client.Client.ClientID);
@@ -67,7 +67,7 @@ namespace TaskrowSharp.IntegrationTests
             TaskrowException exception = null;
             try
             {
-                var client = await _taskrowClient.GetClientDetailAsync(clientID);
+                var client = await _taskrowClient.ClientDetailGetAsync(clientID);
                 Assert.NotNull(client);
             }
             catch (TaskrowException ex)
@@ -86,8 +86,8 @@ namespace TaskrowSharp.IntegrationTests
             var userID = _configurationFile.UserIDs.First();
             var clientName = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
-            var request = new InsertClientRequest(clientName, clientName, userID);
-            var response = await _taskrowClient.InsertClientAsync(request);
+            var request = new ClientInsertRequest(clientName, clientName, userID);
+            var response = await _taskrowClient.ClientInsertAsync(request);
             Assert.True(response.Success);
             Assert.Equal(request.ClientName, response.Entity.ClientName);
         }
@@ -98,15 +98,15 @@ namespace TaskrowSharp.IntegrationTests
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
             var clientID = clientIDs.First();
 
-            var clientDetail = await _taskrowClient.GetClientDetailAsync(clientID);
+            var clientDetail = await _taskrowClient.ClientDetailGetAsync(clientID);
             var client = clientDetail.Client;
 
-            var request = new UpdateClientRequest(client)
+            var request = new ClientUpdateRequest(client)
             {
                 Memo = $"Updated {DateTime.Now:yyyy-MM-dd HH:mm:ss}"
             };
 
-            var response = await _taskrowClient.UpdateClientAsync(request);
+            var response = await _taskrowClient.ClientUpdateAsync(request);
             Assert.True(response.Success);
             Assert.Equal(request.Memo, response.Entity.ClientAdministrativeDetail.Memo);
         }
@@ -116,7 +116,7 @@ namespace TaskrowSharp.IntegrationTests
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
             var clientID = clientIDs.First();
-            var client = await _taskrowClient.GetClientDetailAsync(clientID);
+            var client = await _taskrowClient.ClientDetailGetAsync(clientID);
 
             string cnpj = "62.520.218/0001-24";
             string name = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
@@ -125,7 +125,7 @@ namespace TaskrowSharp.IntegrationTests
 
             if (clientAddress == null)
             {
-                var request = new InsertClientAddressRequest(
+                var request = new ClientAddressInsertRequest(
                     clientID, 
                     client.Client.ClientNickName, 
                     name, 
@@ -138,13 +138,13 @@ namespace TaskrowSharp.IntegrationTests
                     "Av Paulista", 
                     "1578");
 
-                var response = await _taskrowClient.InsertClientAddressAsync(request);
+                var response = await _taskrowClient.ClientAddressInsertAsync(request);
                 Assert.True(response.Success);
                 Assert.Equal(request.SocialContractName, response.Entity.SocialContractName);
             }
             else
             {
-                var request = new UpdateClientAddressRequest(
+                var request = new ClientAddressUpdateRequest(
                     clientID, 
                     clientAddress.ClientAddressID, 
                     client.Client.ClientNickName, 
@@ -158,7 +158,7 @@ namespace TaskrowSharp.IntegrationTests
                     clientAddress.Street,
                     clientAddress.Number);
 
-                var response = await _taskrowClient.UpdateClientAddressAsync(request);
+                var response = await _taskrowClient.ClientAddressUpdateAsync(request);
                 Assert.True(response.Success);
                 Assert.Equal(request.SocialContractName, response.Entity.SocialContractName);
             }

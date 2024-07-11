@@ -38,14 +38,14 @@ namespace TaskrowSharp.IntegrationTests
                     { "value2", value2 }
                 };
 
-                await _taskrowClient.SaveExternalDataAsync(PROVIDER, ENTITY_NAME, clientID, dic);
+                await _taskrowClient.ExternalDataSaveAsync(PROVIDER, ENTITY_NAME, clientID, dic);
 
-                var dicGet = await _taskrowClient.GetExternalDataAsync(PROVIDER, ENTITY_NAME, clientID);
+                var dicGet = await _taskrowClient.ExternalDataGetAsync(PROVIDER, ENTITY_NAME, clientID);
 
                 Assert.Equal(value1, dicGet["value1"].ToString());
                 Assert.Equal(value2, dicGet["value2"].ToString());
 
-                var listFind = await _taskrowClient.SearchExternalDataByFieldValueAsync(PROVIDER, ENTITY_NAME, ENTITY_ID, "value1", value1);
+                var listFind = await _taskrowClient.ExternalDataSearchByFieldValueAsync(PROVIDER, ENTITY_NAME, ENTITY_ID, "value1", value1);
                 var dicFind = listFind.First();
 
                 Assert.Equal(value1, dicFind["value1"].ToString());

@@ -1,8 +1,12 @@
 ﻿{
 	"serviceUrl": "https://yourcompany.taskrow.com",
 	"accessKey": "aaaaaaaaaaaaaaaaaaaaaaaaa",
-	"taskUrls": [
-		"/CompanyTest/1/1"
+	"tasks": [
+		{
+			"clientNickName": "CompanyTest",
+			"jobNumber": 1,
+			"taskNumber": 1
+		}
 	],
 	"clients": [
 		{

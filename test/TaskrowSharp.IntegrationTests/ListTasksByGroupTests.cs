@@ -16,10 +16,10 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task Task_ListTasksByGroup_Success()
         {
-            var groups = await _taskrowClient.ListGroupsAsync();
+            var groups = await _taskrowClient.UserGroupListAsync();
             var group = groups.First();
 
-            var entity = await _taskrowClient.ListTasksByGroupAsync(group.GroupID);
+            var entity = await _taskrowClient.TaskListByGroupAsync(group.GroupID);
             Assert.NotNull(entity);
         }
     }

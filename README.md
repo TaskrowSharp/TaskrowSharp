@@ -46,7 +46,7 @@ var httpClient = new HttpClient();
 //TIP: You can use a retry policy with Poly, more info: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-http-call-retries-exponential-backoff-polly
 
 var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
-var users = await taskrowClient.ListUsersAsync();
+var users = await taskrowClient.UserListAsync();
 ```
 
 
@@ -54,17 +54,17 @@ var users = await taskrowClient.ListUsersAsync();
 
 ```csharp
 var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
-var users = await taskrowClient.ListUsersAsync();
+var users = await taskrowClient.UserListAsync();
 
 var taskReference = new TaskReference("client", 12, 1235);
-var taskResponse = await _taskrowClient.GetTaskDetailAsync(taskReference);
+var taskResponse = await _taskrowClient.TaskDetailGetAsync(taskReference);
 var task = taskResponse.TaskData;
 
 var taskComment = "Task forwarded";
 int ownerUserID = users.First().UserID;
 var dueDate = DateTime.Now.Date;
 
-var request = new SaveTaskRequest(taskResponse.JobData.Client.ClientNickName, taskResponse.JobData.JobNumber, task.TaskNumber, task.TaskID)
+var request = new TaskSaveRequest(taskResponse.JobData.Client.ClientNickName, taskResponse.JobData.JobNumber, task.TaskNumber, task.TaskID)
 {
     TaskTitle = task.TaskTitle,
     TaskItemComment = taskComment,
@@ -75,7 +75,7 @@ var request = new SaveTaskRequest(taskResponse.JobData.Client.ClientNickName, ta
     EffortEstimation = task.EffortEstimation
 };
 
-var response = await _taskrowClient.SaveTaskAsync(request);
+var response = await _taskrowClient.TaskSaveAsync(request);
 ```
 
 

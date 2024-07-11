@@ -31,7 +31,7 @@ public class JobTests : BaseTest
 
         foreach (var jobNumber in jobNumbers)
         {
-            var jobEntity = await _taskrowClient.GetJobDetailAsync(client.ClientNickName, jobNumber);
+            var jobEntity = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
 
             Assert.NotNull(jobEntity);
             Assert.Equal(jobNumber, jobEntity.Job.JobNumber);
@@ -50,7 +50,7 @@ public class JobTests : BaseTest
         TaskrowException exception = null;
         try
         {
-            var jobEntity = await _taskrowClient.GetJobDetailAsync(client.ClientNickName, jobNumber);
+            var jobEntity = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
             Assert.NotNull(jobEntity);
         }
         catch (TaskrowException ex)
@@ -65,7 +65,7 @@ public class JobTests : BaseTest
     {
         var jobInsertData = _configurationFile.InsertJobData;
 
-        var request = new InsertJobRequest(
+        var request = new JobInsertRequest(
             clientID: jobInsertData.ClientID, 
             clientNickName: jobInsertData.ClientNickName,
             jobTitle: $"{jobInsertData.JobTitle} - {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}",
@@ -83,7 +83,7 @@ public class JobTests : BaseTest
             clientAreaID: jobInsertData.ClientAreaID,
             jobSubTypeID: jobInsertData.JobSubTypeID);
 
-        var response = await _taskrowClient.InsertJobAsync(request);
+        var response = await _taskrowClient.JobInsertAsync(request);
         Assert.True(response.Success);
         Assert.Equal(request.JobTitle, response.Entity.JobTitle);
         Assert.Equal(request.ClientNickName, response.Entity.Client.ClientNickName);
@@ -99,11 +99,11 @@ public class JobTests : BaseTest
         var jobNumbers = client.JobNumbers;
         var jobNumber = jobNumbers.First();
 
-        var jobEntity = await _taskrowClient.GetJobDetailAsync(client.ClientNickName, jobNumber);
+        var jobEntity = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
 
-        var request = new UpdateJobRequest(jobEntity.Job);
+        var request = new JobUpdateRequest(jobEntity.Job);
 
-        var response = await _taskrowClient.UpdateJobAsync(request);
+        var response = await _taskrowClient.JobUpdateAsync(request);
         Assert.True(response.Success);
         Assert.Equal(request.JobNumber, response.Entity.JobNumber);
         Assert.Equal(request.JobTitle, response.Entity.JobTitle);
@@ -117,7 +117,7 @@ public class JobTests : BaseTest
 
         var client = _configurationFile.Clients.First();
 
-        var response = await _taskrowClient.ListJobClientDependeciesAsync(client.ClientID);
+        var response = await _taskrowClient.JobClientDependecyListAsync(client.ClientID);
 
         Assert.NotNull(response);
         Assert.NotEmpty(response.Entity.ClientAreas);
@@ -134,7 +134,7 @@ public class JobTests : BaseTest
 
         var jobStatusID = 4;
 
-        var response = await _taskrowClient.UpdateJobStatusAsync(client.ClientNickName, jobNumber, jobStatusID);
+        var response = await _taskrowClient.JobStatusUpdateAsync(client.ClientNickName, jobNumber, jobStatusID);
 
         Assert.NotNull(response);
         Assert.True(response.Success);
@@ -150,7 +150,7 @@ public class JobTests : BaseTest
         var client = _configurationFile.Clients.First();
         var jobNumber = client.JobNumbers.First();
 
-        var jobHome = await _taskrowClient.GetJobHomeAsync(client.ClientNickName, jobNumber);
+        var jobHome = await _taskrowClient.JobHomeGetAsync(client.ClientNickName, jobNumber);
 
         Assert.NotNull(jobHome);
         Assert.NotNull(jobHome.Job);
@@ -165,10 +165,10 @@ public class JobTests : BaseTest
 
         var client = _configurationFile.Clients.First();
         var jobNumber = client.JobNumbers.First();
-        var jobHome = await _taskrowClient.GetJobHomeAsync(client.ClientNickName, jobNumber);
+        var jobHome = await _taskrowClient.JobHomeGetAsync(client.ClientNickName, jobNumber);
 
-        var request = new SaveJobWallPostRequest(jobHome.JobWall.WallID, jobNumber, $"TaskrowSharp Test -- {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff)}");
-        var response = await _taskrowClient.SaveJobWallPostAsync(request);
+        var request = new JobWallPostSaveRequest(jobHome.JobWall.WallID, jobNumber, $"TaskrowSharp Test -- {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff)}");
+        var response = await _taskrowClient.JobWallPostSaveAsync(request);
 
         Assert.NotNull(response);
         Assert.True(response.Success);

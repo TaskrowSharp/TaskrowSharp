@@ -21,14 +21,14 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task TaskDetail_Get_OpenTasks()
         {
-            var group = (await _taskrowClient.ListGroupsAsync()).First();
-            var tasksByGroup = await _taskrowClient.ListTasksByGroupAsync(group.GroupID);
+            var group = (await _taskrowClient.UserGroupListAsync()).First();
+            var tasksByGroup = await _taskrowClient.TaskListByGroupAsync(group.GroupID);
 
             var openTasks = tasksByGroup.OpenTasks.OrderBy(a => _random.Next()).Take(LIMIT).ToList();
             foreach (var task in openTasks)
             {
                 var taskReference = new TaskReference(task.ClientNickName, task.JobNumber, task.TaskNumber);
-                var taskDetailResponse = await _taskrowClient.GetTaskDetailAsync(taskReference);
+                var taskDetailResponse = await _taskrowClient.TaskDetailGetAsync(taskReference);
 
                 Assert.Equal(taskReference.ClientNickname, taskDetailResponse.JobData.Client.ClientNickName);
                 Assert.Equal(taskReference.JobNumber, taskDetailResponse.JobData.JobNumber);
@@ -39,7 +39,7 @@ namespace TaskrowSharp.IntegrationTests
             foreach (var task in closedTasks)
             {
                 var taskReference = new TaskReference(task.ClientNickName, task.JobNumber, task.TaskNumber);
-                var taskDetailResponse = await _taskrowClient.GetTaskDetailAsync(taskReference);
+                var taskDetailResponse = await _taskrowClient.TaskDetailGetAsync(taskReference);
 
                 Assert.Equal(taskReference.ClientNickname, taskDetailResponse.JobData.Client.ClientNickName);
                 Assert.Equal(taskReference.JobNumber, taskDetailResponse.JobData.JobNumber);

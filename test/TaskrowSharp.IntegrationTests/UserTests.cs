@@ -15,7 +15,7 @@ namespace TaskrowSharp.IntegrationTests
         [Fact]
         public async Task UserList_Success()
         {
-            var listUsers = await _taskrowClient.ListUsersAsync();
+            var listUsers = await _taskrowClient.UserListAsync();
             Assert.NotEmpty(listUsers);
         }
     }
