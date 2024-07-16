@@ -14,7 +14,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task UserDetail_Get_FirstActive()
+        public async Task UserDetailGetAsync_FirstActive()
         {
             var listUsers = await _taskrowClient.UserListAsync();
             var user = listUsers.Where(a => !a.Inactive).First();
@@ -27,7 +27,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task UserDetail_Get_FirstInactive()
+        public async Task UserDetailGetAsync_FirstInactive()
         {
             var listUsers = await _taskrowClient.UserListAsync();
             var user = listUsers.Where(a => !a.Inactive).FirstOrDefault();

@@ -13,7 +13,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task GetIndexDataAsync_Success()
+        public async Task IndexDataGetAsync_Success()
         {
             var indexData = await _taskrowClient.IndexDataGetAsync();
             

@@ -1,4 +1,5 @@
-﻿namespace TaskrowSharp.Models.ClientModels;
+﻿/*
+namespace TaskrowSharp.Models.ClientModels;
 
 public class ClientAddressUpdateResponse
 {
@@ -7,3 +8,4 @@ public class ClientAddressUpdateResponse
     public ClientAddress Entity { get; set; }
     public string TargetURL { get; set; }
 }
+*/

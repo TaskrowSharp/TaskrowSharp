@@ -22,7 +22,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task SaveExternalData_Success()
+        public async Task ExternalDataSaveAsync_Success()
         {
             try
             {

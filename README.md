@@ -79,8 +79,21 @@ var response = await _taskrowClient.TaskSaveAsync(request);
 ```
 
 
+## 5- Additional features
 
-## 5- Explore source code / debug
+### 5.1 - OnApiCallExecuted event
+
+```csharp
+var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
+taskrowClient.OnApiCallExecuted += (HttpMethod httpMethod, Uri fullUrl, HttpStatusCode httpStatusCode, bool isSuccess, string? jsonRequest, string? jsonResponse, long elapsedMilliseconds) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"API Call - {httpMethod} {fullUrl} -- HttpStatus: {(int)httpStatusCode}");
+            };
+var users = await taskrowClient.UserListAsync();
+```
+
+
+## 6- Explore source code / debug
 
 Open solution "TaskrowSharp.sln" in Visual Studio 2022
 

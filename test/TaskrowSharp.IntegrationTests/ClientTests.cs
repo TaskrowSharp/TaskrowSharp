@@ -21,14 +21,15 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task ListClientsAsync_Success()
+        public async Task ClientListAsync_Success()
         {
-            var clients = await _taskrowClient.ClientListAsync();
-            Assert.NotNull(clients);
+            var response = await _taskrowClient.ClientListAsync();
+            Assert.NotNull(response);
+            Assert.NotEmpty(response.Items);
         }
 
         [Fact]
-        public async Task ListClientsAsync_IncludeInactives_Success()
+        public async Task ClientListAsync_IncludeInactives_Success()
         {
             var clients = new List<ClientListItem>();
 
@@ -46,7 +47,16 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task GetClientDetailAsync_Success()
+        public async Task ClientSearchAsync_Success()
+        {
+            var term = "a";
+            var response = await _taskrowClient.ClientSearchAsync(term);
+            Assert.NotEmpty(response);
+        }
+
+
+        [Fact]
+        public async Task ClientDetailGetAsync_Success()
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
 
@@ -55,12 +65,12 @@ namespace TaskrowSharp.IntegrationTests
                 var client = await _taskrowClient.ClientDetailGetAsync(clientID);
 
                 Assert.NotNull(client);
-                Assert.Equal(clientID, client.Client.ClientID);
+                Assert.Equal(clientID, client.ClientID);
             }
         }
 
         [Fact]
-        public async Task GetClientDetailAsync_NotFound()
+        public async Task ClientDetailGetAsync_NotFound()
         {
             var clientID = 0;
 
@@ -78,7 +88,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task InsertClientAsync_Success()
+        public async Task ClientInsertAsync_Success()
         {
             if (_configurationFile.UserIDs?.Count == 0)
                 throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
@@ -88,31 +98,30 @@ namespace TaskrowSharp.IntegrationTests
 
             var request = new ClientInsertRequest(clientName, clientName, userID);
             var response = await _taskrowClient.ClientInsertAsync(request);
-            Assert.True(response.Success);
-            Assert.Equal(request.ClientName, response.Entity.ClientName);
+            Assert.NotNull(response);
+            Assert.Equal(request.ClientName, response.ClientName);
         }
         
         [Fact]
-        public async Task UpdateClientAsync_Success()
+        public async Task ClientUpdateAsync_Success()
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
             var clientID = clientIDs.First();
 
-            var clientDetail = await _taskrowClient.ClientDetailGetAsync(clientID);
-            var client = clientDetail.Client;
-
+            var client = await _taskrowClient.ClientDetailGetAsync(clientID);
+            
             var request = new ClientUpdateRequest(client)
             {
                 Memo = $"Updated {DateTime.Now:yyyy-MM-dd HH:mm:ss}"
             };
 
             var response = await _taskrowClient.ClientUpdateAsync(request);
-            Assert.True(response.Success);
-            Assert.Equal(request.Memo, response.Entity.ClientAdministrativeDetail.Memo);
+            Assert.NotNull(response);
+            Assert.Equal(request.Memo, response.ClientAdministrativeDetail.Memo);
         }
 
         [Fact]
-        public async Task SaveClientAddresAsync()
+        public async Task ClientAddressInsert_or_UpdateAsync_Success()
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
             var clientID = clientIDs.First();
@@ -121,13 +130,13 @@ namespace TaskrowSharp.IntegrationTests
             string cnpj = "62.520.218/0001-24";
             string name = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
-            var clientAddress = client.Client.ClientAddress.Where(a => a.CNPJ.Equals(cnpj)).FirstOrDefault();
+            var clientAddress = client.ClientAddress.Where(a => a.CNPJ.Equals(cnpj)).FirstOrDefault();
 
             if (clientAddress == null)
             {
                 var request = new ClientAddressInsertRequest(
                     clientID, 
-                    client.Client.ClientNickName, 
+                    client.ClientNickName, 
                     name, 
                     cnpj, 
                     null, 
@@ -139,15 +148,15 @@ namespace TaskrowSharp.IntegrationTests
                     "1578");
 
                 var response = await _taskrowClient.ClientAddressInsertAsync(request);
-                Assert.True(response.Success);
-                Assert.Equal(request.SocialContractName, response.Entity.SocialContractName);
+                Assert.NotNull(response);
+                Assert.Equal(request.SocialContractName, response.SocialContractName);
             }
             else
             {
                 var request = new ClientAddressUpdateRequest(
                     clientID, 
                     clientAddress.ClientAddressID, 
-                    client.Client.ClientNickName, 
+                    client.ClientNickName, 
                     name, 
                     clientAddress.CNPJ,
                     clientAddress.CPF,
@@ -159,8 +168,8 @@ namespace TaskrowSharp.IntegrationTests
                     clientAddress.Number);
 
                 var response = await _taskrowClient.ClientAddressUpdateAsync(request);
-                Assert.True(response.Success);
-                Assert.Equal(request.SocialContractName, response.Entity.SocialContractName);
+                Assert.NotNull(response);
+                Assert.Equal(request.SocialContractName, response.SocialContractName);
             }
         }
     }

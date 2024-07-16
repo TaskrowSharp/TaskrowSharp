@@ -19,7 +19,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task TaskDetail_Get_OpenTasks()
+        public async Task TaskDetailGetAsync_OpenTasks()
         {
             var group = (await _taskrowClient.UserGroupListAsync()).First();
             var tasksByGroup = await _taskrowClient.TaskListByGroupAsync(group.GroupID);

@@ -1,4 +1,4 @@
-﻿namespace TaskrowSharp.Models.ClientModels;
+﻿/*namespace TaskrowSharp.Models.ClientModels;
 
 public class ClientInsertResponse
 {
@@ -9,3 +9,4 @@ public class ClientInsertResponse
     public string PreviousGUID { get; set; }
     public string UserTaskListGUID { get; set; }
 }
+*/

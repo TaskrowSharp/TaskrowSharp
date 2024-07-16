@@ -13,14 +13,14 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task CityList_Success()
+        public async Task CityListAsync_Success()
         {
             var list = await _taskrowClient.CityListAsync("SP");
             Assert.NotEmpty(list);
         }
 
         [Fact]
-        public async Task GetCityByName_Success()
+        public async Task CityGetByNameAsync_Success()
         {
             var stateAbbreviation = "SP";
             var cityName = Utils.RemoveDiacritics("São Paulo").ToUpper();

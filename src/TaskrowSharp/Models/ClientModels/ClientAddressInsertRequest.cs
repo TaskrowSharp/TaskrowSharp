@@ -72,6 +72,10 @@ public class ClientAddressInsertRequest
             CPF = cpf;
             NoCNPJ = true;
         }
+        else
+        {
+            NoCNPJ = true;
+        }
         
         CountryID = countryID;
         CityID = cityID;

@@ -14,7 +14,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task Task_ListTasksByGroup_Success()
+        public async Task TaskListByGroupAsync_Success()
         {
             var groups = await _taskrowClient.UserGroupListAsync();
             var group = groups.First();

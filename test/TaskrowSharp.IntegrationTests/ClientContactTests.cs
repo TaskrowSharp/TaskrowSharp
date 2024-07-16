@@ -21,7 +21,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task ListClientContactsAsync_Success()
+        public async Task ClientContactListAsync_Success()
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
 
@@ -34,7 +34,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task InsertClientContactAsync()
+        public async Task ClientContactInsertAsync_Success()
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
             var clientID = clientIDs.FirstOrDefault();
@@ -45,7 +45,7 @@ namespace TaskrowSharp.IntegrationTests
             
             var contactName = $"Teste TaskrowSharp {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
-            var request = new ClientContactInsertRequest(clientID, client.Client.ClientNickName, contactName)
+            var request = new ClientContactInsertRequest(clientID, client.ClientNickName, contactName)
             {
                 ContactEmail = $"{Guid.NewGuid()}@email.com",
                 ContactMainPhone = "+55 (11) 6666-6666",

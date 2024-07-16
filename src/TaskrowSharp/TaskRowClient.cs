@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -8,7 +10,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
+using TaskrowSharp.Events;
 using TaskrowSharp.Exceptions;
+using TaskrowSharp.Interfaces;
+using TaskrowSharp.Models;
 using TaskrowSharp.Models.AdministrativeModels;
 using TaskrowSharp.Models.BasicDataModels;
 using TaskrowSharp.Models.ClientModels;
@@ -28,10 +33,13 @@ public class TaskrowClient
     public string UserAgent { get; set; }
     public HttpClient HttpClient { get; private set; }
 
-    private readonly JsonSerializerOptions jsonSerializerOptions = new()
-    {
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
+    #region Events
+
+    public event ApiCallExecutedEventHandler OnApiCallExecuted;
+
+    #endregion
+
+    #region Constructors
 
     public TaskrowClient(Uri serviceUrl, string accessKey, HttpClient httpClient)
     {
@@ -46,6 +54,13 @@ public class TaskrowClient
 
         this.UserAgent = $"TaskrowSharp v{Utils.GetAppVersion()}";
     }
+
+    #endregion
+
+    private readonly JsonSerializerOptions jsonSerializerOptions = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
 
     private static void ValidateAccessKey(string accessKey)
     {
@@ -66,6 +81,59 @@ public class TaskrowClient
         
         if (!serviceUrl.ToString().StartsWith("https://", StringComparison.CurrentCultureIgnoreCase) || !serviceUrl.ToString().EndsWith(".taskrow.com/", StringComparison.CurrentCultureIgnoreCase))
             throw new InvalidServiceUrlException("Invalid service url, use the format: https://yourdomain.taskrow.com");
+    }
+
+    private async Task<T2> ExecuteApiCall<T1, T2>(HttpMethod httpMethod, Uri fullUrl, T1? request)
+    {
+        var jsonRequest = (request != null ? JsonSerializer.Serialize(request, jsonSerializerOptions) : null);
+
+        try
+        {
+            var httpRequest = new HttpRequestMessage(httpMethod, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            if (jsonRequest != null)
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                httpRequest.Content = requestContent;
+            }
+
+            var stopwatch = Stopwatch.StartNew();
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            stopwatch.Stop();
+
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+
+            RegisterApiCallExecuted(httpMethod, fullUrl, httpResponse.StatusCode, httpResponse.IsSuccessStatusCode, jsonRequest, jsonResponse, stopwatch.ElapsedMilliseconds);
+
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
+
+            var response = JsonSerializer.Deserialize<T2>(jsonResponse);
+
+            if (response is IBaseApiResponse baseResponseParsed)
+            {
+                if (baseResponseParsed != null && !baseResponseParsed.Success)
+                    throw new TaskrowException(baseResponseParsed.Message ?? "Response.success=false");
+            }
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowException($"Error in Taskrow API Call {fullUrl} -- {ex.Message}", ex);
+        }
+    }
+
+    private void RegisterApiCallExecuted(HttpMethod httpMethod, Uri fullUrl, HttpStatusCode httpStatusCode, bool isSuccess, string? jsonRequest, string? jsonResponse, long elapsedMilliseconds)
+    {
+        if (isSuccess)
+            Debug.WriteLine($"API Call - {httpMethod} {fullUrl} -- HttpStatus: {(int)httpStatusCode}");
+        else
+            Debug.WriteLine($"API Call ERROR - {httpMethod} {fullUrl} -- HttpStatus: {(int)httpStatusCode} -- Response: {jsonResponse}");
+
+        OnApiCallExecuted?.Invoke(httpMethod, fullUrl, httpStatusCode, isSuccess, jsonRequest, jsonResponse, elapsedMilliseconds);
     }
 
     #region IndexData
@@ -101,7 +169,7 @@ public class TaskrowClient
 
     public async Task<List<ClientItemSearch>> ClientSearchAsync(string term, bool showInactives = true)
     {
-        var relativeUrl = new Uri($"/api/v1/Search/SearchClients?&q={term}&showInactives={showInactives}", UriKind.Relative);
+        /*var relativeUrl = new Uri($"/api/v1/Search/SearchClients?&q={term}&showInactives={showInactives}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
         
         try
@@ -121,7 +189,11 @@ public class TaskrowClient
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+        
+        var fullUrl = new Uri($"{this.ServiceUrl}/api/v1/Search/SearchClients?&q={term}&showInactives={showInactives}");
+        var response = await ExecuteApiCall<object, List<ClientItemSearch>>(HttpMethod.Get, fullUrl, null);
+        return response;
     }
 
     public async Task<ClientListItemResponse> ClientListAsync(string? nextToken = null, bool? includeInactives = null)
@@ -132,9 +204,7 @@ public class TaskrowClient
         if (includeInactives != null)
             queryString = $"{queryString}{(queryString == null ? "?" : "&")}includeInactives={includeInactives.ToString().ToLower()}";
 
-        var relativeUrl = new Uri($"/api/v2/core/client{queryString}", UriKind.Relative);
-        var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
-
+        /*
         try
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, fullUrl);
@@ -152,12 +222,16 @@ public class TaskrowClient
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/core/client{queryString}");
+        var response = await ExecuteApiCall<object, ClientListItemResponse>(HttpMethod.Get, fullUrl, null);
+        return response;
     }
 
-    public async Task<ClientDetailEntity> ClientDetailGetAsync(int clientID)
+    public async Task<Client> ClientDetailGetAsync(int clientID)
     {
-        var relativeUrl = new Uri($"/api/v1/Client/ClientDetail?clientID={clientID}", UriKind.Relative);
+        /*var relativeUrl = new Uri($"/api/v1/Client/ClientDetail?clientID={clientID}", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
 
         try
@@ -181,14 +255,18 @@ public class TaskrowClient
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+
+        var fullUrl = new Uri($"{this.ServiceUrl}/api/v1/Client/ClientDetail?clientID={clientID}");
+        var response = await ExecuteApiCall<object, ClientDetailResponse>(HttpMethod.Get, fullUrl, null);
+        return response.Entity.Client;
     }
 
-    public async Task<ClientInsertResponse> ClientInsertAsync(ClientInsertRequest insertClientRequest)
+    public async Task<Client> ClientInsertAsync(ClientInsertRequest clientInsertRequest)
     {
-        var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
+        /*var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
-        var jsonRequest = JsonSerializer.Serialize(insertClientRequest, jsonSerializerOptions);
+        var jsonRequest = JsonSerializer.Serialize(clientInsertRequest, jsonSerializerOptions);
 
         try
         {
@@ -201,19 +279,26 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowException($"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var model = JsonSerializer.Deserialize<ClientInsertResponse>(jsonResponse);
+            var response = JsonSerializer.Deserialize<BaseApiResponse<Client>>(jsonResponse);
 
-            return model;
+            if (!response.Success)
+                throw new TaskrowException(response.Message ?? "Success false");
+
+            return response.Entity;
         }
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+
+        var fullUrl = new Uri($"{this.ServiceUrl}/api/v1/Client/SaveClient");
+        var response = await ExecuteApiCall<ClientInsertRequest, BaseApiResponse<Client>>(HttpMethod.Post, fullUrl, clientInsertRequest);
+        return response.Entity;
     }
 
-    public async Task<ClientUpdateResponse> ClientUpdateAsync(ClientUpdateRequest updateClientRequest)
+    public async Task<Client> ClientUpdateAsync(ClientUpdateRequest updateClientRequest)
     {
-        var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
+        /*var relativeUrl = new Uri($"/api/v1/Client/SaveClient", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
         var jsonRequest = JsonSerializer.Serialize(updateClientRequest, jsonSerializerOptions);
 
@@ -235,18 +320,22 @@ public class TaskrowClient
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+
+        var fullUrl = new Uri($"{this.ServiceUrl}/api/v1/Client/SaveClient");
+        var response = await ExecuteApiCall<ClientUpdateRequest, BaseApiResponse<Client>>(HttpMethod.Post, fullUrl, updateClientRequest);
+        return response.Entity;
     }
 
     #endregion
 
     #region ClientAddress
 
-    public async Task<ClientAddressInsertResponse> ClientAddressInsertAsync(ClientAddressInsertRequest insertClientAddressRequest)
+    public async Task<ClientAddress> ClientAddressInsertAsync(ClientAddressInsertRequest clientAddressInsertRequest)
     {
-        var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
+        /*var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
-        var jsonRequest = JsonSerializer.Serialize(insertClientAddressRequest);
+        var jsonRequest = JsonSerializer.Serialize(clientAddressInsertRequest);
 
         try
         {
@@ -266,14 +355,18 @@ public class TaskrowClient
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+
+        var fullUrl = new Uri($"{this.ServiceUrl}/api/v1/Client/SaveClientAddress");
+        var response = await ExecuteApiCall<ClientAddressInsertRequest, BaseApiResponse<ClientAddress>>(HttpMethod.Post, fullUrl, clientAddressInsertRequest);
+        return response.Entity;
     }
 
-    public async Task<ClientAddressUpdateResponse> ClientAddressUpdateAsync(ClientAddressUpdateRequest updateClientAddressRequest)
+    public async Task<ClientAddress> ClientAddressUpdateAsync(ClientAddressUpdateRequest clientAddressUpdateRequest)
     {
-        var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
+        /*var relativeUrl = new Uri($"/api/v1/Client/SaveClientAddress", UriKind.Relative);
         var fullUrl = new Uri(this.ServiceUrl, relativeUrl);
-        var jsonRequest = JsonSerializer.Serialize(updateClientAddressRequest);
+        var jsonRequest = JsonSerializer.Serialize(clientAddressUpdateRequest);
 
         try
         {
@@ -293,7 +386,11 @@ public class TaskrowClient
         catch (Exception ex)
         {
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
-        }
+        }*/
+
+        var fullUrl = new Uri($"{this.ServiceUrl}/api/v1/Client/SaveClientAddress");
+        var response = await ExecuteApiCall<ClientAddressUpdateRequest, BaseApiResponse<ClientAddress>>(HttpMethod.Post, fullUrl, clientAddressUpdateRequest);
+        return response.Entity;
     }
 
     #endregion

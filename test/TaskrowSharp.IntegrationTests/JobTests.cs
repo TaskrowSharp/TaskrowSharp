@@ -21,7 +21,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task GetJobDetailAsync_Success()
+    public async Task JobDetailGetAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
@@ -39,7 +39,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task GetJobDetailAsync_NotFound()
+    public async Task JobDetailGetAsync_NotFound()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
@@ -61,7 +61,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task InsertJobAsync_Success()
+    public async Task JobInsertAsync_Success()
     {
         var jobInsertData = _configurationFile.InsertJobData;
 
@@ -90,7 +90,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task UpdateJobAsync_Success()
+    public async Task JobUpdateAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
@@ -110,7 +110,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task ListJobClientDependeciesAsync_Success()
+    public async Task JobClientDependecyListAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
@@ -124,7 +124,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task UpdateJobStatusAsyncAsync_Inactivate_Success()
+    public async Task JobStatusUpdateAsync_Inactivate_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
@@ -142,7 +142,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task GetJobHomeAsync_Success()
+    public async Task JobHomeGetAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
@@ -158,7 +158,7 @@ public class JobTests : BaseTest
     }
 
     [Fact]
-    public async Task SaveJobWallPostAsync_Success()
+    public async Task JobWallPostSaveAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
             throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
