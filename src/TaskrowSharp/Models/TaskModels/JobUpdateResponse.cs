@@ -1,4 +1,5 @@
-﻿using TaskrowSharp.Models.JobModels;
+﻿/*
+using TaskrowSharp.Models.JobModels;
 
 namespace TaskrowSharp.Models.TaskModels;
 
@@ -9,3 +10,4 @@ public class JobUpdateResponse
     public Job Entity { get; set; }
     public string TargetURL { get; set; }
 }
+*/

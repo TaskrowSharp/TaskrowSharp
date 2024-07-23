@@ -1,4 +1,5 @@
-﻿namespace TaskrowSharp.Models.InvoiceModels;
+﻿/*
+namespace TaskrowSharp.Models.InvoiceModels;
 
 public class InvoiceDeleteResponse
 {
@@ -7,3 +8,4 @@ public class InvoiceDeleteResponse
     public Invoice Entity { get; set; }
     public string TargetURL { get; set; }
 }
+*/

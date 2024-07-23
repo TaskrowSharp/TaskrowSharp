@@ -22,8 +22,8 @@ namespace TaskrowSharp.IntegrationTests
             var userDetail = await _taskrowClient.UserDetailGetAsync(user.UserID);
 
             Assert.NotNull(userDetail);
-            Assert.Equal(user.UserID, userDetail.User.UserID);
-            Assert.Equal(user.MainEmail, userDetail.User.MainEmail);
+            Assert.Equal(user.UserID, userDetail.UserID);
+            Assert.Equal(user.MainEmail, userDetail.MainEmail);
         }
 
         [Fact]
@@ -37,8 +37,8 @@ namespace TaskrowSharp.IntegrationTests
             var userDetail = await _taskrowClient.UserDetailGetAsync(user.UserID);
 
             Assert.NotNull(userDetail);
-            Assert.Equal(user.UserID, userDetail.User.UserID);
-            Assert.Equal(user.MainEmail, userDetail.User.MainEmail);
+            Assert.Equal(user.UserID, userDetail.UserID);
+            Assert.Equal(user.MainEmail, userDetail.MainEmail);
         }
     }
 }

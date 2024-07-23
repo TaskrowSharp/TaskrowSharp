@@ -31,10 +31,10 @@ public class JobTests : BaseTest
 
         foreach (var jobNumber in jobNumbers)
         {
-            var jobEntity = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
+            var job = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
 
-            Assert.NotNull(jobEntity);
-            Assert.Equal(jobNumber, jobEntity.Job.JobNumber);
+            Assert.NotNull(job);
+            Assert.Equal(jobNumber, job.JobNumber);
         }
     }
 
@@ -83,10 +83,11 @@ public class JobTests : BaseTest
             clientAreaID: jobInsertData.ClientAreaID,
             jobSubTypeID: jobInsertData.JobSubTypeID);
 
-        var response = await _taskrowClient.JobInsertAsync(request);
-        Assert.True(response.Success);
-        Assert.Equal(request.JobTitle, response.Entity.JobTitle);
-        Assert.Equal(request.ClientNickName, response.Entity.Client.ClientNickName);
+        var job = await _taskrowClient.JobInsertAsync(request);
+
+        Assert.NotNull(job);
+        Assert.Equal(request.JobTitle, job.JobTitle);
+        Assert.Equal(request.ClientNickName, job.Client.ClientNickName);
     }
 
     [Fact]
@@ -99,14 +100,14 @@ public class JobTests : BaseTest
         var jobNumbers = client.JobNumbers;
         var jobNumber = jobNumbers.First();
 
-        var jobEntity = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
+        var job = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
 
-        var request = new JobUpdateRequest(jobEntity.Job);
-
+        var request = new JobUpdateRequest(job);
         var response = await _taskrowClient.JobUpdateAsync(request);
-        Assert.True(response.Success);
-        Assert.Equal(request.JobNumber, response.Entity.JobNumber);
-        Assert.Equal(request.JobTitle, response.Entity.JobTitle);
+
+        Assert.NotNull(response);
+        Assert.Equal(request.JobNumber, response.JobNumber);
+        Assert.Equal(request.JobTitle, response.JobTitle);
     }
 
     [Fact]
@@ -120,7 +121,7 @@ public class JobTests : BaseTest
         var response = await _taskrowClient.JobClientDependecyListAsync(client.ClientID);
 
         Assert.NotNull(response);
-        Assert.NotEmpty(response.Entity.ClientAreas);
+        Assert.NotEmpty(response.ClientAreas);
     }
 
     [Fact]
@@ -137,8 +138,7 @@ public class JobTests : BaseTest
         var response = await _taskrowClient.JobStatusUpdateAsync(client.ClientNickName, jobNumber, jobStatusID);
 
         Assert.NotNull(response);
-        Assert.True(response.Success);
-        Assert.Equal(jobStatusID, response.Entity.JobStatusID);
+        Assert.Equal(jobStatusID, response.JobStatusID);
     }
 
     [Fact]
@@ -171,6 +171,5 @@ public class JobTests : BaseTest
         var response = await _taskrowClient.JobWallPostSaveAsync(request);
 
         Assert.NotNull(response);
-        Assert.True(response.Success);
     }
 }

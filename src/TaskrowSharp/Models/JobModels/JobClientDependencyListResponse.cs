@@ -1,4 +1,5 @@
-﻿namespace TaskrowSharp.Models.JobModels;
+﻿/*
+namespace TaskrowSharp.Models.JobModels;
 
 public class JobClientDependencyListResponse
 {
@@ -7,3 +8,4 @@ public class JobClientDependencyListResponse
     public JobClientDependeciesEntity Entity { get; set; }
     public string TargetURL { get; set; }
 }
+*/

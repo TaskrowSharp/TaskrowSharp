@@ -51,12 +51,9 @@ namespace TaskrowSharp.IntegrationTests
                     "Serviços TaskrowSharp Test",
                     null);
 
-                var insertResponse = await _taskrowClient.InvoiceFeeInsertAsync(request);
-                if (!insertResponse.Success)
-                    throw new InvalidOperationException($"Error inserting invoice -- {insertResponse.Message}");
-
-
-                var invoiceFee = insertResponse.Entities!.OrderByDescending(a => a.InvoiceFeeID).First();
+                var listInvoiceFees = await _taskrowClient.InvoiceFeeInsertAsync(request);
+                
+                var invoiceFee = listInvoiceFees.OrderByDescending(a => a.InvoiceFeeID).First();
 
                 Debug.WriteLine($"InvoiceFee inserted successfully (invoiceFeeID={invoiceFee.InvoiceFeeID}, invoiceID={invoiceFee.InvoiceID})");
 
@@ -75,9 +72,7 @@ namespace TaskrowSharp.IntegrationTests
 
                 Debug.WriteLine($"Invoice canceled (invoiceID={invoiceFee.InvoiceID})");
 
-
-                Assert.True(insertResponse.Success);
-                Assert.NotEmpty(insertResponse.Entities);
+                Assert.NotEmpty(listInvoiceFees);
             }
             catch (Exception ex)
             {

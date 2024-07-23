@@ -75,13 +75,10 @@ namespace TaskrowSharp.IntegrationTests
                     EffortEstimation = task.EffortEstimation
                 };
 
-                var response = await _taskrowClient.TaskSaveAsync(request);
+                var taskEntity = await _taskrowClient.TaskSaveAsync(request);
 
-                if (!response.Success)
-                    throw new InvalidOperationException($"Error saving task: {response.Message}");
-
-                Assert.True(response.Success);
-                Assert.Equal(request.TaskTitle, response.Entity.TaskTitle);
+                Assert.NotNull(taskEntity);
+                Assert.Equal(request.TaskTitle, taskEntity.TaskTitle);
             }
         }
     }

@@ -62,7 +62,7 @@ namespace TaskrowSharp.IntegrationTests
 
             var response = await _taskrowClient.ClientContactInsertAsync(request);
             
-            Assert.Equal(request.ContactName, response.Entity.ContactName);
+            Assert.Equal(request.ContactName, response.ContactName);
         }
     }
 }

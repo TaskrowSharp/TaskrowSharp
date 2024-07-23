@@ -1,4 +1,5 @@
-﻿namespace TaskrowSharp.Models.InvoiceModels;
+﻿/*
+namespace TaskrowSharp.Models.InvoiceModels;
 
 public class InvoiceAuthorizationSaveResponse
 {
@@ -7,3 +8,4 @@ public class InvoiceAuthorizationSaveResponse
     public Invoice? Entity { get; set; }
     public string TargetURL { get; set; }
 }
+*/

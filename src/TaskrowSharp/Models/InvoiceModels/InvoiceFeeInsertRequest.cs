@@ -7,7 +7,7 @@ public class InvoiceFeeInsertRequest
 {
     public int InvoiceFeeID { get; set; }
     public int FeeID { get; set; }
-    public string GuidModification { get; set; }
+    public string? GuidModification { get; set; }
 
     [JsonPropertyName("jobNumber")]
     public int JobNumber { get; private set; }

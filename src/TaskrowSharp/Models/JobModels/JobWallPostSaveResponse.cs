@@ -1,4 +1,5 @@
-﻿namespace TaskrowSharp.Models.JobModels;
+﻿/*
+namespace TaskrowSharp.Models.JobModels;
 
 public class JobWallPostSaveResponse
 {
@@ -7,3 +8,4 @@ public class JobWallPostSaveResponse
     public JobWallPost Entity { get; set; }
     public string TargetURL { get; set; }
 }
+*/

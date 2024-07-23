@@ -4,6 +4,7 @@ namespace TaskrowSharp.Models.JobModels;
 
 public class JobDetailEntity
 {
+    public bool? Success { get; set; }
     //public List<object> JobApprovalList { get; set; }
     //public List<object> PendingApprovalList { get; set; }
     //public List<object> ClientJobTags { get; set; }

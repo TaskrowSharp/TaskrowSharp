@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿/*
+using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.Models.InvoiceModels;
 
@@ -12,3 +13,4 @@ public class InvoiceSaveResponse
 
     public string TargetURL { get; set; }
 }
+*/
