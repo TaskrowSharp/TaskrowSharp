@@ -934,8 +934,8 @@ public class TaskrowClient
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
         }*/
 
-        var response = await ExecuteApiCall<object, TaskListByGroupEntity>(HttpMethod.Get, fullUrl, null);
-        return response;
+        var response = await ExecuteApiCall<object, BaseApiResponse<TaskListByGroupEntity>>(HttpMethod.Get, fullUrl, null);
+        return response.Entity;
     }
             
     public async Task<TaskDetailResponse> TaskDetailGetAsync(TaskReference taskReference)
@@ -1159,7 +1159,7 @@ public class TaskrowClient
             throw new TaskrowException($"Error in Taskrow API Call {relativeUrl} -- {ex.Message} -- Url: {fullUrl}", ex);
         }*/
 
-        var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Invoice/SaveInvoiceFe");
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Invoice/SaveInvoiceFee");
         var response = await ExecuteApiCall<InvoiceFeeInsertRequest, BaseApiResponse<List<InvoiceFee>>>(HttpMethod.Post, fullUrl, invoiceInsertRequest);
         return response.Entity;
     }
@@ -1230,8 +1230,8 @@ public class TaskrowClient
         }*/
 
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Invoice/GetInvoiceDetail?invoiceID={invoiceID}");
-        var response = await ExecuteApiCall<object, InvoiceDetailResponseEntity>(HttpMethod.Get, fullUrl, null);
-        return response;
+        var response = await ExecuteApiCall<object, BaseApiResponse<InvoiceDetailResponseEntity>>(HttpMethod.Get, fullUrl, null);
+        return response.Entity;
     }
 
     public async Task<Invoice> InvoiceSaveAsync(InvoiceSaveRequest invoiceSaveRequest)

@@ -3,10 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
-using TaskrowSharp.Models;
 using TaskrowSharp.Models.InvoiceModels;
 using Xunit;
-using static TaskrowSharp.IntegrationTests.TestModels.ConfigurationFile;
 
 namespace TaskrowSharp.IntegrationTests
 {
@@ -54,21 +52,24 @@ namespace TaskrowSharp.IntegrationTests
                 var listInvoiceFees = await _taskrowClient.InvoiceFeeInsertAsync(request);
                 
                 var invoiceFee = listInvoiceFees.OrderByDescending(a => a.InvoiceFeeID).First();
-
                 Debug.WriteLine($"InvoiceFee inserted successfully (invoiceFeeID={invoiceFee.InvoiceFeeID}, invoiceID={invoiceFee.InvoiceID})");
 
-
                 //--- Get
-
                 invoiceFee = await _taskrowClient.InvoiceFeeDetailGetAsync(invoiceFee.Job.JobNumber, invoiceFee.InvoiceFeeID);
-
                 var invoice = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee.InvoiceID)).InvoiceDetail;
+                Debug.WriteLine($"Invoice inserted successfully (invoiceID={invoice.InvoiceID})");
 
+                //-- Cancel Invoice Bills
+                foreach (var invoiceBill in invoice.InvoiceBill)
+                {
+                    var responseCancelInvoiceBill = await _taskrowClient.InvoiceBillCancelAsync(invoiceBill.InvoiceBillID);
+                    Debug.WriteLine($"InvoiceBill Canceled (invoiceBillID={invoiceBill.InvoiceBillID}, invoiceID={invoice.InvoiceID})");
+                }
 
                 //--- Cancel Invoice
-
                 var cancelInvoiceRequest = new InvoiceCancelRequest(invoiceFee.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice.GuidModification);
                 await _taskrowClient.InvoiceCancelAsync(cancelInvoiceRequest);
+                Debug.WriteLine($"Invoice Canceled (invoiceID={invoice.InvoiceID})");
 
                 Debug.WriteLine($"Invoice canceled (invoiceID={invoiceFee.InvoiceID})");
 

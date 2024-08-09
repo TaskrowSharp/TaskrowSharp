@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Json;
-using System.Net.Http;
-using System.Net;
 using System.Threading.Tasks;
 using TaskrowSharp.IntegrationTests.TestModels;
 using Xunit;
@@ -175,7 +172,6 @@ namespace TaskrowSharp.IntegrationTests
                 };
 
                 var saveInvoiceBill1Response = await _taskrowClient.InvoiceBillSaveAsync(saveInvoiceBill1Request);
-                
                 Debug.WriteLine($"InvoiceBill inserted (invoiceID={invoice1.InvoiceID})");
 
 
@@ -193,13 +189,10 @@ namespace TaskrowSharp.IntegrationTests
                     MemoDueDate = null
                 };
 
-                var saveInvoiceBill2Response = await _taskrowClient.InvoiceBillSaveAsync(saveInvoiceBill2Request);
-                
+                var saveInvoiceBill2Response = await _taskrowClient.InvoiceBillSaveAsync(saveInvoiceBill2Request);                
                 Debug.WriteLine($"InvoiceBill inserted (invoiceID={invoice1.InvoiceID})");
 
-
                 invoice1 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
-
                 Debug.WriteLine($"Invoice inserted successfully (invoiceID={invoice1.InvoiceID})");
 
                 //-- Update invoiceStatus
@@ -207,19 +200,16 @@ namespace TaskrowSharp.IntegrationTests
                 var updateInvoiceStatus = new InvoiceStatusUpdateRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test", invoice1.GuidModification);
                 var responseUpdate = await _taskrowClient.InvoiceStatusUpdateAsync(updateInvoiceStatus);
                 
-                
                 //-- Cancel Invoice Bills
                 foreach (var invoiceBill in invoice1.InvoiceBill)
                 {
-                    var responseCancelInvoiceBill = await _taskrowClient.InvoiceBillCancelAsync(invoiceBill.InvoiceBillID);
-                    
+                    var responseCancelInvoiceBill = await _taskrowClient.InvoiceBillCancelAsync(invoiceBill.InvoiceBillID);                    
                     Debug.WriteLine($"InvoiceBill Canceled (invoiceBillID={invoiceBill.InvoiceBillID}, invoiceID={invoice1.InvoiceID})");
                 }
 
                 //-- Cancel Invoice
                 var requestCancelInvoice = new InvoiceCancelRequest(invoiceFee1.InvoiceID, "Inserted and canceled by TaskrowSharp", invoice1.GuidModification);
                 var responseCancelInvoice = await _taskrowClient.InvoiceCancelAsync(requestCancelInvoice);
-                
                 Debug.WriteLine($"Invoice Canceled (invoiceID={invoice1.InvoiceID})");
 
                 invoice1 = (await _taskrowClient.InvoiceDetailGetAsync(invoiceFee1.InvoiceID)).InvoiceDetail;
