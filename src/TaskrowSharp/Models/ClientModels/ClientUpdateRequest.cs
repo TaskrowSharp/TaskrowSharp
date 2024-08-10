@@ -51,11 +51,11 @@ public class ClientUpdateRequest
         
         ExternalCode = client.ExternalCode;
         OwnerID = client.OwnerID;
-        /*MemberListString = client.MemberListString;
+        //MemberListString = client.MemberListString;
 
-        client.ClientAdministrativeDetail.SupplierComissionPercentage;
-        client.ClientAdministrativeDetail.Memo;
-        client.ExtranetRestrictedAccessTime*/
+        //client.ClientAdministrativeDetail.SupplierComissionPercentage;
+        //client.ClientAdministrativeDetail.Memo;
+        //client.ExtranetRestrictedAccessTime
 
         //"SegmentListString": "",
         //"OwnerID": "5380",
