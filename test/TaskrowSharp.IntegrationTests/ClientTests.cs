@@ -74,13 +74,13 @@ namespace TaskrowSharp.IntegrationTests
         {
             var clientID = 0;
 
-            TaskrowException exception = null;
+            TaskrowSharpException exception = null;
             try
             {
                 var client = await _taskrowClient.ClientDetailGetAsync(clientID);
                 Assert.NotNull(client);
             }
-            catch (TaskrowException ex)
+            catch (TaskrowSharpException ex)
             {
                 exception = ex;
             }

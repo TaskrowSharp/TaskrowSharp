@@ -47,13 +47,13 @@ public class JobTests : BaseTest
         var client = _configurationFile.Clients.First();
         var jobNumber = 99999;
 
-        TaskrowException exception = null;
+        TaskrowSharpException exception = null;
         try
         {
             var jobEntity = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
             Assert.NotNull(jobEntity);
         }
-        catch (TaskrowException ex)
+        catch (TaskrowSharpException ex)
         {
             exception = ex;
         }

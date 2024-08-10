@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace TaskrowSharp.Events;
+namespace TaskrowSharp.EventHandlers;
 
 public delegate void ApiCallExecutedEventHandler(
     HttpMethod httpMethod,

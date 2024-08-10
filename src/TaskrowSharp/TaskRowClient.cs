@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
-using TaskrowSharp.Events;
+using TaskrowSharp.EventHandlers;
 using TaskrowSharp.Exceptions;
 using TaskrowSharp.Interfaces;
 using TaskrowSharp.Models;
@@ -35,7 +35,7 @@ public class TaskrowClient
 
     #region Events
 
-    public event ApiCallExecutedEventHandler OnApiCallExecuted;
+    public event ApiCallExecutedEventHandler? OnApiCallExecuted;
 
     #endregion
 
@@ -64,23 +64,21 @@ public class TaskrowClient
 
     private static void ValidateAccessKey(string accessKey)
     {
-        if (accessKey == null)
-            throw new ArgumentNullException(nameof(accessKey));
-        
+        ArgumentNullException.ThrowIfNull(accessKey);
+
         if (accessKey.Length < 20)
             throw new ArgumentException("Invalid AccessKey");
     }
 
     private static void ValidateServiceUrl(Uri serviceUrl)
     {
-        if (serviceUrl == null)
-            throw new ArgumentNullException(nameof(serviceUrl));
+        ArgumentNullException.ThrowIfNull(serviceUrl);
 
         if (serviceUrl.ToString().StartsWith("http://", StringComparison.CurrentCultureIgnoreCase))
-            throw new InvalidServiceUrlException("https:// is required");
+            throw new TaskrowSharpInvalidServiceUrlException("https:// is required");
         
         if (!serviceUrl.ToString().StartsWith("https://", StringComparison.CurrentCultureIgnoreCase) || !serviceUrl.ToString().EndsWith(".taskrow.com/", StringComparison.CurrentCultureIgnoreCase))
-            throw new InvalidServiceUrlException("Invalid service url, use the format: https://yourdomain.taskrow.com");
+            throw new TaskrowSharpInvalidServiceUrlException("Invalid service url, use the format: https://yourdomain.taskrow.com");
     }
 
     private async Task<T2> ExecuteApiCall<T1, T2>(HttpMethod httpMethod, Uri fullUrl, T1? request)
@@ -108,24 +106,24 @@ public class TaskrowClient
             RegisterApiCallExecuted(httpMethod, fullUrl, httpResponse.StatusCode, httpResponse.IsSuccessStatusCode, jsonRequest, jsonResponse, stopwatch.ElapsedMilliseconds);
 
             if (httpMethod == HttpMethod.Get && httpResponse.StatusCode == HttpStatusCode.NotFound)
-                return default(T2);
+                return default;
 
             if (!httpResponse.IsSuccessStatusCode)
-                throw new TaskrowWebException(httpResponse.StatusCode, $"Error statusCode: {(int)httpResponse.StatusCode}");
+                throw new TaskrowSharpWebException(httpResponse.StatusCode, $"Error statusCode: {(int)httpResponse.StatusCode}");
 
             var response = JsonSerializer.Deserialize<T2>(jsonResponse);
 
             if (response is IBaseApiResponse baseResponseParsed)
             {
                 if (baseResponseParsed != null && !baseResponseParsed.Success)
-                    throw new TaskrowException(baseResponseParsed.Message ?? "Response.success=false");
+                    throw new TaskrowSharpException(baseResponseParsed.Message ?? "Response.success=false");
             }
 
             return response;
         }
         catch (Exception ex)
         {
-            throw new TaskrowException($"Error in Taskrow API Call {fullUrl} -- {ex.Message}", ex);
+            throw new TaskrowSharpException($"Error in Taskrow API Call {fullUrl} -- {ex.Message}", ex);
         }
     }
 
@@ -271,7 +269,7 @@ public class TaskrowClient
             var response = await ExecuteApiCall<object, ClientDetailResponse>(HttpMethod.Get, fullUrl, null);
             return response.Entity.Client;
         }
-        catch (TaskrowWebException twe)
+        catch (TaskrowSharpWebException twe)
         {
             //NOTE: API Taskrow retorna erro 500 quando não encontra o registro, deveria retornar erro 404
             if (twe.HttpStatusCode == HttpStatusCode.InternalServerError)
@@ -547,7 +545,7 @@ public class TaskrowClient
             var response = await ExecuteApiCall<object, UserDetailResponse>(HttpMethod.Get, fullUrl, null);
             return response.User;
         }
-        catch (TaskrowWebException twe)
+        catch (TaskrowSharpWebException twe)
         {
             //NOTE: API Taskrow retorna erro 500 quando não encontra o registro, deveria retornar erro 404
             if (twe.HttpStatusCode == HttpStatusCode.InternalServerError)
@@ -1582,7 +1580,7 @@ public class TaskrowClient
             var response = await ExecuteApiCall<object, Opportunity?>(HttpMethod.Get, fullUrl, null);
             return response;
         }
-        catch (TaskrowWebException twe)
+        catch (TaskrowSharpWebException twe)
         {
             //NOTE: API Taskrow retorna erro 500 quando não encontra o registro, deveria retornar erro 404
             if (twe.HttpStatusCode == HttpStatusCode.InternalServerError)
