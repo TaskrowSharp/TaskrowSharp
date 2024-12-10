@@ -41,7 +41,7 @@ public class InvoiceProject : IInvoiceFeeOrProject
 
     public decimal IAComissionValue { get; set; }
 
-    public int InvoiceSupplierID { get; set; }
+    //public int InvoiceSupplierID { get; set; }
 
     public int InvoiceID { get; set; }
 
