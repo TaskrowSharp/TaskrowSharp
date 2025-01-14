@@ -18,6 +18,7 @@ using TaskrowSharp.Models.AdministrativeModels;
 using TaskrowSharp.Models.BasicDataModels;
 using TaskrowSharp.Models.ClientModels;
 using TaskrowSharp.Models.IndexDataModels;
+using TaskrowSharp.Models.Integration;
 using TaskrowSharp.Models.InvoiceModels;
 using TaskrowSharp.Models.JobModels;
 using TaskrowSharp.Models.OpportunityModels;
@@ -120,6 +121,42 @@ public class TaskrowClient
             }
 
             return response;
+        }
+        catch (Exception ex)
+        {
+            throw new TaskrowSharpException($"Error in Taskrow API Call {fullUrl} -- {ex.Message}", ex);
+        }
+    }
+
+    private async Task ExecuteApiCallWithNoReturn<T1>(HttpMethod httpMethod, Uri fullUrl, T1? request)
+    {
+        var jsonRequest = (request != null ? JsonSerializer.Serialize(request, jsonSerializerOptions) : null);
+
+        try
+        {
+            var httpRequest = new HttpRequestMessage(httpMethod, fullUrl);
+            httpRequest.Headers.Add("__identifier", this.AccessKey);
+
+            if (jsonRequest != null)
+            {
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                httpRequest.Content = requestContent;
+            }
+
+            var stopwatch = Stopwatch.StartNew();
+            var httpResponse = await this.HttpClient.SendAsync(httpRequest);
+            stopwatch.Stop();
+
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+
+            RegisterApiCallExecuted(httpMethod, fullUrl, httpResponse.StatusCode, httpResponse.IsSuccessStatusCode, jsonRequest, jsonResponse, stopwatch.ElapsedMilliseconds);
+
+            if (httpMethod == HttpMethod.Get && httpResponse.StatusCode == HttpStatusCode.NotFound)
+                return;
+
+            if (!httpResponse.IsSuccessStatusCode)
+                throw new TaskrowSharpWebException(httpResponse.StatusCode, $"Error statusCode: {(int)httpResponse.StatusCode}");
         }
         catch (Exception ex)
         {
@@ -626,6 +663,23 @@ public class TaskrowClient
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Administrative/ListJobSubType");
         var response = await ExecuteApiCall<object, AdministrativeJobSubTypesListResponse>(HttpMethod.Get, fullUrl, null);
         return response;
+    }
+
+    #endregion
+
+    #region IntegrationLog
+
+    public async Task IntegrationLogInsertAsync(IntegrationLogInsertRequest integrationLogInsertRequest)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/integrationLog/log");
+        await ExecuteApiCallWithNoReturn<IntegrationLogInsertRequest>(HttpMethod.Post, fullUrl, integrationLogInsertRequest);
+    }
+
+    public async Task<List<IntegrationLogEntry>> IntegrationLogListAsync(string entityType, string entityID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"api/v2/integrationLog/log?entityType={entityType}&entityID={entityID}");
+        var response = await ExecuteApiCall<object, IntegrationLogListResponse>(HttpMethod.Get, fullUrl, null);
+        return response.LogEntries;
     }
 
     #endregion

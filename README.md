@@ -6,7 +6,7 @@ Taskrow is a software for organizing teamwork.
 
 https://taskrow.com/
 
-TaskrowSharp is a client that allows .NET applications communicate with Taskrow system to execute this operations:
+TaskrowSharp is a client that allows .NET applications communicate with Taskrow system to execute operations like:
 .	Get users and groups
 .	Get task details
 .	Comment, forward and close tasks
