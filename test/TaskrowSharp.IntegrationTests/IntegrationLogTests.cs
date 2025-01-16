@@ -7,12 +7,12 @@ using TaskrowSharp.Models.Integration;
 
 namespace TaskrowSharp.IntegrationTests;
 
-public class IntegrationTests : BaseTest
+public class IntegrationLogTests : BaseTest
 {
     private readonly TaskrowClient _taskrowClient;
     private readonly ConfigurationFile _configurationFile;
 
-    public IntegrationTests()
+    public IntegrationLogTests()
     {
         _taskrowClient = GetTaskrowClient();
         _configurationFile = GetConfigurationFile();
@@ -42,7 +42,7 @@ public class IntegrationTests : BaseTest
         var userMessage = $"UserMessage {dateReference}";
 
         var request = new IntegrationLogInsertRequest(entityType, entityID,  
-            new IntegrationLogInsertRequestEntry(userMessage, $"UserDetail {dateReference}", $"TechDetail {dateReference}", DateTimeOffset.Now, IntegrationLogEntryLevels.Info));
+            new IntegrationLogInsertRequestEntry(IntegrationLogEntryLevels.Info, DateTimeOffset.Now, userMessage, $"UserDetail {dateReference}", $"TechDetail {dateReference}"));
 
         await _taskrowClient.IntegrationLogInsertAsync(request);
         
