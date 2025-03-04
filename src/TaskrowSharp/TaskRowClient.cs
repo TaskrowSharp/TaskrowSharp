@@ -389,6 +389,13 @@ public class TaskrowClient
         return response.Entity;
     }
 
+    public async Task<JobPipelineStepUpdateEntity> JobPipelineStepUpdateAsync(string clientNickName, int jobNumber, int jobPipelineStepID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"api/v1/Job/UpdateJobPipelineStep?clientNickName={clientNickName}&jobNumber={jobNumber}&jobPipelineStepID={jobPipelineStepID}");
+        var response = await ExecuteApiCall<object, BaseApiResponse<JobPipelineStepUpdateEntity>>(HttpMethod.Post, fullUrl, null);
+        return response.Entity;
+    }
+
     #endregion
 
     #region JobClientDependecies

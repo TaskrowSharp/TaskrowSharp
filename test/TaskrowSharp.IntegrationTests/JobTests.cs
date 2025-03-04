@@ -142,6 +142,29 @@ public class JobTests : BaseTest
     }
 
     [Fact]
+    public async Task JobPipelineStepUpdateAsync_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.First();
+        var jobNumber = client.JobNumbers.First();
+
+        var jobHome = await _taskrowClient.JobHomeGetAsync(client.ClientNickName, jobNumber);
+        var jobSteps = jobHome.JobPipeline.JobPipelineSteps;
+
+        var job = await _taskrowClient.JobDetailGetAsync(client.ClientNickName, jobNumber);
+        var newJobStep = jobSteps.Where(a => a.JobPipelineStepID != job.JobPipelineStepID).First();
+
+        var jobPipelineStepID = newJobStep.JobPipelineStepID;
+
+        var response = await _taskrowClient.JobPipelineStepUpdateAsync(client.ClientNickName, jobNumber, jobPipelineStepID);
+
+        Assert.NotNull(response);
+        Assert.Equal(jobPipelineStepID, response.JobPipelineStepID);
+    }
+
+    [Fact]
     public async Task JobHomeGetAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)
