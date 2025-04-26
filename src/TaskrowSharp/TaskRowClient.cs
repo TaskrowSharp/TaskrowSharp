@@ -195,7 +195,7 @@ public class TaskrowClient
         return response;
     }
 
-    public async Task<ClientListItemResponse> ClientListAsync(string? nextToken = null, bool? includeInactives = null)
+    public async Task<ClientListItemResponse> ClientListAsync(string? nextToken = null, bool? includeInactives = null, bool convertNextTokenToNumeric = true)
     {
         string queryString = null;
         if (!string.IsNullOrWhiteSpace(nextToken))
@@ -205,6 +205,15 @@ public class TaskrowClient
 
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/core/client{queryString}");
         var response = await ExecuteApiCall<object, ClientListItemResponse>(HttpMethod.Get, fullUrl, null);
+
+        if (!string.IsNullOrEmpty(response.NextToken) && convertNextTokenToNumeric)
+        {
+            //Convert "nextToken": "WzYyNjEzXQ" em "62613"
+            var newNextToken = Utils.ConvertFromBase64ToString(response.NextToken, true);
+            newNextToken = Utils.GetOnlyNumbers(newNextToken);
+            response.NextToken = newNextToken;
+        }
+
         return response;
     }
 

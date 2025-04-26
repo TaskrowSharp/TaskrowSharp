@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TaskrowSharp.Exceptions;
 using TaskrowSharp.IntegrationTests.TestModels;
@@ -34,11 +35,21 @@ namespace TaskrowSharp.IntegrationTests
             var clients = new List<ClientListItem>();
 
             string? nextToken = null;
+            string? lastNextToken = null;
             do
             {
-                var response = await _taskrowClient.ClientListAsync(nextToken, true);
+                var response = await _taskrowClient.ClientListAsync(nextToken, includeInactives: true, convertNextTokenToNumeric: true);
                 clients.AddRange(response.Items);
                 nextToken = response.NextToken;
+
+                if (string.IsNullOrWhiteSpace(nextToken))
+                    throw new InvalidOperationException("nextToken retornado é null");
+
+                if (lastNextToken != null && nextToken.Equals(lastNextToken))
+                    throw new InvalidOperationException("Retorno está em loop retornando sempre o mesmo nextToken");
+
+                lastNextToken = nextToken;
+
             } while (nextToken != null);
 
             Assert.NotNull(clients);
@@ -145,7 +156,10 @@ namespace TaskrowSharp.IntegrationTests
                     "SP", 
                     "SAO PAULO", 
                     "Av Paulista", 
-                    "1578");
+                    "1578",
+                    "Conjunto 123",
+                    "01310-200",
+                    "Bela Vista");
 
                 var response = await _taskrowClient.ClientAddressInsertAsync(request);
                 Assert.NotNull(response);
@@ -165,7 +179,10 @@ namespace TaskrowSharp.IntegrationTests
                     clientAddress.StateName,
                     clientAddress.CityName,
                     clientAddress.Street,
-                    clientAddress.Number);
+                    clientAddress.Number,
+                    clientAddress.Complement,
+                    clientAddress.ZipCode,
+                    clientAddress.District);
 
                 var response = await _taskrowClient.ClientAddressUpdateAsync(request);
                 Assert.NotNull(response);

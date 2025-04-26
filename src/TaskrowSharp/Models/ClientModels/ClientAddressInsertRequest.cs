@@ -53,7 +53,8 @@ public class ClientAddressInsertRequest
 
     public ClientAddressInsertRequest(int clientID, string clientNickName, string socialContractName,
         string? cnpj = null, string? cpf = null,
-        int countryID = 31, int cityID = 1, string? stateName = null, string? cityName = null, string? street = null, string? number = null, string? complement = null)
+        int countryID = 31, int cityID = 1, string? stateName = null, string? cityName = null, 
+        string? street = null, string? number = null, string? complement = null, string? zipCode = null, string? district = null)
     {
         ClientID = clientID;
         ClientAddressID = 0;
@@ -84,6 +85,8 @@ public class ClientAddressInsertRequest
         Street = street;
         Number = number;
         Complement = complement;
+        ZipCode = zipCode;
+        District = district;
 
         Inactive = false;
     }

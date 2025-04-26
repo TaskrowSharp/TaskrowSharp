@@ -59,7 +59,8 @@ public class ClientAddressUpdateRequest
         string clientNickName, 
         string socialContractName,
         string? cnpj, string? cpf,
-        int countryID, int cityID, string? stateName, string? cityName, string? street, string? number)
+        int countryID, int cityID, string? stateName, string? cityName, 
+        string? street, string? number, string? complement, string? zipCode, string? district)
     {
         ClientID = clientID;
         ClientAddressID = clientAddressID;
@@ -89,5 +90,8 @@ public class ClientAddressUpdateRequest
         CityName = cityName;
         Street = street;
         Number = number;
+        Complement = complement;
+        ZipCode = zipCode;
+        District = district;
     }
 }

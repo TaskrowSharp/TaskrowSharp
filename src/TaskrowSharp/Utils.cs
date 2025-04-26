@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TaskrowSharp;
 
@@ -95,6 +96,22 @@ internal static class Utils
         return ret;
     }
 
+    public static string ConvertFromBase64ToString(string input, bool fixLength = true)
+    {
+        if (string.IsNullOrEmpty(input))
+            return string.Empty;
+
+        if (fixLength)
+        {
+            int remainder = input.Length % 4;
+            if (remainder > 0)
+                input += new string('=', 4 - remainder);
+        }
+
+        byte[] bytes = Convert.FromBase64String(input);
+        return Encoding.UTF8.GetString(bytes);
+    }
+
     #endregion
 
     #region Application
@@ -118,6 +135,18 @@ internal static class Utils
 
         staticExecutingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
         return staticExecutingAssembly;
+    }
+
+    #endregion
+
+    #region String
+
+    public static string? GetOnlyNumbers(string? text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return string.Empty;
+
+        return Regex.Replace(text!, @"[^0-9]+?", string.Empty);
     }
 
     #endregion
