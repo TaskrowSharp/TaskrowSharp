@@ -7,7 +7,7 @@ public class InvoiceAuthorizationSaveRequest
     public int JobNumber { get; set; }
     public int InvoiceID { get; set; }
     public string GuidModification { get; set; }
-    public List<int> InvoiceFeeIDs { get; set; }
+    public List<int> InvoiceFeeIDs { get; set; } = [];
 
     public InvoiceAuthorizationSaveRequest(int jobNumber, int invoiceID, string guidModification, List<int> invoiceFeeIDs)
     {

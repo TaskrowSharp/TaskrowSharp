@@ -25,7 +25,7 @@ public class Opportunity
     public User LastModificationUser { get; set; }
     public int AppMainCompanyID { get; set; }
     public string DisplayName { get; set; }
-    //public List<object> Estimate { get; set; }
-    //public List<object> Proposal { get; set; }
+    //public List<object> Estimate { get; set; } = [];
+    //public List<object> Proposal { get; set; } = [];
     public bool Canceled { get; set; }
 }

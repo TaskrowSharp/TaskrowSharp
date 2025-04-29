@@ -40,7 +40,7 @@ public class NewTaskItem
     public int? PercentComplete { get; set; }
     public int? PipelineStepID { get; set; }
     public bool ProgressChange { get; set; }
-    public List<Attachment> Attachments { get; set; }
+    public List<Attachment> Attachments { get; set; } = [];
     public int? EffortEstimation { get; set; }
     //public object? RemainingEffortEstimation { get; set; }
     public int? SubtaskID { get; set; }

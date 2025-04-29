@@ -47,7 +47,7 @@ public class InvoiceBill2
     public DateTime? BillDueDate { get; set; }
 
     //NOTE: This is the difference to InvoiceBill.cs, this property is an array!!!
-    public List<InvoiceBillDueDate> InvoiceBillDueDate { get; set; }
+    public List<InvoiceBillDueDate> InvoiceBillDueDate { get; set; } = [];
 
     public decimal? PaymentDiscountValue { get; set; }
     public bool CanBuildBillet { get; set; }

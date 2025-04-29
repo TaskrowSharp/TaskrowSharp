@@ -15,11 +15,11 @@ public class TaskDetailResponse
     public bool JobInactive { get; set; }
     public string JobInactiveMessage { get; set; }
     public bool CreateTaskPermission { get; set; }
-    public List<ContextTaskTag> ContextTaskTags { get; set; }
-    //public List<object> ExternalServices { get; set; }
+    public List<ContextTaskTag> ContextTaskTags { get; set; } = [];
+    //public List<object> ExternalServices { get; set; } = [];
     public Pipeline Pipeline { get; set; }
     public ExtranetPipeline ExtranetPipeline { get; set; }
-    public List<TaskStatus> TaskStatus { get; set; }
+    public List<TaskStatus> TaskStatus { get; set; } = [];
     public bool NotifyMe { get; set; }
     public bool Favorite { get; set; }
     public bool Follow { get; set; }
@@ -27,11 +27,11 @@ public class TaskDetailResponse
     public bool RequiredTimesheet { get; set; }
     public bool ExtranetEnabled { get; set; }
     public bool CanChangeRequestType { get; set; }
-    public List<RequestTypeList> RequestTypeList { get; set; }
+    public List<RequestTypeList> RequestTypeList { get; set; } = [];
     public bool RequestTypeChangeRequiredParam { get; set; }
     public bool CreateTasksForAllGroupsPermission { get; set; }
     public bool ForwardTasksForAllGroupsPermission { get; set; }
     public bool ViewAllGroupsPermission { get; set; }
-    public List<HierarchyGroup> HierarchyGroups { get; set; }
-    public List<SiblingTask> SiblingTasks { get; set; }
+    public List<HierarchyGroup> HierarchyGroups { get; set; } = [];
+    public List<SiblingTask> SiblingTasks { get; set; } = [];
 }

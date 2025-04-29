@@ -18,5 +18,5 @@ public class JobPipeline
     public DateTime? LastModificationDate { get; set; }
 
     public int LastModificationUserID { get; set; }
-    public List<JobPipelineStep> JobPipelineSteps { get; set; }
+    public List<JobPipelineStep> JobPipelineSteps { get; set; } = [];
 }

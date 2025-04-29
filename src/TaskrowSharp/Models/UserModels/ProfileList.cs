@@ -12,7 +12,7 @@ public class ProfileList
     public string PermissionListString { get; set; }
     public bool Inactive { get; set; }
     public bool? ExternalUser { get; set; }
-    public List<Permission> Permission { get; set; }
+    public List<Permission> Permission { get; set; } = [];
     public bool HasMorePermissions { get; set; }
-    public List<User> Users { get; set; }
+    public List<User> Users { get; set; } = [];
 }

@@ -21,14 +21,14 @@ public class IntegrationLogEntry
     public DateTimeOffset EventDate { get; set; }
 
     [JsonPropertyName("logLevel")]
-    public int LogLevel { get; set; }
+    public string LogLevel { get; set; }
 
     public IntegrationLogEntry()
     {
 
     }
 
-    public IntegrationLogEntry(string userMessage, string userDetail, string techDetail, DateTimeOffset eventDate, int logLevel)
+    public IntegrationLogEntry(string userMessage, string userDetail, string techDetail, DateTimeOffset eventDate, string logLevel)
     {
         UserMessage = userMessage;
         UserDetail = userDetail;

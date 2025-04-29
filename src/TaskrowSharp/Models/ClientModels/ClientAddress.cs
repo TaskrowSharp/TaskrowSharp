@@ -7,8 +7,8 @@ public class ClientAddress
     public int ClientAddressID { get; set; }
     public int ClientID { get; set; }
     public Client Client { get; set; }
-    public bool NoCNPJ { get; set; }
     public Country Country { get; set; }
+    public bool NoCNPJ { get; set; }
     public string CNPJ { get; set; }
     public string CPF { get; set; }
     public string SocialContractName { get; set; }
@@ -31,7 +31,7 @@ public class ClientAddress
     public string FormattedAddress { get; set; }
     public string FormattedLocality { get; set; }
     public string FormattedSocialName { get; set; }
-    //public List<object> Product { get; set; }
+    //public List<object> Product { get; set; } = [];
     public bool Complete { get; set; }
     public string ProductListString { get; set; }
     public string ProductListNames { get; set; }

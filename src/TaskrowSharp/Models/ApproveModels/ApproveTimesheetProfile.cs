@@ -10,7 +10,7 @@ public class ApproveTimesheetProfile
     public string PermissionListString { get; set; }
     public bool Inactive { get; set; }
     //public object? ExternalUser { get; set; }
-    //public List<object>? Permission { get; set; }
+    //public List<object> Permission { get; set; } = [];
     public bool HasMorePermissions { get; set; }
-    //public List<object>? Users { get; set; }
+    //public List<object> Users { get; set; } = [];
 }

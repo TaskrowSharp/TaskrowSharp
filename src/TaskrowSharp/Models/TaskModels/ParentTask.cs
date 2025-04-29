@@ -21,8 +21,8 @@ public class ParentTask
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
     public DateTime? LastModificationDate { get; set; }
 
-    //public List<object> Tags { get; set; }
-    public List<Subtask> Subtasks { get; set; }
+    //public List<object> Tags { get; set; } = [];
+    public List<Subtask> Subtasks { get; set; } = [];
     public bool ExternalRequest { get; set; }
     public bool ExtranetCloseRequested { get; set; }
     public bool ExtranetClosed { get; set; }

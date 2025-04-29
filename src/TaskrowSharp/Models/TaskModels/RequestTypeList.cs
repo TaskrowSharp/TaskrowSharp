@@ -22,7 +22,7 @@ public class RequestTypeList
     //public object? FunctionGroupName { get; set; }
     //public object? DynFormHint { get; set; }
     //public object? DynFormMetadata { get; set; }
-    public List<object> RequestTypeFunctionGroup { get; set; }
+    public List<object> RequestTypeFunctionGroup { get; set; } = [];
     public bool SingleUse { get; set; }
     public bool InitialType { get; set; }
     public int RequestTypeClassificationID { get; set; }

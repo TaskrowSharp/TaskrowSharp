@@ -24,8 +24,8 @@ public class TaskEntity
 
     public bool Closed { get; set; }
     public int JobID { get; set; }
-    public List<NewTaskItem> NewTaskItems { get; set; }
-    public List<ExternalTaskItem> ExternalTaskItems { get; set; }
+    public List<NewTaskItem> NewTaskItems { get; set; } = [];
+    public List<ExternalTaskItem> ExternalTaskItems { get; set; } = [];
     public string RowVersion { get; set; }
     public bool Unread { get; set; }
     public int DueDateOrder { get; set; }
@@ -42,21 +42,21 @@ public class TaskEntity
     public ActualPermissions ActualPermissions { get; set; }
     public Owner Owner { get; set; }
     public User LastForwardUser { get; set; }
-    public List<Member> Members { get; set; }
-    public List<ExternalMember> ExternalMembers { get; set; }
-    public List<TaskAttachment> TaskAttachments { get; set; }
-    public List<Tag> Tags { get; set; }
+    public List<Member> Members { get; set; } = [];
+    public List<ExternalMember> ExternalMembers { get; set; } = [];
+    public List<TaskAttachment> TaskAttachments { get; set; } = [];
+    public List<Tag> Tags { get; set; } = [];
     public string TagListString { get; set; }
     public string MemberListString { get; set; }
     public string EffortUnitListString { get; set; }
-    //public List<object> EffortUnitTask { get; set; }
+    //public List<object> EffortUnitTask { get; set; } = [];
     public int? ParentTaskID { get; set; }
     public Deliverable Deliverable { get; set; }
     //public object? RecurringAllocation { get; set; }
-    public List<Subtask> Subtasks { get; set; }
+    public List<Subtask> Subtasks { get; set; } = [];
     public int? RequestContactID { get; set; }
     public RequestContact RequestContact { get; set; }
-    public List<ExternalAttachment> ExternalAttachments { get; set; }
+    public List<ExternalAttachment> ExternalAttachments { get; set; } = [];
     //public object? Replica { get; set; }
     public bool HasRequestDelivery { get; set; }
     public ParentTask ParentTask { get; set; }

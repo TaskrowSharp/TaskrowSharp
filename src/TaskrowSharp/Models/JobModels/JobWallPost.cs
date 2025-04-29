@@ -14,7 +14,7 @@ public class JobWallPost
     public int WallPostTypeID { get; set; }
     public string WallPostType { get; set; }
     public Wall Wall { get; set; }
-    //public List<object> WallComment { get; set; }
+    //public List<object> WallComment { get; set; } = [];
     public UserReference CreationUser { get; set; }
-    //public List<object> Attachments { get; set; }
+    //public List<object> Attachments { get; set; } = [];
 }

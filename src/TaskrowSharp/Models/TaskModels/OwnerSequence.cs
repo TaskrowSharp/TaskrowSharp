@@ -7,5 +7,5 @@ public class OwnerSequence
 {
     public Owner NextOwner { get; set; }
     public Owner PrevOwner { get; set; }
-    public List<Member> Members { get; set; }
+    public List<Member> Members { get; set; } = [];
 }

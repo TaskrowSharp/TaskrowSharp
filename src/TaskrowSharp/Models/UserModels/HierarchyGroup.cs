@@ -8,6 +8,6 @@ public class HierarchyGroup
     public string GroupName { get; set; }
     //public object? Slug { get; set; }
     public int OwnerUserID { get; set; }
-    public List<Member> Members { get; set; }
-    public List<UserGroup> Groups { get; set; }
+    public List<Member> Members { get; set; } = [];
+    public List<UserGroup> Groups { get; set; } = [];
 }

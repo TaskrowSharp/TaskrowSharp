@@ -17,5 +17,5 @@ public class UserGroup
     //public object? AllowedUsers { get; set; }
     public string MembersNames { get; set; }
     public ParentGroup ParentGroup { get; set; }
-    //public List<object>? Groups { get; set; }
+    //public List<object>? Groups { get; set; } = [];
 }

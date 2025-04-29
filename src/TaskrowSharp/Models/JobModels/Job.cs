@@ -32,8 +32,8 @@ public class Job
     public string OwnerUserLogin { get; set; }
     public string OwnerUserHashCode { get; set; }
     //public object DaysToAnswerRequest { get; set; }
-    public List<object> Tags { get; set; }
-    public List<JobMember> JobMember { get; set; }
+    //public List<object> Tags { get; set; } = [];
+    public List<JobMember> JobMember { get; set; } = [];
     public JobDetail JobDetail { get; set; }
     public string? InternalNumber { get; set; }
     public string? ExternalCode { get; set; }
@@ -48,16 +48,16 @@ public class Job
     public string JobExtranetMemberListString { get; set; }
     public string JobExtranetMemberInfoListString { get; set; }
     public string? JobExtranetUser { get; set; }
-    public List<object> JobExtranetMember { get; set; }
+    public List<object> JobExtranetMember { get; set; } = [];
     public bool ExternalRequestsEnabled { get; set; }
     public bool ExtranetShowSubtasks { get; set; }
-    public List<object> JobExternalMembers { get; set; }
+    //public List<object> JobExternalMembers { get; set; } = [];
     public int? TagContextID { get; set; }
     public string TagContext { get; set; }
     public bool EffortRequired { get; set; }
     public bool TemplateRequired { get; set; }
     public bool LooseEntriesAllowed { get; set; }
-    public List<object> DeliverableList { get; set; }
+    //public List<object> DeliverableList { get; set; } = [];
     public int? ProductID { get; set; }
     public string? Product { get; set; }
     public bool DeliverableRequired { get; set; }

@@ -19,5 +19,5 @@ public class ApprovalGroup
     //public object? AllowedUsers { get; set; }
     public string MembersNames { get; set; }
     public ParentGroup ParentGroup { get; set; }
-    public List<UserGroup> Groups { get; set; }
+    public List<UserGroup> Groups { get; set; } = [];
 }

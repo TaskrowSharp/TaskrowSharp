@@ -24,11 +24,11 @@ public class UserDetailInfo
     public string LanguageTitle { get; set; }
     public UserDetail UserDetail { get; set; }
     public UserAdministrativeDetail UserAdministrativeDetail { get; set; }
-    public List<object> UserBankingInfo { get; set; }
-    public List<UserPeriod> UserPeriods { get; set; }
-    public List<UserFunctionPeriod> UserFunctionPeriod { get; set; }
-    public List<UserPeriodDetail> UserPeriod { get; set; }
-    public List<object> UserExternalService { get; set; }
+    public List<object> UserBankingInfo { get; set; } = [];
+    public List<UserPeriod> UserPeriods { get; set; } = [];
+    public List<UserFunctionPeriod> UserFunctionPeriod { get; set; } = [];
+    public List<UserPeriodDetail> UserPeriod { get; set; } = [];
+    //public List<object> UserExternalService { get; set; } = [];
     public string ApprovalGroup { get; set; }
     //public object? AppMainCompanyMediaUser { get; set; }
     public bool SystemUser { get; set; }

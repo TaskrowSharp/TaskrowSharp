@@ -47,5 +47,5 @@ public class FinancialAccount
 
     public bool BilletEnabled { get; set; }
 
-    //public List<object> Members { get; set; }
+    //public List<object> Members { get; set; } = [];
 }

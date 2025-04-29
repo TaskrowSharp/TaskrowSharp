@@ -20,9 +20,9 @@ public class InternalClient
     public string OwnerUserHashCode { get; set; }
     public string UrlData { get; set; }
     public string EditUrlData { get; set; }
-    //public List<object>? ClientMember { get; set; }
-    //public List<object>? ClientSegment { get; set; }
-    //public List<object>? ClientAddress { get; set; }
+    //public List<object>? ClientMember { get; set; } = [];
+    //public List<object>? ClientSegment { get; set; } = [];
+    //public List<object>? ClientAddress { get; set; } = [];
     public ClientAdministrativeDetail ClientAdministrativeDetail { get; set; }
     public double? BonusOrderPercentage { get; set; }
     //public object? HasOpenedJobs { get; set; }

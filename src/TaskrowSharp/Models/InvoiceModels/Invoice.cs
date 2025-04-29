@@ -56,12 +56,12 @@ public class Invoice
     public int? InvoiceServiceCodeID { get; set; }
 
     public InvoiceServiceCode InvoiceServiceCode { get; set; }
-    public List<InvoiceBill2> InvoiceBill { get; set; }
+    public List<InvoiceBill2> InvoiceBill { get; set; } = [];
     public InvoiceAuthorization InvoiceAuthorization { get; set; }
 
     //public Values Values { get; set; }
-    //public List<object> InvoiceTaxValueInvoice { get; set; }
-    //public List<object> Attachments { get; set; }
+    //public List<object> InvoiceTaxValueInvoice { get; set; } = [];
+    //public List<object> Attachments { get; set; } = [];
     //public object InvoiceEmailHistory { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]

@@ -13,5 +13,5 @@ public class JobWall
     public ClientReference? Client { get; set; }
     public int TotalWallPost { get; set; }
     public string LastUpdateTime { get; set; }
-    public List<JobWallPost> WallPost { get; set; }
+    public List<JobWallPost> WallPost { get; set; } = [];
 }

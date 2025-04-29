@@ -49,6 +49,6 @@ public class IntegrationLogTests : BaseTest
         var logEntries = await _taskrowClient.IntegrationLogListAsync(entityType, entityID);
         Assert.NotNull(logEntries);
         Assert.NotEmpty(logEntries);
-        Assert.Equal(userMessage, logEntries.Last().UserMessage);
+        Assert.Equal(userMessage, logEntries.First().UserMessage);
     }
 }

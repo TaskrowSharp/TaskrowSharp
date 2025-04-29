@@ -633,6 +633,12 @@ public class TaskrowClient
 
     #endregion
 
+    #region SupplierInvoice
+
+
+
+    #endregion
+
     #region Opportunity
 
     public async Task<Opportunity> OpportunityInsertAsync(OpportunityInsertRequest opportunityInsertRequest)

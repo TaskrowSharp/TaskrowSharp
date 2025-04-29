@@ -12,6 +12,6 @@ public class ExtranetPipeline
     public bool ResetOnRequestTypeChange { get; set; }
     public bool Extranet { get; set; }
     public bool Inactive { get; set; }
-    public List<PipelineStep> PipelineSteps { get; set; }
-    public List<object> PipelineTrigger { get; set; }
+    public List<PipelineStep> PipelineSteps { get; set; } = [];
+    public List<object> PipelineTrigger { get; set; } = [];
 }

@@ -62,7 +62,7 @@ public class InvoiceFee : IInvoiceFeeOrProject
 
     public bool InvoiceIsDeleted { get; set; }
 
-    public List<InvoiceBill> InvoiceBill { get; set; }
+    public List<InvoiceBill> InvoiceBill { get; set; } = [];
 
     public string InvoiceForecast { get; set; }
 }

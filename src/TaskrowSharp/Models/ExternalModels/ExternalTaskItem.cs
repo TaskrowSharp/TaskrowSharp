@@ -24,7 +24,7 @@ public class ExternalTaskItem
     public User ToUser { get; set; }
     public Contact FromContact { get; set; }
     public Contact ToContact { get; set; }
-    public List<Attachment> Attachments { get; set; }
+    public List<Attachment> Attachments { get; set; } = [];
     public bool CanDeleteAttachments { get; set; }
     //public object? ApprovalRequest { get; set; }
     public int? ExtranetPipelineStepID { get; set; }
