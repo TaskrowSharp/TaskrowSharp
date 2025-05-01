@@ -29,6 +29,9 @@
 		712,
 		734
 	],
+	"supplierInvoiceIDs": [
+		1569
+	],
 	"insertInvoiceData": {
 		"jobNumber": 1,
 		"fromClientAddressID": 123,

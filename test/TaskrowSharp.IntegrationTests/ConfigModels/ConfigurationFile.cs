@@ -21,6 +21,9 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         [JsonPropertyName("userIDs")]
         public List<int> UserIDs { get; set; }
 
+        [JsonPropertyName("supplierInvoiceIDs")]
+        public List<int> SupplierInvoiceIDs { get; set; }
+
         [JsonPropertyName("insertInvoiceData")]
         public InsertInvoiceDataConfigurationItem InsertInvoiceData { get; set; }
 

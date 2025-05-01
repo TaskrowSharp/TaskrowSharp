@@ -22,6 +22,7 @@ using TaskrowSharp.Models.Integration;
 using TaskrowSharp.Models.InvoiceModels;
 using TaskrowSharp.Models.JobModels;
 using TaskrowSharp.Models.OpportunityModels;
+using TaskrowSharp.Models.SupplierModels;
 using TaskrowSharp.Models.TaskModels;
 using TaskrowSharp.Models.UserModels;
 
@@ -635,7 +636,12 @@ public class TaskrowClient
 
     #region SupplierInvoice
 
-
+    public async Task<SupplierInvoiceResponse> SupplierInvoiceGetAsync(int supplierInvoiceID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/SupplierInvoice/GetSupplierInvoiceData?supplierInvoiceID={supplierInvoiceID}");
+        var response = await ExecuteApiCall<object, SupplierInvoiceResponse>(HttpMethod.Get, fullUrl, null);
+        return response;
+    }
 
     #endregion
 
