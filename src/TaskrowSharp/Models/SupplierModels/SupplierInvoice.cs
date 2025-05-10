@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using TaskrowSharp.JsonConverters;
 using TaskrowSharp.Models.ClientModels;
 using TaskrowSharp.Models.UserModels;
 
@@ -8,9 +11,14 @@ public class SupplierInvoice
 {
     public int SupplierInvoiceID { get; set; }
     public string InvoiceNumber { get; set; }
-    public double InvoiceValue { get; set; }
-    public string IssueDate { get; set; }
-    public string DueDate { get; set; }
+    public decimal InvoiceValue { get; set; }
+
+    [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+    public DateTime? IssueDate { get; set; }
+
+    [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+    public DateTime? DueDate { get; set; }
+
     public bool EnforceNumberUniqueness { get; set; }
     public int ClientAddressID { get; set; }
     public ClientAddress ClientAddress { get; set; }
@@ -18,12 +26,16 @@ public class SupplierInvoice
     public SupplierInvoiceType? SupplierInvoiceType { get; set; }
     public int SupplierID { get; set; }
     public Supplier? Supplier { get; set; }
-    
-    public string ModificationDate { get; set; }
+
+    [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+    public DateTime? ModificationDate { get; set; }
+
     public int? ModificationUserID { get; set; }
     public UserReference? ModificationUser { get; set; }
     
-    public string CreationDate { get; set; }
+    [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+    public DateTime? CreationDate { get; set; }
+
     public int? CreationUserID { get; set; }
     public UserReference? CreationUser { get; set; }
 
