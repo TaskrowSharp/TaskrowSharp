@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskrowSharp.Models.AdministrativeModels;
 using TaskrowSharp.Models.ClientModels;
 
 namespace TaskrowSharp.Models.InvoiceModels;

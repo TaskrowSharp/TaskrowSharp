@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using TaskrowSharp.JsonConverters;
+using TaskrowSharp.Models.AdministrativeModels;
 using TaskrowSharp.Models.ClientModels;
 
 namespace TaskrowSharp.Models.InvoiceModels;

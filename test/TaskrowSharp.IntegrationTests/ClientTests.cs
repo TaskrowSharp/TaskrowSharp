@@ -174,7 +174,7 @@ namespace TaskrowSharp.IntegrationTests
                     clientAddress.CNPJ,
                     clientAddress.CPF,
                     clientAddress.Country.CountryID,
-                    clientAddress.CityID ?? 0,
+                    clientAddress.CityID,
                     clientAddress.StateName,
                     clientAddress.CityName,
                     clientAddress.Street,

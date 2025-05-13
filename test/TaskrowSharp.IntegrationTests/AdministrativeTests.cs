@@ -23,4 +23,12 @@ public class AdministrativeTests : BaseTest
         Assert.NotNull(response);
         Assert.NotEmpty(response.JobSubTypeList);
     }
+
+    [Fact]
+    public async Task FinancialAccountListAsync_Success()
+    {
+        var response = await _taskrowClient.FinancialAccountListAsync();
+
+        Assert.NotNull(response);
+    }
 }

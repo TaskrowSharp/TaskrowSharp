@@ -695,6 +695,17 @@ public class TaskrowClient
 
     #endregion
 
+    #region FinancialAccount
+
+    public async Task<FinancialAccountListResponse> FinancialAccountListAsync()
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Administrative/ListFinancialAccount");
+        var response = await ExecuteApiCall<object, FinancialAccountListResponse>(HttpMethod.Get, fullUrl, null);
+        return response;
+    }
+
+    #endregion
+
     #region IntegrationLog
 
     public async Task IntegrationLogInsertAsync(IntegrationLogInsertRequest integrationLogInsertRequest)
