@@ -22,9 +22,9 @@ public class User
     public int ProfileRate { get; set; }
     public string FunctionGroupName { get; set; }
     public string UserFunctionTitle { get; set; }
-    public object NotBillable { get; set; }
-    public object NotRequiredTimesheet { get; set; }
+    //public object NotBillable { get; set; }
+    //public object NotRequiredTimesheet { get; set; }
     public string RegistrationNumber { get; set; }
-    public object Office { get; set; }
+    //public object Office { get; set; }
     public bool SystemUser { get; set; }
 }

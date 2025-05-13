@@ -34,7 +34,7 @@ public class FinancialAccount
     public bool MainAccount { get; set; }
 
     [JsonPropertyName("PaymentDueDateDay")]
-    public object PaymentDueDateDay { get; set; }
+    public int? PaymentDueDateDay { get; set; }
 
     [JsonPropertyName("Inactive")]
     public bool Inactive { get; set; }
@@ -43,7 +43,7 @@ public class FinancialAccount
     public ClientAddress? ClientAddress { get; set; }
 
     [JsonPropertyName("BankID")]
-    public int BankID { get; set; }
+    public int? BankID { get; set; }
 
     [JsonPropertyName("Bank")]
     public Bank Bank { get; set; }
