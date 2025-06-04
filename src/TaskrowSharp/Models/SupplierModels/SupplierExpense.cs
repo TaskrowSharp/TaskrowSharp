@@ -1,4 +1,7 @@
-﻿using TaskrowSharp.Models.ClientModels;
+﻿using System;
+using System.Text.Json.Serialization;
+using TaskrowSharp.JsonConverters;
+using TaskrowSharp.Models.ClientModels;
 using TaskrowSharp.Models.JobModels;
 
 namespace TaskrowSharp.Models.SupplierModels;
@@ -11,7 +14,10 @@ public class SupplierExpense
     public string ExpenseDate { get; set; }
     public int? SupplierOrderID { get; set; }
     public int? AdOrderID { get; set; }
-    public string ExpenseDueDate { get; set; }
+    
+    [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
+    public DateTime? ExpenseDueDate { get; set; }
+
     public int? RefundTypeID { get; set; }
     public int? InvoiceToClientAddressID { get; set; }
     public InvoiceToClientAddress? InvoiceToClientAddress { get; set; }

@@ -46,7 +46,7 @@ public class SupplierInvoice
     public string DeletionStatus { get; set; }
 
     public int? RefundTypeID { get; set; }
-    public List<Expense>? Expenses { get; set; } = [];
+    public List<SupplierExpense>? Expenses { get; set; } = [];
 
     //public List<object>? Attachments { get; set; } = [];
     
