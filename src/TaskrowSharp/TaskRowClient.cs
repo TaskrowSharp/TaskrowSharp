@@ -643,6 +643,12 @@ public class TaskrowClient
         return response;
     }
 
+    public async Task SupplierInvoiceSaveExpensePaymentAsync(SupplierInvoiceSaveExpensePaymentRequest supplierExpenseSaveRequest)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Expense/SaveExpensePayment");
+        var response = await ExecuteApiCall<SupplierInvoiceSaveExpensePaymentRequest, object>(HttpMethod.Post, fullUrl, supplierExpenseSaveRequest);
+    }
+
     #endregion
 
     #region Opportunity
