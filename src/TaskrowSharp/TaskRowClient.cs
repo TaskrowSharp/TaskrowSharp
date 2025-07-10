@@ -643,10 +643,13 @@ public class TaskrowClient
         return response;
     }
 
-    public async Task SupplierInvoiceSaveExpensePaymentAsync(SupplierInvoiceSaveExpensePaymentRequest supplierExpenseSaveRequest)
+    public async Task<SupplierInvoiceSaveExpensePaymentResponse> SupplierInvoiceSaveExpensePaymentAsync(SupplierInvoiceSaveExpensePaymentRequest supplierExpenseSaveRequest)
     {
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Expense/SaveExpensePayment");
-        var response = await ExecuteApiCall<SupplierInvoiceSaveExpensePaymentRequest, object>(HttpMethod.Post, fullUrl, supplierExpenseSaveRequest);
+        var response = await ExecuteApiCall<SupplierInvoiceSaveExpensePaymentRequest, SupplierInvoiceSaveExpensePaymentResponse>(HttpMethod.Post, fullUrl, supplierExpenseSaveRequest);
+        if (response.Success == null)
+            response.Success = true;
+        return response;
     }
 
     #endregion
