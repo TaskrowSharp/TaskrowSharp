@@ -197,8 +197,8 @@ namespace TaskrowSharp.IntegrationTests
 
                 //-- Update invoiceStatus
 
-                var updateInvoiceStatus = new InvoiceStatusUpdateRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test", invoice1.GuidModification);
-                var responseUpdate = await _taskrowClient.InvoiceStatusUpdateAsync(updateInvoiceStatus);
+                var updateInvoiceStatus = new InvoiceIntegrationStatusUpdateRequest(invoice1.InvoiceID, IntegrationStatusEnum.Error, "TaskrowSharp Test", invoice1.GuidModification);
+                var responseUpdate = await _taskrowClient.InvoiceIntegrationStatusUpdateAsync(updateInvoiceStatus);
                 
                 //-- Cancel Invoice Bills
                 foreach (var invoiceBill in invoice1.InvoiceBill)

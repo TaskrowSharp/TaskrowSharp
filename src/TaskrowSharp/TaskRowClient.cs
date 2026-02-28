@@ -570,12 +570,12 @@ public class TaskrowClient
 
     #endregion
 
-    #region InvoiceStatus
+    #region InvoiceIntegrationStatus
 
-    public async Task<Invoice> InvoiceStatusUpdateAsync(InvoiceStatusUpdateRequest invoiceUpdateRequest)
+    public async Task<Invoice> InvoiceIntegrationStatusUpdateAsync(InvoiceIntegrationStatusUpdateRequest updateRequest)
     {
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Invoice/SaveInvoiceIntegrationStatus");
-        var response = await ExecuteApiCall<InvoiceStatusUpdateRequest, BaseApiResponse<Invoice>>(HttpMethod.Post, fullUrl, invoiceUpdateRequest);
+        var response = await ExecuteApiCall<InvoiceIntegrationStatusUpdateRequest, BaseApiResponse<Invoice>>(HttpMethod.Post, fullUrl, updateRequest);
         return response.Entity;
     }
 
@@ -649,6 +649,27 @@ public class TaskrowClient
         var response = await ExecuteApiCall<SupplierInvoiceSaveExpensePaymentRequest, SupplierInvoiceSaveExpensePaymentResponse>(HttpMethod.Post, fullUrl, supplierExpenseSaveRequest);
         if (response.Success == null)
             response.Success = true;
+        return response;
+    }
+
+    #endregion
+
+    #region SupplierInvoiceIntegrationStatus
+
+    public async Task SupplierInvoiceIntegrationStatusUpdateAsync(SupplierInvoiceIntegrationStatusUpdateRequest updateRequest)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/supplierInvoice/saveIntegrationStatus");
+        await ExecuteApiCallWithNoReturn<SupplierInvoiceIntegrationStatusUpdateRequest>(HttpMethod.Post, fullUrl, updateRequest);
+    }
+
+    #endregion
+
+    #region SupplierOrder
+
+    public async Task<SupplierOrder?> SupplierOrderGetAsync(int supplierOrderID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/production/supplierOrder?SupplierOrderID={supplierOrderID}");
+        var response = await ExecuteApiCall<object, SupplierOrder>(HttpMethod.Get, fullUrl, null);
         return response;
     }
 

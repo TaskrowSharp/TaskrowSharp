@@ -3,7 +3,7 @@ using TaskrowSharp.JsonConverters;
 
 namespace TaskrowSharp.Models.InvoiceModels;
 
-public class InvoiceStatusUpdateRequest
+public class InvoiceIntegrationStatusUpdateRequest
 {
     public int InvoiceID { get; set; }
 
@@ -13,7 +13,7 @@ public class InvoiceStatusUpdateRequest
     public string Message { get; set; }
     public string GuidModification { get; set; }
 
-    public InvoiceStatusUpdateRequest(int invoiceID, IntegrationStatusEnum integrationStatusID, string message, string guidModification)
+    public InvoiceIntegrationStatusUpdateRequest(int invoiceID, IntegrationStatusEnum integrationStatusID, string message, string guidModification)
     {
         InvoiceID = invoiceID;
         IntegrationStatusID = integrationStatusID;
