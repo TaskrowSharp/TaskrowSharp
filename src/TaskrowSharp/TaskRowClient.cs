@@ -668,7 +668,7 @@ public class TaskrowClient
 
     public async Task<SupplierOrder?> SupplierOrderGetAsync(int supplierOrderID)
     {
-        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/production/supplierOrder?SupplierOrderID={supplierOrderID}");
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/production/supplierOrder/get?supplierOrderID={supplierOrderID}");
         var response = await ExecuteApiCall<object, SupplierOrder>(HttpMethod.Get, fullUrl, null);
         return response;
     }

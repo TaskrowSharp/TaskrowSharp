@@ -29,6 +29,9 @@ namespace TaskrowSharp.IntegrationTests.TestModels
         [JsonPropertyName("insertJobData")]
         public InsertJobDataConfigurationItem InsertJobData { get; set; }
 
+        [JsonPropertyName("supplierOrderIDs")]
+        public List<int> SupplierOrderIDs { get; set; }
+
         internal class TaskConfigurationItem
         {
             [JsonPropertyName("clientNickName")]

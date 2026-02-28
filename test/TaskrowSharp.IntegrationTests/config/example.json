@@ -56,5 +56,8 @@
 		"requestDeliveryEnforceabilityID": 1,
 		"clientAreaID": 20364,
 		"jobSubTypeID": 845
-	}
+	},
+	"supplierOrderIDs": [
+		4455
+	]
 }
