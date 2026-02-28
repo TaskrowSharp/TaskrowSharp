@@ -1,44 +1,40 @@
 # TaskrowSharp - Simple Taskrow Client for .NET
 
-### License: MIT
+`Package License: MIT`
 
-Taskrow is a software for organizing teamwork.
+[Taskrow](https://taskrow.com/) is software for organizing your team's work.
 
-https://taskrow.com/
+TaskrowSharp is a client that facilitates the integration of .NET applications with the Taskrow API.
 
-TaskrowSharp is a client that allows .NET applications communicate with Taskrow system to execute operations like:
-.	Get users and groups
-.	Get task details
-.	Comment, forward and close tasks
+Using TaskrowSharp you can perform operations like:
 
+- Get users and groups
+- Get task details
+- Comment, forward and close tasks
+- Create invoice
 
-## 1- Create a Taskrow account
+---
 
-To use TaskrowSharp client you need a Taskrow account, to create a account go to website:
+## 1. How to use the TaskrowSharp lib
 
-https://taskrow.com/
+## 1.1. Create a Taskrow AccessKey
 
-
-## 2- Create a Taskrow AccessKey
-
-The second step is create a AccessKey to use in client, to create this, do the following:
+You need a Taskrow AccessKey to use in client, to create this, do the following:
 
 1.  Go to your Taskrow account (https://yourdomain.taskrow.com)
 2.  Log in using the e-mail of user you want to use in integration with API (you can use your, or create a new user)
 3.  Go to User List and acces User page
 4.  Click the button to create a new Mobile API Key
 
+### 1.2. Add the dependency
 
+Add the referece to "TaskrowSharp.dll" in your project, get this file from directory: "binaries".
 
-## 3- Add nuget reference to your project
+A version of this package should be available on NuGet in the future.
 
-(available soon)
+### 1.3. Connect
 
-
-
-## 4- Examples
-
-### 4.1- List users
+Use your Taskrow AccessKey to connect to Taskrow API:
 
 ```csharp
 var httpClient = new HttpClient(); 
@@ -46,11 +42,21 @@ var httpClient = new HttpClient();
 //TIP: You can use a retry policy with Poly, more info: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-http-call-retries-exponential-backoff-polly
 
 var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
+```
+
+---
+
+## 2. Examples
+
+### 2.1. List users
+
+```csharp
+var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
 var users = await taskrowClient.UserListAsync();
 ```
 
 
-## 4.2- Forward Task
+## 2.2. Forward Task
 
 ```csharp
 var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
@@ -78,10 +84,11 @@ var request = new TaskSaveRequest(taskResponse.JobData.Client.ClientNickName, ta
 var response = await _taskrowClient.TaskSaveAsync(request);
 ```
 
+---
 
-## 5- Additional features
+## 3. Additional features
 
-### 5.1 - OnApiCallExecuted event
+### 3.1. OnApiCallExecuted event
 
 ```csharp
 var taskrowClient = new TaskrowSharp.TaskrowClient(new Uri("https://yourdomain.taskrow.com"), "AccessKey_xxxxxxxxxxxxx", httpClient);
@@ -92,13 +99,17 @@ taskrowClient.OnApiCallExecuted += (HttpMethod httpMethod, Uri fullUrl, HttpStat
 var users = await taskrowClient.UserListAsync();
 ```
 
+---
 
-## 6- Explore source code / debug
+## 4. Explore source code / debug
 
-Open solution "TaskrowSharp.sln" in Visual Studio 2022
+Steps to run the code:
 
-To Run Tests, you need to create a file "main.json"
-1.	create a file "main.json" in folder: \TaskrowSharp.IntegrationTests\config\ using the example file
-2.	add your Taskrow credentials to this file
-3.	change main.json file configuration to "Copy if newer"
+1. Open solution "TaskrowSharp.sln" in Visual Studio 2026
+2. Create a file "main.json"
+    - create a file "main.json" in folder: \TaskrowSharp.IntegrationTests\config\ using the example file
+    - add your Taskrow credentials to this file
+    - change main.json file configuration to "Copy if newer"
+3. Build the solution (CTRL+SHIFT+B)
+4. Run the tests
 
