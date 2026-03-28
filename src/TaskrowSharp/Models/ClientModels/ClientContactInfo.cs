@@ -1,6 +1,6 @@
 ﻿namespace TaskrowSharp.Models.ClientModels;
 
-public class Contact
+public class ClientContactInfo
 {
     public int ClientContactID { get; set; }
     public string ContactName { get; set; }

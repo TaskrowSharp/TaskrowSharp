@@ -103,15 +103,21 @@ namespace TaskrowSharp.IntegrationTests
             if (_configurationFile.UserIDs?.Count == 0)
                 throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
 
+            //-- Insere Client
+
             var userID = _configurationFile.UserIDs.First();
             var clientName = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
 
-            var request = new ClientInsertRequest(clientName, clientName, userID);
+            var request = new ClientInsertRequest(clientName, clientName, userID)
+            {
+                Memo = "Teste"
+            };
+
             var response = await _taskrowClient.ClientInsertAsync(request);
             Assert.NotNull(response);
             Assert.Equal(request.ClientName, response.ClientName);
         }
-        
+
         [Fact]
         public async Task ClientUpdateAsync_Success()
         {
@@ -128,6 +134,110 @@ namespace TaskrowSharp.IntegrationTests
             var response = await _taskrowClient.ClientUpdateAsync(request);
             Assert.NotNull(response);
             Assert.Equal(request.Memo, response.ClientAdministrativeDetail.Memo);
+        }
+
+        [Fact]
+        public async Task ClientInsertAsync_InsertAddressAndContact_FullData_Success()
+        {
+            if (_configurationFile.UserIDs?.Count == 0)
+                throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
+
+            //-- Insere Client
+
+            var userID = _configurationFile.UserIDs.First();
+            var clientName = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
+
+            var requestClient = new ClientInsertRequest(clientName, clientName, userID)
+            {
+                Memo = "Teste"
+            };
+
+            var client = await _taskrowClient.ClientInsertAsync(requestClient);
+            Assert.NotNull(client);
+            Assert.Equal(requestClient.ClientName, client.ClientName);
+
+            //-- Insere ClientAddress
+
+            var cnpj = Utils.GenerateFakeCnpj(formatted: true);
+            
+            var clientAddressInsertRequest = new ClientAddressInsertRequest(
+                    clientID: client.ClientID,
+                    clientNickName: client.ClientNickName,
+                    socialContractName: $"Teste {cnpj}",
+                    cnpj: cnpj,
+                    cpf: null,
+                    countryID: 31,
+                    cityID: 7352,
+                    stateName: "SP",
+                    cityName: "SAO PAULO",
+                    street: "Av Paulista",
+                    number: "1578",
+                    complement: "Conjunto 123",
+                    zipCode: "01310-200",
+                    district: "Bela Vista");
+
+            var clientAddress = await _taskrowClient.ClientAddressInsertAsync(clientAddressInsertRequest);
+            Assert.NotNull(clientAddress);
+            Assert.Equal(clientAddressInsertRequest.SocialContractName, clientAddress.SocialContractName);
+
+            //-- Insere ClientContact
+
+            var clientContactInsertRequest = new ClientContactInsertRequest(
+                clientID: client.ClientID,
+                clientNickName: client.ClientNickName,
+                contactName: "Contato Teste 1")
+            {
+                ContactEmail = "contato-teste@testecompany.com"
+            };
+
+            var clientContact = await _taskrowClient.ClientContactInsertAsync(clientContactInsertRequest);
+            Assert.NotNull(clientContact);
+            Assert.Equal(clientContactInsertRequest.ContactName, clientContact.ContactName);
+        }
+
+
+        [Fact]
+        public async Task ClientInsertAsync_InsertAddressAndContact_MinimalData_Success()
+        {
+            if (_configurationFile.UserIDs?.Count == 0)
+                throw new System.InvalidOperationException("Error in configuration file, \"users\" list is empty");
+
+            //-- Insere Client
+
+            var userID = _configurationFile.UserIDs.First();
+            var clientName = $"TaskrowSharp_{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}";
+
+            var requestClient = new ClientInsertRequest(clientName, clientName, userID)
+            {
+                Memo = null
+            };
+
+            var client = await _taskrowClient.ClientInsertAsync(requestClient);
+            Assert.NotNull(client);
+            Assert.Equal(requestClient.ClientName, client.ClientName);
+
+            //-- Insere ClientAddress
+
+            //var cnpj = Utils.GenerateFakeCnpj(formatted: true);
+
+            var clientAddressInsertRequest = new ClientAddressInsertRequest(
+                    clientID: client.ClientID,
+                    clientNickName: client.ClientNickName);
+
+            var clientAddress = await _taskrowClient.ClientAddressInsertAsync(clientAddressInsertRequest);
+            Assert.NotNull(clientAddress);
+            Assert.Equal(clientAddressInsertRequest.SocialContractName, clientAddress.SocialContractName);
+
+            //-- Insere ClientContact
+
+            var clientContactInsertRequest = new ClientContactInsertRequest(
+                clientID: client.ClientID,
+                clientNickName: client.ClientNickName,
+                contactName: "Contato Teste 1");
+
+            var clientContact = await _taskrowClient.ClientContactInsertAsync(clientContactInsertRequest);
+            Assert.NotNull(clientContact);
+            Assert.Equal(clientContactInsertRequest.ContactName, clientContact.ContactName);
         }
 
         [Fact]

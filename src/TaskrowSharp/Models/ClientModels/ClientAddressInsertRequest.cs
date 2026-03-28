@@ -16,7 +16,7 @@ public class ClientAddressInsertRequest
     public string? StateName { get; set; }
     public string? CityName { get; set; }
     public string? District { get; set; }
-    public string? Street { get; set; }
+    public string Street { get; set; } //Obrigatorio, mesmo que seja " "
     public string? Number { get; set; }
     public string? Complement { get; set; }
     public string? ZipCode { get; set; }
@@ -35,7 +35,7 @@ public class ClientAddressInsertRequest
         string clientNickName, 
         int countryID = 31,
         int cityID = 1, 
-        string street = "há definir",
+        string street = " ",
         string? number = null)
     {
         ClientID = clientID;
@@ -54,7 +54,7 @@ public class ClientAddressInsertRequest
     public ClientAddressInsertRequest(int clientID, string clientNickName, string socialContractName,
         string? cnpj = null, string? cpf = null,
         int countryID = 31, int cityID = 1, string? stateName = null, string? cityName = null, 
-        string? street = null, string? number = null, string? complement = null, string? zipCode = null, string? district = null)
+        string street = " ", string? number = null, string? complement = null, string? zipCode = null, string? district = null)
     {
         ClientID = clientID;
         ClientAddressID = 0;

@@ -7,16 +7,24 @@ public class ClientInsertRequest
     public string DisplayName { get; set; }
     public string ExternalCode { get; set; }
     public int OwnerID { get; set; }
+    public bool? IsSupplier { get; set; }
+    public string Memo { get; set; }
 
-    public bool NewClientAddress { get; set; }
     public string SegmentListString { get; set; }
     public string MemberListString { get; set; }
     public bool? JobRequiredProduct { get; set; }
-    public bool? IsSupplier { get; set; }
     public bool? NotToSearchAsClient { get; set; }
+
+    //Para essa operacao chamar o metodo ClientContactInsert
+    /*
     public string ContactName { get; set; }
     public string ContactMainPhone { get; set; }
     public string ContactEmail { get; set; }
+    */
+
+    //Para essa operacao chamar o metodo ClienteAddressInsert
+    /*
+    public bool NewClientAddress { get; set; }
     public string Location { get; set; }
     public int? CountryID { get; set; }
     public int? CityID { get; set; }
@@ -33,12 +41,14 @@ public class ClientInsertRequest
     public string SocialContractName { get; set; }
     public string InscrEstad { get; set; }
     public string InscrMunic { get; set; }
-    public string Memo { get; set; }
+    */
 
-    public ClientInsertRequest(string clientName, string displayName, int ownerID)
+    public ClientInsertRequest(string clientName, string displayName, int ownerID, bool isSupplier = false, string? memo = null)
     {
         ClientName = clientName;
         DisplayName = displayName;
         OwnerID = ownerID;
+        IsSupplier = isSupplier;
+        Memo = memo;
     }
 }

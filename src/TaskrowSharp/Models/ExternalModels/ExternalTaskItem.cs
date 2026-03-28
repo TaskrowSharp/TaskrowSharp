@@ -22,8 +22,8 @@ public class ExternalTaskItem
     //public object? Approved { get; set; }
     public User FromUser { get; set; }
     public User ToUser { get; set; }
-    public Contact FromContact { get; set; }
-    public Contact ToContact { get; set; }
+    public ClientContactInfo FromContact { get; set; }
+    public ClientContactInfo ToContact { get; set; }
     public List<Attachment> Attachments { get; set; } = [];
     public bool CanDeleteAttachments { get; set; }
     //public object? ApprovalRequest { get; set; }

@@ -150,4 +150,88 @@ internal static class Utils
     }
 
     #endregion
+
+    #region CNPJ
+
+    private const int CNPJ_LENGTH = 14;
+    private static int[] CNPJ_MULTIPLICADOR_1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+    private static int[] CNPJ_MULTIPLICADOR_2 = new int[13] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+    public static bool IsValidCnpj(string? cnpj)
+    {
+        if (string.IsNullOrEmpty(cnpj))
+            return false;
+
+        var result = cnpj;
+        result = Utils.GetOnlyNumbers(result)!;
+        if (result.Length != CNPJ_LENGTH)
+            return false;
+        if (result.Equals("00000000000000") || result.Equals("111111111111") || result.Equals("222222222222") || result.Equals("333333333333")
+            || result.Equals("444444444444") || result.Equals("555555555555") || result.Equals("666666666666") || result.Equals("777777777777")
+            || result.Equals("888888888888") || result.Equals("999999999999"))
+            return false;
+        var tempCnpj = result[..12];
+        var soma = 0;
+        for (int i = 0; i < 12; i++)
+            soma += int.Parse(tempCnpj[i].ToString()) * CNPJ_MULTIPLICADOR_1[i];
+        int resto = (soma % 11);
+        resto = (resto < 2 ? 0 : 11 - resto);
+        var digito = resto.ToString();
+        tempCnpj += digito;
+        soma = 0;
+        for (int i = 0; i < 13; i++)
+            soma += int.Parse(tempCnpj[i].ToString()) * CNPJ_MULTIPLICADOR_2[i];
+        resto = (soma % 11);
+        resto = (resto < 2 ? 0 : 11 - resto);
+        digito += resto.ToString();
+        return result.EndsWith(digito);
+    }
+
+    public static string? FormatCnpj(string? text, bool returnNullWhenInvalid = false)
+    {
+        if (string.IsNullOrEmpty(text))
+            return null;
+
+        var numbers = GetOnlyNumbers(text)!;
+        if (!IsValidCnpj(numbers))
+            return (!returnNullWhenInvalid ? numbers : null);
+
+        return Convert.ToUInt64(numbers).ToString(@"00\.000\.000\/0000\-00");
+    }
+
+    public static string GenerateFakeCnpj(bool formatted = false)
+    {
+        var now = DateTime.Now;
+        string baseCnpj = $"{now.Hour:00}{now.Minute:00}{now.Second:00}{new Random().Next(0, 99):00}0001";
+
+        var numbers = GetOnlyNumbers(baseCnpj)!;
+        if (numbers.Length != 12)
+            throw new InvalidOperationException($"Invalid base CNPJ length ({baseCnpj.Length}) expected (12)");
+        var tempCnpj = numbers;
+        var soma = 0;
+        for (int i = 0; i < 12; i++)
+            soma += int.Parse(tempCnpj[i].ToString()) * CNPJ_MULTIPLICADOR_1[i];
+        int resto = (soma % 11);
+        resto = (resto < 2 ? 0 : 11 - resto);
+        var digito = resto.ToString();
+        tempCnpj += digito;
+        soma = 0;
+        for (int i = 0; i < 13; i++)
+            soma += int.Parse(tempCnpj[i].ToString()) * CNPJ_MULTIPLICADOR_2[i];
+        resto = (soma % 11);
+        resto = (resto < 2 ? 0 : 11 - resto);
+        digito += resto.ToString();
+
+        var cnpj = baseCnpj + digito;
+
+        if (!IsValidCnpj(cnpj))
+            throw new InvalidOperationException($"Invalid generated CNPJ ({cnpj})");
+
+        if (formatted)
+            cnpj = FormatCnpj(cnpj);
+
+        return cnpj;
+    }
+
+    #endregion
 }
