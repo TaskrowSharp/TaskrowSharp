@@ -37,12 +37,12 @@ namespace TaskrowSharp.IntegrationTests
             string? lastNextToken = null;
             do
             {
-                var response = await _taskrowClient.ClientListAsync(nextToken, includeInactives: true, convertNextTokenToNumeric: true);
+                var response = await _taskrowClient.ClientListAsync(nextToken, includeInactives: true);
                 clients.AddRange(response.Items);
                 nextToken = response.NextToken;
 
                 if (string.IsNullOrWhiteSpace(nextToken))
-                    throw new InvalidOperationException("nextToken retornado é null");
+                    break;
 
                 if (lastNextToken != null && nextToken.Equals(lastNextToken))
                     throw new InvalidOperationException("Retorno está em loop retornando sempre o mesmo nextToken");

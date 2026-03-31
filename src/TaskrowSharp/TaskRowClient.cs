@@ -196,24 +196,17 @@ public class TaskrowClient
         return response;
     }
 
-    public async Task<ClientListItemResponse> ClientListAsync(string? nextToken = null, bool? includeInactives = null, bool convertNextTokenToNumeric = true)
+    public async Task<ClientListItemResponse> ClientListAsync(string? nextToken = null, bool? includeInactives = null)
     {
         string queryString = null;
-        if (!string.IsNullOrWhiteSpace(nextToken))
-            queryString = $"{queryString}{(queryString == null ? "?" : "&")}nextToken={nextToken}";
+        queryString = $"{queryString}{(queryString == null ? "?" : "&")}sortBy=DisplayName";
         if (includeInactives != null)
             queryString = $"{queryString}{(queryString == null ? "?" : "&")}includeInactives={includeInactives.ToString().ToLower()}";
+        if (!string.IsNullOrWhiteSpace(nextToken))
+            queryString = $"{queryString}{(queryString == null ? "?" : "&")}nextToken={nextToken}";
 
-        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/core/client{queryString}");
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/core/client/get{queryString}");
         var response = await ExecuteApiCall<object, ClientListItemResponse>(HttpMethod.Get, fullUrl, null);
-
-        if (!string.IsNullOrEmpty(response.NextToken) && convertNextTokenToNumeric)
-        {
-            //Convert "nextToken": "WzYyNjEzXQ" em "62613"
-            var newNextToken = Utils.ConvertFromBase64ToString(response.NextToken, true);
-            newNextToken = Utils.GetOnlyNumbers(newNextToken);
-            response.NextToken = newNextToken;
-        }
 
         return response;
     }
