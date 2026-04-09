@@ -7,7 +7,7 @@ public class InvoiceIntegrationStatusUpdateRequest
 {
     public int InvoiceID { get; set; }
 
-    [JsonConverter(typeof(EnumJsonConverter<IntegrationStatusEnum>))]
+    [JsonConverter(typeof(EnumIntValueJsonConverter<IntegrationStatusEnum>))]
     public IntegrationStatusEnum IntegrationStatusID { get; set; }
 
     public string Message { get; set; }

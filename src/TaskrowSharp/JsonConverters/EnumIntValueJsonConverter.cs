@@ -4,7 +4,7 @@ using System;
 
 namespace TaskrowSharp.JsonConverters;
 
-public class EnumJsonConverter<TEnum> : JsonConverter<TEnum> where TEnum : struct, Enum
+public class EnumIntValueJsonConverter<TEnum> : JsonConverter<TEnum> where TEnum : struct, Enum
 {
     public override TEnum Read(
         ref Utf8JsonReader reader,

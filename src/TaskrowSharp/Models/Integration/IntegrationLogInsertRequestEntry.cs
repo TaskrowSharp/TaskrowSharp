@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using TaskrowSharp.JsonConverters;
 
 namespace TaskrowSharp.Models.Integration;
 
 public class IntegrationLogInsertRequestEntry
 {
     [JsonPropertyName("logLevel")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(EnumTextJsonConverter<IntegrationLogEntryLevels>))]
     public IntegrationLogEntryLevels LogLevel { get; set; }
 
     [JsonPropertyName("eventDate")]

@@ -39,16 +39,58 @@ public class IntegrationLogTests : BaseTest
 
         const string entityType = "job";
         var entityID = job.JobID.ToString();
-        var userMessage = $"UserMessage {dateReference}";
-
-        var request = new IntegrationLogInsertRequest(entityType, entityID,  
-            new IntegrationLogInsertRequestEntry(IntegrationLogEntryLevels.Info, DateTimeOffset.Now, userMessage, $"UserDetail {dateReference}", $"TechDetail {dateReference}"));
-
-        await _taskrowClient.IntegrationLogInsertAsync(request);
         
+        //-- Info
+
+        var logInfo = new IntegrationLogInsertRequest(
+            entityType, 
+            entityID,  
+            new IntegrationLogInsertRequestEntry(
+                IntegrationLogEntryLevels.Info, 
+                DateTimeOffset.Now, 
+                $"UserMessage INFO {dateReference}", 
+                $"UserDetail {dateReference}", 
+                $"TechDetail {dateReference}"
+            )
+        );
+        await _taskrowClient.IntegrationLogInsertAsync(logInfo);
+
+        //-- Error
+
+        var logError = new IntegrationLogInsertRequest(
+            entityType,
+            entityID,
+            new IntegrationLogInsertRequestEntry(
+                IntegrationLogEntryLevels.Error,
+                DateTimeOffset.Now,
+                $"UserMessage ERROR {dateReference}",
+                $"UserDetail {dateReference}",
+                $"TechDetail {dateReference}"
+            )
+        );
+        await _taskrowClient.IntegrationLogInsertAsync(logError);
+
+        //-- Warning
+
+        var logWarning = new IntegrationLogInsertRequest(
+            entityType,
+            entityID,
+            new IntegrationLogInsertRequestEntry(
+                IntegrationLogEntryLevels.Warning,
+                DateTimeOffset.Now,
+                $"UserMessage WARNING {dateReference}",
+                $"UserDetail {dateReference}",
+                $"TechDetail {dateReference}"
+            )
+        );
+        await _taskrowClient.IntegrationLogInsertAsync(logWarning);
+
         var logEntries = await _taskrowClient.IntegrationLogListAsync(entityType, entityID);
         Assert.NotNull(logEntries);
         Assert.NotEmpty(logEntries);
-        Assert.Equal(userMessage, logEntries.First().UserMessage);
+
+        Assert.True(logEntries.Exists(a => a.UserMessage.Equals(logInfo.Entry.UserMessage)));
+        Assert.True(logEntries.Exists(a => a.UserMessage.Equals(logError.Entry.UserMessage)));
+        Assert.True(logEntries.Exists(a => a.UserMessage.Equals(logWarning.Entry.UserMessage)));
     }
 }
