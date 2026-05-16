@@ -473,6 +473,8 @@ public class TaskrowClient
     {
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/externaldata/{entityName.ToLower()}?provider={provider}&identification={id}");
         var response = await ExecuteApiCall<object, Dictionary<string, object?>> (HttpMethod.Get, fullUrl, null);
+        if (response == null)
+            return [];
         return response;
     }
 
@@ -481,6 +483,8 @@ public class TaskrowClient
     {
         var fullUrl = new Uri(this.ServiceUrl, $"api/v2/externaldata/{entityName.ToLower()}/find?provider={provider}&fieldName={fieldName}&fieldValue={fieldValue}");
         var listSearch = await ExecuteApiCall<object, List<Dictionary<string, object?>>>(HttpMethod.Get, fullUrl, null);
+        if (listSearch == null)
+            listSearch = [];
 
         var listRet = new List<Dictionary<string, object?>>();
 
