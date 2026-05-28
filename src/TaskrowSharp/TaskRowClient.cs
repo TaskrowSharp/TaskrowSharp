@@ -17,6 +17,7 @@ using TaskrowSharp.Models;
 using TaskrowSharp.Models.AdministrativeModels;
 using TaskrowSharp.Models.BasicDataModels;
 using TaskrowSharp.Models.ClientModels;
+using TaskrowSharp.Models.FinanceiroModels;
 using TaskrowSharp.Models.IndexDataModels;
 using TaskrowSharp.Models.Integration;
 using TaskrowSharp.Models.InvoiceModels;
@@ -746,6 +747,29 @@ public class TaskrowClient
         var fullUrl = new Uri(this.ServiceUrl, $"api/v2/integrationLog/log?entityType={entityType}&entityID={entityID}");
         var response = await ExecuteApiCall<object, IntegrationLogListResponse>(HttpMethod.Get, fullUrl, null);
         return response.LogEntries;
+    }
+
+    #endregion
+
+    #region PaymentCondition
+
+    public async Task<PaymentCondition?> PaymentConditionGetAsync(int paymentConditionID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/paymentConditions/getPaymentCondition?paymentConditionID={paymentConditionID}");
+        var response = await ExecuteApiCall<object, PaymentCondition>(HttpMethod.Get, fullUrl, null);
+        return response;
+    }
+
+    public async Task PaymentConditionInsertAsync(PaymentCondition paymentCondition)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/paymentConditions/savePaymentCondition");
+        await ExecuteApiCallWithNoReturn<PaymentCondition>(HttpMethod.Post, fullUrl, null);
+    }
+
+    public async Task PaymentConditionUpdateAsync(PaymentCondition paymentCondition)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/paymentConditions/savePaymentCondition");
+        await ExecuteApiCallWithNoReturn<PaymentCondition>(HttpMethod.Post, fullUrl, null);
     }
 
     #endregion
