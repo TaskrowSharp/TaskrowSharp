@@ -4,6 +4,7 @@ namespace TaskrowSharp.Models.FinanceiroModels;
 
 public class PaymentCondition
 {
+    public int PaymentConditionID { get; set; }
     public string Name { get; set; }
     public bool Inactive { get; set; }
     public bool ManualEntry { get; set; }

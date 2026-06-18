@@ -62,7 +62,8 @@ public class TaskrowClient
 
     private readonly JsonSerializerOptions jsonSerializerOptions = new()
     {
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNameCaseInsensitive = true
     };
 
     private static void ValidateAccessKey(string accessKey)
@@ -114,7 +115,7 @@ public class TaskrowClient
             if (!httpResponse.IsSuccessStatusCode)
                 throw new TaskrowSharpWebException(httpResponse.StatusCode, $"Error statusCode: {(int)httpResponse.StatusCode}");
 
-            var response = JsonSerializer.Deserialize<T2>(jsonResponse);
+            var response = JsonSerializer.Deserialize<T2>(jsonResponse, jsonSerializerOptions);
 
             if (response is IBaseApiResponse baseResponseParsed)
             {
@@ -760,16 +761,23 @@ public class TaskrowClient
         return response;
     }
 
-    public async Task PaymentConditionInsertAsync(PaymentCondition paymentCondition)
+    public async Task<PaymentCondition> PaymentConditionInsertAsync(PaymentCondition paymentCondition)
     {
+        paymentCondition.PaymentConditionID = 0;
+
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/paymentConditions/savePaymentCondition");
-        await ExecuteApiCallWithNoReturn<PaymentCondition>(HttpMethod.Post, fullUrl, null);
+        var ret = await ExecuteApiCall<PaymentCondition, PaymentCondition>(HttpMethod.Post, fullUrl, paymentCondition);
+        return ret;
     }
 
-    public async Task PaymentConditionUpdateAsync(PaymentCondition paymentCondition)
+    public async Task<PaymentCondition> PaymentConditionUpdateAsync(PaymentCondition paymentCondition)
     {
-        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/paymentConditions/savePaymentCondition");
-        await ExecuteApiCallWithNoReturn<PaymentCondition>(HttpMethod.Post, fullUrl, null);
+        if (paymentCondition.PaymentConditionID <= 0)
+            throw new ArgumentException("PaymentConditionID required", nameof(paymentCondition));
+
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/paymentConditions/savePaymentCondition?paymentConditionID={paymentCondition.PaymentConditionID}");
+        var ret = await ExecuteApiCall<PaymentCondition, PaymentCondition>(HttpMethod.Post, fullUrl, paymentCondition);
+        return ret;
     }
 
     #endregion
