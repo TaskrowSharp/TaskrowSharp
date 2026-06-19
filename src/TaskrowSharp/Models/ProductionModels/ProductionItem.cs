@@ -29,13 +29,13 @@ public class ProductionItem
     public string ExpenseTypeName { get; set; }
 
     [JsonPropertyName("expenseItemTypeName_ExpenseTypeName")]
-    public object ExpenseItemTypeNameExpenseTypeName { get; set; }
+    public string ExpenseItemTypeNameExpenseTypeName { get; set; }
 
     [JsonPropertyName("internalDescription")]
-    public object InternalDescription { get; set; }
+    public string InternalDescription { get; set; }
 
     [JsonPropertyName("supplierDescription")]
-    public object SupplierDescription { get; set; }
+    public string SupplierDescription { get; set; }
 
     [JsonPropertyName("totalCost")]
     public decimal TotalCost { get; set; }

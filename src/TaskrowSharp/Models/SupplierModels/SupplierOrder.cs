@@ -122,4 +122,7 @@ public class SupplierOrder
 
     [JsonPropertyName("detailedLetterOfAgreement")]
     public bool DetailedLetterOfAgreement { get; set; }
+
+    [JsonPropertyName("paymentConditionID")]
+    public int PaymentConditionID { get; set; }
 }

@@ -59,7 +59,7 @@ public class Job
     public bool LooseEntriesAllowed { get; set; }
     //public List<object> DeliverableList { get; set; } = [];
     public int? ProductID { get; set; }
-    public string? Product { get; set; }
+    public JobProduct? Product { get; set; }
     public bool DeliverableRequired { get; set; }
     public bool Public { get; set; }
     public bool ExternalUserAccess { get; set; }
