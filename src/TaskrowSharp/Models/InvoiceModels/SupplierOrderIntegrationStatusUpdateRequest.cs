@@ -3,16 +3,16 @@ using TaskrowSharp.JsonConverters;
 
 namespace TaskrowSharp.Models.InvoiceModels;
 
-public class SupplierInvoiceIntegrationStatusUpdateRequest
+public class SupplierOrderIntegrationStatusUpdateRequest
 {
-    public int SupplierInvoiceID { get; set; }
+    public int SupplierOrderID { get; set; }
 
     [JsonConverter(typeof(EnumIntValueJsonConverter<IntegrationStatusEnum>))]
     public IntegrationStatusEnum IntegrationStatusID { get; set; }
 
-    public SupplierInvoiceIntegrationStatusUpdateRequest(int supplierInvoiceID, IntegrationStatusEnum integrationStatusID)
+    public SupplierOrderIntegrationStatusUpdateRequest(int supplierOrderID, IntegrationStatusEnum integrationStatusID)
     {
-        SupplierInvoiceID = supplierInvoiceID;
+        SupplierOrderID = supplierOrderID;
         IntegrationStatusID = integrationStatusID;
     }
 }

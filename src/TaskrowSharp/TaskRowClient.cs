@@ -674,6 +674,16 @@ public class TaskrowClient
 
     #endregion
 
+    #region SupplierOrderIntegrationStatus
+
+    public async Task SupplierOrderIntegrationStatusUpdateAsync(SupplierOrderIntegrationStatusUpdateRequest updateRequest)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/finance/supplierOrder/saveIntegrationStatus");
+        await ExecuteApiCallWithNoReturn<SupplierOrderIntegrationStatusUpdateRequest>(HttpMethod.Post, fullUrl, updateRequest);
+    }
+
+    #endregion
+
     #region Opportunity
 
     public async Task<Opportunity> OpportunityInsertAsync(OpportunityInsertRequest opportunityInsertRequest)
