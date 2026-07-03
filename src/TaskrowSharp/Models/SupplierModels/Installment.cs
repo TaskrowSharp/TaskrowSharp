@@ -15,7 +15,7 @@ public class Installment
     public string Title { get; set; }
 
     [JsonPropertyName("value")]
-    public double Value { get; set; }
+    public decimal Value { get; set; }
 
     [JsonPropertyName("dueDate")]
     public DateTime DueDate { get; set; }
@@ -30,10 +30,10 @@ public class Installment
     public string Description { get; set; }
 
     [JsonPropertyName("supplierInvoiceID")]
-    public object SupplierInvoiceID { get; set; }
+    public int? SupplierInvoiceID { get; set; }
 
-    [JsonPropertyName("supplierInvoice")]
-    public object SupplierInvoice { get; set; }
+    //[JsonPropertyName("supplierInvoice")]
+    //public SupplierInvoice? SupplierInvoice { get; set; }
 
     [JsonPropertyName("hasInvoiceProject")]
     public bool HasInvoiceProject { get; set; }
@@ -45,5 +45,5 @@ public class Installment
     public bool HasInvoiceFeeSupplierIncentives { get; set; }
 
     [JsonPropertyName("integrationStatusID")]
-    public object IntegrationStatusID { get; set; }
+    public int? IntegrationStatusID { get; set; }
 }

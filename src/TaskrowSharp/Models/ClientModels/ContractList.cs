@@ -12,7 +12,7 @@ public class ContractList
     public int? ClientContractTypeID { get; set; }
     public string ContractType { get; set; }
     //public List<object>? ContractPeriod { get; set; } = [];
-    public double? ContractValueTotal { get; set; }
+    public decimal? ContractValueTotal { get; set; }
     //public object? Job { get; set; }
     //public object? Client { get; set; }
     //public object? AlertStatusReference { get; set; }

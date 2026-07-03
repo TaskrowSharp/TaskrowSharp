@@ -28,10 +28,10 @@ public class SupplierInvoiceExpensePayment
     public object? PaymentTo { get; set; }
 
     [JsonPropertyName("PaymentValue")]
-    public double? PaymentValue { get; set; }
+    public decimal? PaymentValue { get; set; }
 
     [JsonPropertyName("DiscountValue")]
-    public double? DiscountValue { get; set; }
+    public decimal? DiscountValue { get; set; }
 
     [JsonPropertyName("Memo")]
     public string Memo { get; set; }

@@ -5,7 +5,7 @@ public class UserAdministrativeDetail
     public string VacationPeriodDateStart { get; set; }
     //public object? VacationPeriodInitialBalance { get; set; }
     //public object? CompTimeDateStart { get; set; }
-    public double CompTimeInitialBalanceHours { get; set; }
+    public decimal CompTimeInitialBalanceHours { get; set; }
     //public object? NumberCTPS { get; set; }
     //public object? DateCTPS { get; set; }
     //public object? UFCTPS { get; set; }

@@ -24,7 +24,7 @@ public class InternalClient
     //public List<object>? ClientSegment { get; set; } = [];
     //public List<object>? ClientAddress { get; set; } = [];
     public ClientAdministrativeDetail ClientAdministrativeDetail { get; set; }
-    public double? BonusOrderPercentage { get; set; }
+    public decimal? BonusOrderPercentage { get; set; }
     //public object? HasOpenedJobs { get; set; }
     public bool? IsSupplier { get; set; }
     public bool? NotToSearchAsClient { get; set; }

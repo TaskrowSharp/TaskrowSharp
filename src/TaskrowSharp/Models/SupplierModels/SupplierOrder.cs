@@ -46,10 +46,10 @@ public class SupplierOrder
     public string ClientNickName { get; set; }
 
     [JsonPropertyName("cost")]
-    public double Cost { get; set; }
+    public decimal Cost { get; set; }
 
     [JsonPropertyName("realCost")]
-    public double RealCost { get; set; }
+    public decimal RealCost { get; set; }
 
     [JsonPropertyName("internalDescription")]
     public string InternalDescription { get; set; }
@@ -85,10 +85,10 @@ public class SupplierOrder
     public bool IsCanceled { get; set; }
 
     [JsonPropertyName("cashback")]
-    public double Cashback { get; set; }
+    public decimal Cashback { get; set; }
 
     [JsonPropertyName("incentiveValue")]
-    public double IncentiveValue { get; set; }
+    public decimal IncentiveValue { get; set; }
 
     [JsonPropertyName("supplierOrderItem")]
     public List<SupplierOrderItem> SupplierOrderItem { get; set; }
