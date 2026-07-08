@@ -2,10 +2,10 @@
 
 namespace TaskrowSharp.Models.SupplierModels;
 
-public class SupplierInvoiceSaveExpensePaymentResponse
+public class ExpenseSaveExpensePaymentResponse
 {
     public bool? Success { get; set; }
     public string Message { get; set; }
-    public SupplierInvoiceExpensePayment? Entity { get; set; }
+    public ExpensePayment? Entity { get; set; }
     public string? TargetURL { get; set; }
 }

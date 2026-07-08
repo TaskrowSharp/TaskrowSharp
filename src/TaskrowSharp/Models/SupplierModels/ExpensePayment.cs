@@ -4,7 +4,7 @@ using TaskrowSharp.Models.UserModels;
 
 namespace TaskrowSharp.Models.SupplierModels;
 
-public class SupplierInvoiceExpensePayment
+public class ExpensePayment
 {
     [JsonPropertyName("ExpensePaymentID")]
     public int? ExpensePaymentID { get; set; }

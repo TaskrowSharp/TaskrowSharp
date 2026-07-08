@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace TaskrowSharp.Models.SupplierModels;
 
-public class SupplierInvoiceSaveExpensePaymentRequest
+public class ExpenseSaveExpensePaymentRequest
 {
     [JsonPropertyName("ExpensePaymentID")]
     public int ExpensePaymentID { get; set; }

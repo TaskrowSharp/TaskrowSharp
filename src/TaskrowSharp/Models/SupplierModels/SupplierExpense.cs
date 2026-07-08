@@ -11,7 +11,10 @@ public class SupplierExpense
     public int ExpenseEntryID { get; set; }
     public string ExpenseTitle { get; set; }
     public decimal ExpenseValue { get; set; }
-    public string ExpenseDate { get; set; }
+
+    [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
+    public DateTime ExpenseDate { get; set; }
+
     public int? SupplierOrderID { get; set; }
     public int? AdOrderID { get; set; }
     
@@ -25,4 +28,5 @@ public class SupplierExpense
     public Client? Client { get; set; }
     public int? InvoiceProjectID { get; set; }
     //public List<object> Attachments { get; set; } = [];
+    public string MemoEntry { get; set; }
 }
