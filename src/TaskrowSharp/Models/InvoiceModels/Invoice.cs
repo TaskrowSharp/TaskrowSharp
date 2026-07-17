@@ -25,10 +25,10 @@ public class Invoice
     public string IntegrationStatus { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? InvoiceDueDate { get; set; }
+    public DateTimeOffset? InvoiceDueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? InvoiceIssueDate { get; set; }
+    public DateTimeOffset? InvoiceIssueDate { get; set; }
 
     public decimal? InvoiceGrossValue { get; set; }
     public decimal? InvoiceNetValue { get; set; }
@@ -65,14 +65,14 @@ public class Invoice
     //public object InvoiceEmailHistory { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateModification { get; set; }
+    public DateTimeOffset? DateModification { get; set; }
     //public UserModification UserModification { get; set; }
 
     public bool Approved { get; set; }
 
     public bool IsCancelled { get; set; }
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCancel { get; set; }
+    public DateTimeOffset? DateCancel { get; set; }
     //public object UserCancel { get; set; }
     public string CancellationMemo { get; set; }
 

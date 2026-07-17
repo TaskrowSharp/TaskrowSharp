@@ -7,7 +7,7 @@ namespace TaskrowSharp.Models.UserModels;
 public class DateEndEntity
 {
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime DateEnd { get; set; }
+    public DateTimeOffset DateEnd { get; set; }
 
     public int DayID { get; set; }
 }

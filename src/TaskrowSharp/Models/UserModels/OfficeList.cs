@@ -14,12 +14,12 @@ public class OfficeList
     public int AppMainCompanyID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? CreationDate { get; set; }
+    public DateTimeOffset? CreationDate { get; set; }
 
     public int CreationUserID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? LastModificationDate { get; set; }
+    public DateTimeOffset? LastModificationDate { get; set; }
 
     public int LastModificationUserID { get; set; }
     public bool Inactive { get; set; }

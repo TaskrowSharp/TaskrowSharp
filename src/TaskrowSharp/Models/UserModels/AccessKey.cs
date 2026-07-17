@@ -10,7 +10,7 @@ public class AccessKey
     public string Description { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? MembershipDate { get; set; }
+    public DateTimeOffset? MembershipDate { get; set; }
 
     public string IP { get; set; }
     public string Identifier { get; set; }

@@ -26,7 +26,7 @@ public class IndexData
     public bool HasJobInternalSupport { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? CompanyDate { get; set; }
+    public DateTimeOffset? CompanyDate { get; set; }
 
     public List<ApprovalGroup> ApprovalGroups { get; set; } = [];
     public UserAssets UserAssets { get; set; }

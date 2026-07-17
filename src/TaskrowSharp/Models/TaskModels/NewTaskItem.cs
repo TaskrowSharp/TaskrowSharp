@@ -24,13 +24,13 @@ public class NewTaskItem
     public int TaskItemTypeID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? Date { get; set; }
+    public DateTimeOffset? Date { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? PreviousDueDate { get; set; }
+    public DateTimeOffset? PreviousDueDate { get; set; }
 
     public bool? Closed { get; set; }
     public bool PreviousClosedState { get; set; }

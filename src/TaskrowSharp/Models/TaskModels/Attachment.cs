@@ -15,7 +15,7 @@ public class Attachment
     public int AttachmentTypeID { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime CreationDate { get; set; }
+    public DateTimeOffset CreationDate { get; set; }
 
     public int SizeInKB { get; set; }
     public int CreationUserID { get; set; }

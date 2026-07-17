@@ -25,7 +25,7 @@ public class InvoiceFeeInsertRequest
     public decimal MonthExpectedValue { get; set; }
     public decimal InvoiceIAValue { get; set; }
     public decimal IAValue { get; set; }
-    public DateTime IADueDate { get; set; }
+    public DateTimeOffset IADueDate { get; set; }
     public int IAStatusID { get; set; }
     public int UserSigningDocument { get; set; }
     public string IAMemo { get; set; }

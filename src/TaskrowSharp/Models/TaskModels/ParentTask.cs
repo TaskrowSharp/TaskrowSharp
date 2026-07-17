@@ -14,12 +14,12 @@ public class ParentTask
     public string RequestTypeAcronym { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     public int PipelineStepID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? LastModificationDate { get; set; }
+    public DateTimeOffset? LastModificationDate { get; set; }
 
     //public List<object> Tags { get; set; } = [];
     public List<Subtask> Subtasks { get; set; } = [];

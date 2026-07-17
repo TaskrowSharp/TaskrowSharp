@@ -24,14 +24,14 @@ public class InvoiceFee : IInvoiceFeeOrProject
     public int ClientAddressID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? IADueDate { get; set; }
+    public DateTimeOffset? IADueDate { get; set; }
 
     public decimal IAValue { get; set; }
 
     public string IAMemo { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCreation { get; set; }
+    public DateTimeOffset? DateCreation { get; set; }
 
     public string IAAdmMemo { get; set; }
 
@@ -56,7 +56,7 @@ public class InvoiceFee : IInvoiceFeeOrProject
     public string InvoiceNumber { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? InvoiceIssueDate { get; set; }
+    public DateTimeOffset? InvoiceIssueDate { get; set; }
 
     public bool InvoiceIsCancelled { get; set; }
 

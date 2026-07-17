@@ -12,14 +12,14 @@ public class InvoiceBillDueDate
     public int InvoiceBillID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     public decimal? BillValue { get; set; }
 
     public string MemoDueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCreation { get; set; }
+    public DateTimeOffset? DateCreation { get; set; }
 
     public UserReference UserCreation { get; set; }
 }

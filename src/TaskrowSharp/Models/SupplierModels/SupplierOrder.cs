@@ -70,7 +70,7 @@ public class SupplierOrder
     public string GuidModification { get; set; }
 
     [JsonPropertyName("dateModification")]
-    public DateTime DateModification { get; set; }
+    public DateTimeOffset DateModification { get; set; }
 
     [JsonPropertyName("statusID")]
     public int StatusID { get; set; }

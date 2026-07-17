@@ -15,7 +15,7 @@ public class ChildTask
     public string UrlData { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime DueDate { get; set; }
+    public DateTimeOffset DueDate { get; set; }
 
     public Owner Owner { get; set; }
     public int EffortEstimation { get; set; }

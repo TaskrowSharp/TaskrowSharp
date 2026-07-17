@@ -6,5 +6,5 @@ public class Deliverable
     public string Name { get; set; }
 
     //[JsonConverter(typeof(DatetimeNullableTaskrowFormatJsonConverter))]
-    //public DateTime? DueDate { get; set; }
+    //public DateTimeOffset? DueDate { get; set; }
 }

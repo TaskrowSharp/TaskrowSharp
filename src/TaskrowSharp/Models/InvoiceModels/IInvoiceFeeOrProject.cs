@@ -7,10 +7,10 @@ namespace TaskrowSharp.Models.InvoiceModels;
 public interface IInvoiceFeeOrProject
 {
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? IADueDate { get; set; }
+    public DateTimeOffset? IADueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? InvoiceIssueDate { get; set; }
+    public DateTimeOffset? InvoiceIssueDate { get; set; }
 
     public decimal IAValue { get; set; }
 

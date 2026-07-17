@@ -4,11 +4,11 @@ using System.Text.Json;
 
 namespace TaskrowSharp.JsonConverters;
 
-public class DateTimeNullableTaskrowFormatJsonConverter : JsonConverter<DateTime?>
+public class DateTimeNullableTaskrowFormatJsonConverter : JsonConverter<DateTimeOffset?>
 {
     private const string DATE_WRITE_FORMAT = "yyyy-MM-ddTHH:mm:ss.fff";
 
-    public override DateTime? Read(
+    public override DateTimeOffset? Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options) =>
@@ -16,7 +16,7 @@ public class DateTimeNullableTaskrowFormatJsonConverter : JsonConverter<DateTime
 
     public override void Write(
         Utf8JsonWriter writer,
-        DateTime? value,
+        DateTimeOffset? value,
         JsonSerializerOptions options) =>
             writer.WriteStringValue((value.HasValue ? value?.ToString(DATE_WRITE_FORMAT) : null));
 }

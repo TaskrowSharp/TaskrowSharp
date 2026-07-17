@@ -15,12 +15,12 @@ public class Member
     public bool? Read { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? LastReadDate { get; set; }
+    public DateTimeOffset? LastReadDate { get; set; }
 
     //public object? Favorite { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? LastModificationDate { get; set; }
+    public DateTimeOffset? LastModificationDate { get; set; }
 
     public User User { get; set; }
     public bool Passed { get; set; }

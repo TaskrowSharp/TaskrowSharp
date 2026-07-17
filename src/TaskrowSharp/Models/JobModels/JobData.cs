@@ -14,7 +14,7 @@ public class JobData
     public string JobDisplayTitle { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? CreationDate { get; set; }
+    public DateTimeOffset? CreationDate { get; set; }
 
     public int CreationUserID { get; set; }
     public int JobTypeID { get; set; }

@@ -15,21 +15,21 @@ public class InvoiceBill
     public decimal? BillValue { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? BillDueDate { get; set; }
+    public DateTimeOffset? BillDueDate { get; set; }
 
     public InvoiceBillDueDate InvoiceBillDueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCreation { get; set; }
+    public DateTimeOffset? DateCreation { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateModification { get; set; }
+    public DateTimeOffset? DateModification { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCancel { get; set; }
+    public DateTimeOffset? DateCancel { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? PaymentDate { get; set; }
+    public DateTimeOffset? PaymentDate { get; set; }
 
     public bool IsCancelled { get; set; }
 

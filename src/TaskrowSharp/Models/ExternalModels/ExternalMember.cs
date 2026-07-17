@@ -11,7 +11,7 @@ public class ExternalMember
     public bool Read { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? LastReadDate { get; set; }
+    public DateTimeOffset? LastReadDate { get; set; }
 
     public ClientContactInfo Contact { get; set; }
 }

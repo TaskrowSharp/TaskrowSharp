@@ -39,5 +39,5 @@ public class ClientContact
     public int UserModification { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateModification { get; set; }
+    public DateTimeOffset? DateModification { get; set; }
 }

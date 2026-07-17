@@ -19,7 +19,7 @@ public class TaskSaveRequest
     public int? SpentTime { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     public int? PercentComplete { get; set; }
     public int? EffortEstimation { get; set; }

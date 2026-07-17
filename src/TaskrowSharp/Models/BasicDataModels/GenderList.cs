@@ -12,7 +12,7 @@ public class GenderList
     public int AppMainCompanyID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? ModificationDate { get; set; }
+    public DateTimeOffset? ModificationDate { get; set; }
 
     public int ModificationUserID { get; set; }
     public bool Inactive { get; set; }

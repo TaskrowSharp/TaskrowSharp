@@ -14,10 +14,10 @@ public class SupplierInvoice
     public decimal InvoiceValue { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? IssueDate { get; set; }
+    public DateTimeOffset? IssueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     public bool EnforceNumberUniqueness { get; set; }
     public int ClientAddressID { get; set; }
@@ -28,13 +28,13 @@ public class SupplierInvoice
     public Supplier? Supplier { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? ModificationDate { get; set; }
+    public DateTimeOffset? ModificationDate { get; set; }
 
     public int? ModificationUserID { get; set; }
     public UserReference? ModificationUser { get; set; }
     
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? CreationDate { get; set; }
+    public DateTimeOffset? CreationDate { get; set; }
 
     public int? CreationUserID { get; set; }
     public UserReference? CreationUser { get; set; }

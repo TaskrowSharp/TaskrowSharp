@@ -10,7 +10,7 @@ public class InvoiceBillPaymentSaveRequest
     public string GuidModification { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? PaymentDate { get; set; }
+    public DateTimeOffset? PaymentDate { get; set; }
 
     public decimal PaymentValueRef { get; set; }
     public decimal PaymentDiscountValue { get; set; }

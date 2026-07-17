@@ -13,13 +13,13 @@ public class SupplierExpense
     public decimal ExpenseValue { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime ExpenseDate { get; set; }
+    public DateTimeOffset ExpenseDate { get; set; }
 
     public int? SupplierOrderID { get; set; }
     public int? AdOrderID { get; set; }
     
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? ExpenseDueDate { get; set; }
+    public DateTimeOffset? ExpenseDueDate { get; set; }
 
     public int? RefundTypeID { get; set; }
     public int? InvoiceToClientAddressID { get; set; }

@@ -15,7 +15,7 @@ public class JobPipeline
     public bool Inactive { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? LastModificationDate { get; set; }
+    public DateTimeOffset? LastModificationDate { get; set; }
 
     public int LastModificationUserID { get; set; }
     public List<JobPipelineStep> JobPipelineSteps { get; set; } = [];

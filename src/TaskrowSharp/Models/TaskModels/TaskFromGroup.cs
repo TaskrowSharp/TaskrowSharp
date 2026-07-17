@@ -19,12 +19,12 @@ public class TaskFromGroup
     //public object? ColorID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     public int AbsoluteUserOrder { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? StandByDate { get; set; }
+    public DateTimeOffset? StandByDate { get; set; }
 
     public int EffortEstimation { get; set; }
     public int? RemainingEffortEstimation { get; set; }

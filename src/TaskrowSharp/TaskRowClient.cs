@@ -113,7 +113,7 @@ public class TaskrowClient
                 return default;
 
             if (!httpResponse.IsSuccessStatusCode)
-                throw new TaskrowSharpWebException(httpResponse.StatusCode, $"Error statusCode: {(int)httpResponse.StatusCode}");
+                throw new TaskrowSharpWebException(httpResponse.StatusCode, $"Error statusCode: {(int)httpResponse.StatusCode} -- {Utils.TruncateString(jsonResponse, 200)}");
 
             var response = JsonSerializer.Deserialize<T2>(jsonResponse, jsonSerializerOptions);
 

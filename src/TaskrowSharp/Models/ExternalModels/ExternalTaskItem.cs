@@ -16,7 +16,7 @@ public class ExternalTaskItem
     public int? ToUserID { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
 
     public int ExternalTaskItemTypeID { get; set; }
     //public object? Approved { get; set; }

@@ -80,7 +80,7 @@ internal static class Utils
 
     #region Parse
 
-    public static DateTime ParseToDateTimeFromTaskrowDate(string value)
+    public static DateTimeOffset ParseToDateTimeFromTaskrowDate(string value)
     {
         if (value == null)
             throw new ArgumentNullException(nameof(value));
@@ -91,7 +91,7 @@ internal static class Utils
         if (text.StartsWith("/Date(\""))
             text = text.Substring(7, text.Length - 10);
 
-        _ = DateTime.TryParse(text, out DateTime ret);
+        _ = DateTimeOffset.TryParse(text, out DateTimeOffset ret);
 
         return ret;
     }
@@ -149,6 +149,17 @@ internal static class Utils
         return Regex.Replace(text!, @"[^0-9]+?", string.Empty);
     }
 
+    public static string? TruncateString(string? text, int maxlength, string sufixoTruncar = "...")
+    {
+        if (string.IsNullOrWhiteSpace(text)) 
+            return text;
+
+        if (text.Length > maxlength)
+            return string.Concat(text[..(maxlength - sufixoTruncar.Length)], sufixoTruncar);
+
+        return text;
+    }
+
     #endregion
 
     #region CNPJ
@@ -201,7 +212,7 @@ internal static class Utils
 
     public static string GenerateFakeCnpj(bool formatted = false)
     {
-        var now = DateTime.Now;
+        var now = DateTimeOffset.Now;
         string baseCnpj = $"{now.Hour:00}{now.Minute:00}{now.Second:00}{new Random().Next(0, 99):00}0001";
 
         var numbers = GetOnlyNumbers(baseCnpj)!;

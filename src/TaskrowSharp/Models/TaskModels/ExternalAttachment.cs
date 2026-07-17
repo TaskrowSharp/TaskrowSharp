@@ -14,7 +14,7 @@ public class ExternalAttachment
     public int CreationUserID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? CreationDate { get; set; }
+    public DateTimeOffset? CreationDate { get; set; }
 
     //public object? GroupID { get; set; }
     //public object? NoteID { get; set; }

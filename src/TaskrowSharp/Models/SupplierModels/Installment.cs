@@ -18,7 +18,7 @@ public class Installment
     public decimal Value { get; set; }
 
     [JsonPropertyName("dueDate")]
-    public DateTime DueDate { get; set; }
+    public DateTimeOffset DueDate { get; set; }
 
     [JsonPropertyName("invoiceToClientAddressID")]
     public int InvoiceToClientAddressID { get; set; }

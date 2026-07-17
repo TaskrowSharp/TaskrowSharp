@@ -15,12 +15,12 @@ public class InvoiceBillSaveRequest
     public int ClientAddressID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DueDate { get; set; }
+    public DateTimeOffset? DueDate { get; set; }
 
     public string Memo { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? MemoDueDate { get; set; }
+    public DateTimeOffset? MemoDueDate { get; set; }
 
     public InvoiceBillSaveRequest(int invoiceID, int billTypeID, decimal billValue, int financialAccountID,
         int clientAddressID, DateTime? dueDate)

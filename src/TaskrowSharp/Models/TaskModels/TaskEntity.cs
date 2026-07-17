@@ -17,10 +17,10 @@ public class TaskEntity
     public int? RemainingEffortEstimation { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime DueDate { get; set; }
+    public DateTimeOffset DueDate { get; set; }
 
     [JsonConverter(typeof(DateTimeTaskrowFormatJsonConverter))]
-    public DateTime CreationDate { get; set; }
+    public DateTimeOffset CreationDate { get; set; }
 
     public bool Closed { get; set; }
     public int JobID { get; set; }

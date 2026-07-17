@@ -16,16 +16,16 @@ public class InvoiceBill2
     public decimal? BillValue { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCreation { get; set; }
+    public DateTimeOffset? DateCreation { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateModification { get; set; }
+    public DateTimeOffset? DateModification { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? DateCancel { get; set; }
+    public DateTimeOffset? DateCancel { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? PaymentDate { get; set; }
+    public DateTimeOffset? PaymentDate { get; set; }
 
     public decimal? PaymentValue { get; set; }
     public string PaymentMemo { get; set; }
@@ -45,7 +45,7 @@ public class InvoiceBill2
     public string CancellationMemo { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? BillDueDate { get; set; }
+    public DateTimeOffset? BillDueDate { get; set; }
 
     //NOTE: This is the difference to InvoiceBill.cs, this property is an array!!!
     public List<InvoiceBillDueDate> InvoiceBillDueDate { get; set; } = [];

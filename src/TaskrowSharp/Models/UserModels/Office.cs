@@ -14,7 +14,7 @@ public class Office
     public int AppMainCompanyID { get; set; }
 
     [JsonConverter(typeof(DateTimeNullableTaskrowFormatJsonConverter))]
-    public DateTime? CreationDate { get; set; }
+    public DateTimeOffset? CreationDate { get; set; }
 
     public int CreationUserID { get; set; }
     public string LastModificationDate { get; set; }

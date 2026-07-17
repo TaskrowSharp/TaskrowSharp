@@ -27,7 +27,7 @@ public class ExpenseSaveExpensePaymentRequest
     public int ExpensePaymentTypeID { get; set; }
 
     [JsonPropertyName("PaymentDate")]
-    public DateTime PaymentDate { get; set; }
+    public DateTimeOffset PaymentDate { get; set; }
 
     [JsonPropertyName("ClientID")]
     public int ClientID { get; set; }

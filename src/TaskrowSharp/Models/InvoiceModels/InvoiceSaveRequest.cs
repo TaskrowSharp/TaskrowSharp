@@ -14,7 +14,7 @@ public class InvoiceSaveRequest
 
     public string InvoiceNumber { get; set; }
 
-    public DateTime? InvoiceIssueDate { get; set; }
+    public DateTimeOffset? InvoiceIssueDate { get; set; }
 
     public int? InvoiceServiceCodeID { get; set; }
     public decimal? InvoiceGrossValue { get; set; }
