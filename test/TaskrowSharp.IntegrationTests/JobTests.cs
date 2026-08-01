@@ -21,6 +21,24 @@ public class JobTests : BaseTest
     }
 
     [Fact]
+    public async Task JobInfoGetAsync_Success()
+    {
+        if (_configurationFile.Clients?.Count == 0)
+            throw new System.InvalidOperationException("Error in configuration file, \"clients\" list is empty");
+
+        var client = _configurationFile.Clients.Where(a => a.JobNumbers.Count > 0).First();
+        var jobNumbers = client.JobNumbers;
+
+        foreach (var jobNumber in jobNumbers)
+        {
+            var job = await _taskrowClient.JobInfoGetAsync(jobNumber);
+
+            Assert.NotNull(job);
+            Assert.Equal(jobNumber, job.JobNumber);
+        }
+    }
+
+    [Fact]
     public async Task JobDetailGetAsync_Success()
     {
         if (_configurationFile.Clients?.Count == 0)

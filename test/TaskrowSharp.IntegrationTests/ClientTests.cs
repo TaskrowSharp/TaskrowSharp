@@ -92,6 +92,7 @@ namespace TaskrowSharp.IntegrationTests
             }
             catch (TaskrowSharpException ex)
             {
+                //Taskrow retorna erro 500 quando o cliente nao é encontrado, o erro é convertido em TaskrowSharpException
                 exception = ex;
             }
             Assert.NotNull(exception);
@@ -241,7 +242,7 @@ namespace TaskrowSharp.IntegrationTests
         }
 
         [Fact]
-        public async Task ClientAddressInsert_or_UpdateAsync_Success()
+        public async Task ClientAddressInsertAsync_or_UpdateAsync_Success()
         {
             List<int> clientIDs = _configurationFile.Clients?.Select(a => a.ClientID).ToList() ?? new List<int>();
             var clientID = clientIDs.First();
@@ -297,6 +298,20 @@ namespace TaskrowSharp.IntegrationTests
                 Assert.NotNull(response);
                 Assert.Equal(request.SocialContractName, response.SocialContractName);
             }
+        }
+
+        [Fact]
+        public async Task ClientInfoGetAsync_Success()
+        {
+            int clientID = _configurationFile.Clients?.Select(a => a.ClientID).FirstOrDefault() ?? 0;
+            var client = await _taskrowClient.ClientDetailGetAsync(clientID);
+            Assert.NotNull(client);
+            var clientAddress = client.ClientAddress.FirstOrDefault();
+            Assert.NotNull(clientAddress);
+
+            var clientAddressInfo = await _taskrowClient.ClientAddressInfoGetAsync(clientAddress.ClientAddressID);
+            Assert.NotNull(clientAddressInfo);
+            Assert.Equal(clientAddress.ClientAddressID, clientAddressInfo.ClientAddressID);
         }
     }
 }

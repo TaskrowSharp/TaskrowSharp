@@ -252,6 +252,13 @@ public class TaskrowClient
 
     #region ClientAddress
 
+    public async Task<ClientAddressInfo> ClientAddressInfoGetAsync(int clientAddressID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/core/clientAddress/get?clientAddressID={clientAddressID}");
+        var response = await ExecuteApiCall<object, ClientAddressInfo>(HttpMethod.Get, fullUrl, null);
+        return response;
+    }
+
     public async Task<ClientAddress> ClientAddressInsertAsync(ClientAddressInsertRequest clientAddressInsertRequest)
     {
         var fullUrl = new Uri(this.ServiceUrl, $"/api/v1/Client/SaveClientAddress");
@@ -360,6 +367,13 @@ public class TaskrowClient
     #endregion
 
     #region Job
+
+    public async Task<JobInfo> JobInfoGetAsync(int jobNumber)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/core/job/getByJobNumber?jobNumber={jobNumber}");
+        var response = await ExecuteApiCall<object, JobInfo>(HttpMethod.Get, fullUrl, null);
+        return response;
+    }
 
     public async Task<Job> JobDetailGetAsync(string clientNickName, int jobNumber)
     {
