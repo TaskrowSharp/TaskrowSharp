@@ -12,8 +12,8 @@ public class SupplierOrder
     [JsonPropertyName("clientContactID")]
     public int ClientContactID { get; set; }
 
-    [JsonPropertyName("clientAddressID")]
-    public int ClientAddressID { get; set; }
+    [JsonPropertyName("supplierAddressID")]
+    public int SupplierAddressID { get; set; }
 
     [JsonPropertyName("refundTypeID")]
     public int RefundTypeID { get; set; }
