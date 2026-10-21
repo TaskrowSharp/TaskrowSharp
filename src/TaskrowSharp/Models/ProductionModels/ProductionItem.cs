@@ -156,4 +156,11 @@ public class ProductionItem
 
     [JsonPropertyName("pendingUpdateCount")]
     public int PendingUpdateCount { get; set; }
+
+    [JsonPropertyName("proposalID")]
+    public int ProposalID { get; set; }
+
+    //O Rafael disse que provavelmente no futuro essa propriedade sera removida entao eh melhor nao utilizar
+    //[JsonPropertyName("proposal")]
+    //public Proposal Proposal { get; set; }
 }

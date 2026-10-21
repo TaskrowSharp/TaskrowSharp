@@ -679,6 +679,17 @@ public class TaskrowClient
 
     #endregion
 
+    #region SupplierOrder
+
+    public async Task<Proposal?> ProposalGetAsync(string clientNickName, int proposalID)
+    {
+        var fullUrl = new Uri(this.ServiceUrl, $"/api/v2/proposal/proposal/get?clientNickName={clientNickName}&proposalID={proposalID}");
+        var response = await ExecuteApiCall<object, Proposal>(HttpMethod.Get, fullUrl, null);
+        return response;
+    }
+
+    #endregion
+
     #region SupplierOrderIntegrationStatus
 
     public async Task SupplierOrderIntegrationStatusUpdateAsync(SupplierOrderIntegrationStatusUpdateRequest updateRequest)

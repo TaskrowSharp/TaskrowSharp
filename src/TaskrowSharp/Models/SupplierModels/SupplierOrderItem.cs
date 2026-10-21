@@ -42,5 +42,5 @@ public class SupplierOrderItem
     public string ExtraRealCostDescription { get; set; }
 
     [JsonPropertyName("productionItem")]
-    public ProductionItem ProductionItem { get; set; }
+    public ProductionItem? ProductionItem { get; set; }
 }

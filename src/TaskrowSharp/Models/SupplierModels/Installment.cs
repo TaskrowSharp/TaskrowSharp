@@ -23,8 +23,8 @@ public class Installment
     [JsonPropertyName("invoiceToClientAddressID")]
     public int InvoiceToClientAddressID { get; set; }
 
-    [JsonPropertyName("clientID")]
-    public int ClientID { get; set; }
+    [JsonPropertyName("supplierID")]
+    public int SupplierID { get; set; }
 
     [JsonPropertyName("description")]
     public string Description { get; set; }

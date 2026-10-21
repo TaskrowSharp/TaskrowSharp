@@ -30,6 +30,14 @@ public class SupplierOrderTests : BaseTest
                 var supplierOrder = await _taskrowClient.SupplierOrderGetAsync(supplierOrderID);
                 Assert.NotNull(supplierOrder);
                 Assert.Equal(supplierOrderID, supplierOrder.SupplierOrderID);
+
+                var supplierOrderItem = supplierOrder.SupplierOrderItem.FirstOrDefault();
+                var productionItem = supplierOrderItem.ProductionItem;
+                var proposalID = productionItem.ProposalID;
+
+                var proposal = await _taskrowClient.ProposalGetAsync(supplierOrder.ClientNickName, proposalID);
+                Assert.NotNull(proposal);
+                Assert.Equal(proposalID, proposal.ProposalID);
             }
         }
         catch (Exception ex)

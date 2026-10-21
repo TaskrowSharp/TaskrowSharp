@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TaskrowSharp.Models;
 using TaskrowSharp.Models.TaskModels;
 using Xunit;
 
@@ -44,7 +43,6 @@ namespace TaskrowSharp.IntegrationTests
                 Assert.Equal(taskReference.ClientNickname, taskDetailResponse.JobData.Client.ClientNickName);
                 Assert.Equal(taskReference.JobNumber, taskDetailResponse.JobData.JobNumber);
                 Assert.Equal(taskReference.TaskNumber, taskDetailResponse.TaskData.TaskNumber);
-
             }
         }
     }

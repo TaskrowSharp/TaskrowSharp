@@ -39,6 +39,9 @@ public class SupplierOrder
     [JsonPropertyName("clientID")]
     public int ClientID { get; set; }
 
+    [JsonPropertyName("clientNumber")]
+    public int ClientNumber { get; set; }
+
     [JsonPropertyName("clientDisplayName")]
     public string ClientDisplayName { get; set; }
 
